@@ -1,0 +1,21 @@
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {9.1}Wat zijn threads?}{\reset@font\mtcSfont 128}{section.9.1}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {9.2}Threads zijn objecten}{\reset@font\mtcSfont 130}{section.9.2}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {9.2.1}Subklasse van Thread}{\reset@font\mtcSSfont 130}{subsection.9.2.1}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {9.2.2}De interface Runnable implementeren}{\reset@font\mtcSSfont 130}{subsection.9.2.2}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode Runnable als lambda expressie}{\reset@font\mtcSSSfont 131}{section*.8}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {9.2.3}Thread class versus Runnable Interface}{\reset@font\mtcSSfont 131}{subsection.9.2.3}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {9.3}Thread life cycle}{\reset@font\mtcSfont 132}{section.9.3}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {9.3.1}Thread.sleep()}{\reset@font\mtcSSfont 133}{subsection.9.3.1}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {9.3.2}referencedThread.join()}{\reset@font\mtcSSfont 134}{subsection.9.3.2}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {9.4}Thread synchronization}{\reset@font\mtcSfont 135}{section.9.4}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {9.4.1}Status WAITING, TIMED\_WAITING en BLOCKED}{\reset@font\mtcSSfont 139}{subsection.9.4.1}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {9.5}Timer en TimerTask}{\reset@font\mtcSfont 140}{section.9.5}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {9.6}Concurrency framework}{\reset@font\mtcSfont 141}{section.9.6}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {9.6.1}Concurrent collections}{\reset@font\mtcSSfont 141}{subsection.9.6.1}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode Producer-consumer probleem}{\reset@font\mtcSSSfont 142}{section*.9}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {9.6.2}Atomic variables}{\reset@font\mtcSSfont 142}{subsection.9.6.2}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {9.6.3}ExecutorService framework}{\reset@font\mtcSSfont 143}{subsection.9.6.3}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode Runnable}{\reset@font\mtcSSSfont 143}{section*.10}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode Callable}{\reset@font\mtcSSSfont 144}{section*.11}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {9.7}Parallel streams}{\reset@font\mtcSfont 145}{section.9.7}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {9.8}Oefeningen}{\reset@font\mtcSfont 146}{section.9.8}}

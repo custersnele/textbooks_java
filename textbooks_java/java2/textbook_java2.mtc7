@@ -1,0 +1,19 @@
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {7.1}External en internal iterators}{\reset@font\mtcSfont 101}{section.7.1}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {7.2}Intermediate en terminal operations}{\reset@font\mtcSfont 103}{section.7.2}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {7.2.1}Terminal operation .collect()}{\reset@font\mtcSSfont 103}{subsection.7.2.1}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {7.2.2}Intermediate operation .filter()}{\reset@font\mtcSSfont 103}{subsection.7.2.2}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {7.2.3}Terminal operation .forEach()}{\reset@font\mtcSSfont 105}{subsection.7.2.3}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {7.2.4}Intermediate operation .map()}{\reset@font\mtcSSfont 106}{subsection.7.2.4}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {7.2.5}Intermediate operation .sorted()}{\reset@font\mtcSSfont 107}{subsection.7.2.5}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {7.2.6}Intermediate operation .distinct()}{\reset@font\mtcSSfont 108}{subsection.7.2.6}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {7.2.7}Intermediate operation .limit()}{\reset@font\mtcSSfont 108}{subsection.7.2.7}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {7.2.8}Intermediate operation peek()}{\reset@font\mtcSSfont 108}{subsection.7.2.8}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {7.2.9}Terminal operation .count()}{\reset@font\mtcSSfont 109}{subsection.7.2.9}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {7.3}Intstream, LongStream en DoubleStream}{\reset@font\mtcSfont 109}{section.7.3}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {7.3.1}sum()}{\reset@font\mtcSSfont 109}{subsection.7.3.1}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {7.3.2}range() en rangeClosed()}{\reset@font\mtcSSfont 109}{subsection.7.3.2}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {7.3.3}min(), max() en average()}{\reset@font\mtcSSfont 110}{subsection.7.3.3}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {7.4}Geavanceerdere operations}{\reset@font\mtcSfont 111}{section.7.4}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {7.4.1}Terminal operation .reduce()}{\reset@font\mtcSSfont 111}{subsection.7.4.1}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {7.4.2}Intermediate operation .flatMap()}{\reset@font\mtcSSfont 112}{subsection.7.4.2}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {7.5}Oefeningen}{\reset@font\mtcSfont 113}{section.7.5}}

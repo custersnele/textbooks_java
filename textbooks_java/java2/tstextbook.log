@@ -1,0 +1,3202 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.4.6)  16 SEP 2022 10:38
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**tstextbook.tex
+(./tstextbook.tex
+LaTeX2e <2021-11-15> patch level 1
+L3 programming layer <2022-02-24> (./tstextbook.cls
+Document Class: tstextbook 2017/02/19 Free LaTeX text book template from Typese
+tters.se
+(/usr/local/texlive/2022/texmf-dist/tex/latex/base/book.cls
+Document Class: book 2021/10/04 v1.4n Standard LaTeX document class
+(/usr/local/texlive/2022/texmf-dist/tex/latex/base/bk11.clo
+File: bk11.clo 2021/10/04 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count185
+\c@chapter=\count186
+\c@section=\count187
+\c@subsection=\count188
+\c@subsubsection=\count189
+\c@paragraph=\count190
+\c@subparagraph=\count191
+\c@figure=\count192
+\c@table=\count193
+\abovecaptionskip=\skip47
+\belowcaptionskip=\skip48
+\bibindent=\dimen138
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/base/inputenc.sty
+Package: inputenc 2021/02/14 v1.3d Input encoding file
+\inpenc@prehook=\toks16
+\inpenc@posthook=\toks17
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks18
+)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/iftex/ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+
+(/usr/local/texlive/2022/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2022/02/03 v1.0f TeX engine tests
+))
+\Gm@cnth=\count194
+\Gm@cntv=\count195
+\c@Gm@tempcnt=\count196
+\Gm@bindingoffset=\dimen139
+\Gm@wd@mp=\dimen140
+\Gm@odd@mp=\dimen141
+\Gm@even@mp=\dimen142
+\Gm@layoutwidth=\dimen143
+\Gm@layoutheight=\dimen144
+\Gm@layouthoffset=\dimen145
+\Gm@layoutvoffset=\dimen146
+\Gm@dimlist=\toks19
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/kpfonts/kpfonts.sty
+Package: kpfonts  2010/08/20 v3.31
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/base/textcomp.sty
+Package: textcomp 2020/02/02 v2.0n Standard LaTeX package
+LaTeX Font Info:    Changing ? sub-encoding to TS1/0 on input line 78.
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2021/10/15 v2.17l AMS math features
+\@mathmargin=\skip49
+
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2022/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2021/08/26 v2.01 AMS text
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks20
+\ex@=\dimen147
+))
+(/usr/local/texlive/2022/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen148
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2021/08/26 v2.02 operator names
+)
+\inf@bad=\count197
+LaTeX Info: Redefining \frac on input line 234.
+\uproot@=\count198
+\leftroot@=\count199
+LaTeX Info: Redefining \overline on input line 399.
+\classnum@=\count266
+\DOTSCASE@=\count267
+LaTeX Info: Redefining \ldots on input line 496.
+LaTeX Info: Redefining \dots on input line 499.
+LaTeX Info: Redefining \cdots on input line 620.
+\Mathstrutbox@=\box50
+\strutbox@=\box51
+\big@size=\dimen149
+LaTeX Font Info:    Redeclaring font encoding OML on input line 743.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 744.
+\macc@depth=\count268
+\c@MaxMatrixCols=\count269
+\dotsspace@=\muskip16
+\c@parentequation=\count270
+\dspbrk@lvl=\count271
+\tag@help=\toks21
+\row@=\count272
+\column@=\count273
+\maxfields@=\count274
+\andhelp@=\toks22
+\eqnshift@=\dimen150
+\alignsep@=\dimen151
+\tagshift@=\dimen152
+\tagwidth@=\dimen153
+\totwidth@=\dimen154
+\lineht@=\dimen155
+\@envbody=\toks23
+\multlinegap=\skip50
+\multlinetaggap=\skip51
+\mathdisplay@stack=\toks24
+LaTeX Info: Redefining \[ on input line 2938.
+LaTeX Info: Redefining \] on input line 2939.
+)
+\c@mv@rm=\count275
+\c@mv@boldrm=\count276
+\c@mv@sf=\count277
+\c@mv@boldsf=\count278
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 354.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> OT1/jkp/m/n on input line 354.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/jkp/m/n on input line 354.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `rm'
+(Font)                  OT1/cmr/m/n --> OT1/jkp/m/n on input line 354.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `boldrm'
+(Font)                  OT1/cmr/m/n --> OT1/jkp/m/n on input line 354.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `sf'
+(Font)                  OT1/cmr/m/n --> OT1/jkp/m/n on input line 354.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `boldsf'
+(Font)                  OT1/cmr/m/n --> OT1/jkp/m/n on input line 354.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/jkp/m/n --> OT1/jkp/b/n on input line 355.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `rm'
+(Font)                  OT1/jkp/m/n --> OT1/jkp/m/n on input line 357.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `boldrm'
+(Font)                  OT1/jkp/m/n --> OT1/jkp/b/n on input line 358.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `sf'
+(Font)                  OT1/jkp/m/n --> OT1/jkpss/m/n on input line 359.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `boldsf'
+(Font)                  OT1/jkp/m/n --> OT1/jkpss/b/n on input line 360.
+LaTeX Font Info:    Redeclaring math alphabet \mathrm on input line 364.
+LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `bold'
+(Font)                  OT1/jkp/m/n --> OT1/jkp/b/n on input line 365.
+LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `rm'
+(Font)                  OT1/jkp/m/n --> OT1/jkp/m/n on input line 366.
+LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `boldrm'
+(Font)                  OT1/jkp/m/n --> OT1/jkp/b/n on input line 367.
+LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `sf'
+(Font)                  OT1/jkp/m/n --> OT1/jkp/m/n on input line 368.
+LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `boldsf'
+(Font)                  OT1/jkp/m/n --> OT1/jkp/b/n on input line 369.
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 378.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/cmr/bx/n --> OT1/jkp/b/n on input line 378.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/jkp/b/n on input line 378.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `rm'
+(Font)                  OT1/cmr/bx/n --> OT1/jkp/b/n on input line 378.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `boldrm'
+(Font)                  OT1/cmr/bx/n --> OT1/jkp/b/n on input line 378.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `sf'
+(Font)                  OT1/cmr/bx/n --> OT1/jkp/b/n on input line 378.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `boldsf'
+(Font)                  OT1/cmr/bx/n --> OT1/jkp/b/n on input line 378.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
+(Font)                  OT1/jkp/b/n --> OT1/jkp/b/n on input line 379.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `rm'
+(Font)                  OT1/jkp/b/n --> OT1/jkp/b/n on input line 381.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `boldrm'
+(Font)                  OT1/jkp/b/n --> OT1/jkp/b/n on input line 382.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `sf'
+(Font)                  OT1/jkp/b/n --> OT1/jkpss/b/n on input line 383.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `boldsf'
+(Font)                  OT1/jkp/b/n --> OT1/jkpss/b/n on input line 384.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 390.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/cmr/m/it --> OT1/jkp/m/it on input line 390.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmr/bx/it --> OT1/jkp/m/it on input line 390.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `rm'
+(Font)                  OT1/cmr/m/it --> OT1/jkp/m/it on input line 390.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `boldrm'
+(Font)                  OT1/cmr/m/it --> OT1/jkp/m/it on input line 390.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `sf'
+(Font)                  OT1/cmr/m/it --> OT1/jkp/m/it on input line 390.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `boldsf'
+(Font)                  OT1/cmr/m/it --> OT1/jkp/m/it on input line 390.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/jkp/m/it --> OT1/jkp/b/it on input line 391.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `rm'
+(Font)                  OT1/jkp/m/it --> OT1/jkp/m/it on input line 393.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `boldrm'
+(Font)                  OT1/jkp/m/it --> OT1/jkp/b/it on input line 394.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `sf'
+(Font)                  OT1/jkp/m/it --> OT1/jkpss/m/it on input line 395.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `boldsf'
+(Font)                  OT1/jkp/m/it --> OT1/jkpss/b/it on input line 396.
+LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 401.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
+(Font)                  OT1/cmss/m/n --> OT1/jkpss/m/n on input line 401.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
+(Font)                  OT1/cmss/bx/n --> OT1/jkpss/m/n on input line 401.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `rm'
+(Font)                  OT1/cmss/m/n --> OT1/jkpss/m/n on input line 401.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `boldrm'
+(Font)                  OT1/cmss/m/n --> OT1/jkpss/m/n on input line 401.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `sf'
+(Font)                  OT1/cmss/m/n --> OT1/jkpss/m/n on input line 401.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `boldsf'
+(Font)                  OT1/cmss/m/n --> OT1/jkpss/m/n on input line 401.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
+(Font)                  OT1/jkpss/m/n --> OT1/jkpss/b/n on input line 402.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `rm'
+(Font)                  OT1/jkpss/m/n --> OT1/jkpss/m/n on input line 403.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `boldrm'
+(Font)                  OT1/jkpss/m/n --> OT1/jkpss/b/n on input line 404.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `sf'
+(Font)                  OT1/jkpss/m/n --> OT1/jkpss/m/n on input line 405.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `boldsf'
+(Font)                  OT1/jkpss/m/n --> OT1/jkpss/b/n on input line 406.
+LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 410.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
+(Font)                  OT1/cmtt/m/n --> OT1/jkptt/m/n on input line 410.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
+(Font)                  OT1/cmtt/m/n --> OT1/jkptt/m/n on input line 410.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `rm'
+(Font)                  OT1/cmtt/m/n --> OT1/jkptt/m/n on input line 410.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `boldrm'
+(Font)                  OT1/cmtt/m/n --> OT1/jkptt/m/n on input line 410.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `sf'
+(Font)                  OT1/cmtt/m/n --> OT1/jkptt/m/n on input line 410.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `boldsf'
+(Font)                  OT1/cmtt/m/n --> OT1/jkptt/m/n on input line 410.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
+(Font)                  OT1/jkptt/m/n --> OT1/jkptt/b/n on input line 411.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `rm'
+(Font)                  OT1/jkptt/m/n --> OT1/jkptt/m/n on input line 412.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `boldrm'
+(Font)                  OT1/jkptt/m/n --> OT1/jkptt/b/n on input line 413.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `sf'
+(Font)                  OT1/jkptt/m/n --> OT1/jkptt/m/n on input line 414.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `boldsf'
+(Font)                  OT1/jkptt/m/n --> OT1/jkptt/b/n on input line 415.
+LaTeX Font Info:    Redeclaring symbol font `letters' on input line 423.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `normal'
+(Font)                  OML/cmm/m/it --> OML/jkp/m/it on input line 423.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/cmm/b/it --> OML/jkp/m/it on input line 423.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `rm'
+(Font)                  OML/cmm/m/it --> OML/jkp/m/it on input line 423.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `boldrm'
+(Font)                  OML/cmm/m/it --> OML/jkp/m/it on input line 423.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `sf'
+(Font)                  OML/cmm/m/it --> OML/jkp/m/it on input line 423.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `boldsf'
+(Font)                  OML/cmm/m/it --> OML/jkp/m/it on input line 423.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/jkp/m/it --> OML/jkp/bx/it on input line 424.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `rm'
+(Font)                  OML/jkp/m/it --> OML/jkp/m/it on input line 426.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `boldrm'
+(Font)                  OML/jkp/m/it --> OML/jkp/bx/it on input line 427.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `sf'
+(Font)                  OML/jkp/m/it --> OML/jkpss/m/it on input line 428.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `boldsf'
+(Font)                  OML/jkp/m/it --> OML/jkpss/bx/it on input line 429.
+\symlettersA=\mathgroup4
+LaTeX Font Info:    Overwriting symbol font `lettersA' in version `bold'
+(Font)                  U/jkpmia/m/it --> U/jkpmia/bx/it on input line 439.
+LaTeX Font Info:    Overwriting symbol font `lettersA' in version `rm'
+(Font)                  U/jkpmia/m/it --> U/jkpmia/m/it on input line 441.
+LaTeX Font Info:    Overwriting symbol font `lettersA' in version `boldrm'
+(Font)                  U/jkpmia/m/it --> U/jkpmia/bx/it on input line 442.
+LaTeX Font Info:    Overwriting symbol font `lettersA' in version `sf'
+(Font)                  U/jkpmia/m/it --> U/jkpssmia/m/it on input line 443.
+LaTeX Font Info:    Overwriting symbol font `lettersA' in version `boldsf'
+(Font)                  U/jkpmia/m/it --> U/jkpssmia/bx/it on input line 444.
+LaTeX Font Info:    Redeclaring symbol font `symbols' on input line 456.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
+(Font)                  OMS/cmsy/m/n --> OMS/jkp/m/n on input line 456.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/cmsy/b/n --> OMS/jkp/m/n on input line 456.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `rm'
+(Font)                  OMS/cmsy/m/n --> OMS/jkp/m/n on input line 456.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `boldrm'
+(Font)                  OMS/cmsy/m/n --> OMS/jkp/m/n on input line 456.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `sf'
+(Font)                  OMS/cmsy/m/n --> OMS/jkp/m/n on input line 456.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `boldsf'
+(Font)                  OMS/cmsy/m/n --> OMS/jkp/m/n on input line 456.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/jkp/m/n --> OMS/jkp/bx/n on input line 457.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `rm'
+(Font)                  OMS/jkp/m/n --> OMS/jkp/m/n on input line 459.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `boldrm'
+(Font)                  OMS/jkp/m/n --> OMS/jkp/bx/n on input line 460.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `sf'
+(Font)                  OMS/jkp/m/n --> OMS/jkp/m/n on input line 461.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `boldsf'
+(Font)                  OMS/jkp/m/n --> OMS/jkp/bx/n on input line 462.
+\symAMSa=\mathgroup5
+LaTeX Font Info:    Overwriting symbol font `AMSa' in version `bold'
+(Font)                  U/jkpsya/m/n --> U/jkpsya/bx/n on input line 476.
+LaTeX Font Info:    Overwriting symbol font `AMSa' in version `rm'
+(Font)                  U/jkpsya/m/n --> U/jkpsya/m/n on input line 477.
+LaTeX Font Info:    Overwriting symbol font `AMSa' in version `boldrm'
+(Font)                  U/jkpsya/m/n --> U/jkpsya/bx/n on input line 478.
+LaTeX Font Info:    Overwriting symbol font `AMSa' in version `sf'
+(Font)                  U/jkpsya/m/n --> U/jkpsya/m/n on input line 479.
+LaTeX Font Info:    Overwriting symbol font `AMSa' in version `boldsf'
+(Font)                  U/jkpsya/m/n --> U/jkpsya/bx/n on input line 480.
+\symAMSb=\mathgroup6
+LaTeX Font Info:    Overwriting symbol font `AMSb' in version `bold'
+(Font)                  U/jkpsyb/m/n --> U/jkpsyb/bx/n on input line 529.
+LaTeX Font Info:    Overwriting symbol font `AMSb' in version `rm'
+(Font)                  U/jkpsyb/m/n --> U/jkpsyb/m/n on input line 530.
+LaTeX Font Info:    Overwriting symbol font `AMSb' in version `boldrm'
+(Font)                  U/jkpsyb/m/n --> U/jkpsyb/bx/n on input line 531.
+LaTeX Font Info:    Overwriting symbol font `AMSb' in version `sf'
+(Font)                  U/jkpsyb/m/n --> U/jkpsssyb/m/n on input line 532.
+LaTeX Font Info:    Overwriting symbol font `AMSb' in version `boldsf'
+(Font)                  U/jkpsyb/m/n --> U/jkpsssyb/bx/n on input line 533.
+\symsymbolsC=\mathgroup7
+LaTeX Font Info:    Overwriting symbol font `symbolsC' in version `bold'
+(Font)                  U/jkpsyc/m/n --> U/jkpsyc/bx/n on input line 549.
+LaTeX Font Info:    Overwriting symbol font `symbolsC' in version `rm'
+(Font)                  U/jkpsyc/m/n --> U/jkpsyc/m/n on input line 551.
+LaTeX Font Info:    Overwriting symbol font `symbolsC' in version `boldrm'
+(Font)                  U/jkpsyc/m/n --> U/jkpsyc/bx/n on input line 552.
+LaTeX Font Info:    Overwriting symbol font `symbolsC' in version `sf'
+(Font)                  U/jkpsyc/m/n --> U/jkpsyc/m/n on input line 553.
+LaTeX Font Info:    Overwriting symbol font `symbolsC' in version `boldsf'
+(Font)                  U/jkpsyc/m/n --> U/jkpsyc/bx/n on input line 554.
+LaTeX Font Info:    Overwriting math alphabet `\mathscr' in version `bold'
+(Font)                  U/jkpsyd/m/n --> U/jkpsyd/bx/n on input line 583.
+LaTeX Font Info:    Overwriting math alphabet `\mathscr' in version `rm'
+(Font)                  U/jkpsyd/m/n --> U/jkpsyd/m/n on input line 585.
+LaTeX Font Info:    Overwriting math alphabet `\mathscr' in version `boldrm'
+(Font)                  U/jkpsyd/m/n --> U/jkpsyd/bx/n on input line 586.
+LaTeX Font Info:    Overwriting math alphabet `\mathscr' in version `sf'
+(Font)                  U/jkpsyd/m/n --> U/jkpsyd/m/n on input line 587.
+LaTeX Font Info:    Overwriting math alphabet `\mathscr' in version `boldsf'
+(Font)                  U/jkpsyd/m/n --> U/jkpsyd/bx/n on input line 588.
+LaTeX Font Info:    Redeclaring symbol font `largesymbols' on input line 598.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
+(Font)                  OMX/cmex/m/n --> OMX/jkp/m/n on input line 598.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/cmex/m/n --> OMX/jkp/m/n on input line 598.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `rm'
+(Font)                  OMX/cmex/m/n --> OMX/jkp/m/n on input line 598.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `boldrm'
+(Font)                  OMX/cmex/m/n --> OMX/jkp/m/n on input line 598.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `sf'
+(Font)                  OMX/cmex/m/n --> OMX/jkp/m/n on input line 598.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `boldsf'
+(Font)                  OMX/cmex/m/n --> OMX/jkp/m/n on input line 598.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/jkp/m/n --> OMX/jkp/bx/n on input line 599.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `rm'
+(Font)                  OMX/jkp/m/n --> OMX/jkp/m/n on input line 601.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `boldrm'
+(Font)                  OMX/jkp/m/n --> OMX/jkp/bx/n on input line 602.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `sf'
+(Font)                  OMX/jkp/m/n --> OMX/jkpss/m/n on input line 603.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `boldsf'
+(Font)                  OMX/jkp/m/n --> OMX/jkpss/bx/n on input line 604.
+\symlargesymbolsA=\mathgroup8
+LaTeX Font Info:    Overwriting symbol font `largesymbolsA' in version `bold'
+(Font)                  U/jkpexa/m/n --> U/jkpexa/bx/n on input line 615.
+LaTeX Font Info:    Overwriting symbol font `largesymbolsA' in version `rm'
+(Font)                  U/jkpexa/m/n --> U/jkpexa/m/n on input line 617.
+LaTeX Font Info:    Overwriting symbol font `largesymbolsA' in version `boldrm'
+
+(Font)                  U/jkpexa/m/n --> U/jkpexa/bx/n on input line 618.
+LaTeX Font Info:    Overwriting symbol font `largesymbolsA' in version `sf'
+(Font)                  U/jkpexa/m/n --> U/jkpexa/m/n on input line 619.
+LaTeX Font Info:    Overwriting symbol font `largesymbolsA' in version `boldsf'
+
+(Font)                  U/jkpexa/m/n --> U/jkpexa/bx/n on input line 620.
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 940.
+LaTeX Info: Redefining \not on input line 1580.
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2021/10/31 v2.13 LaTeX color extensions (UK)
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 227.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2020/10/05 v1.2a Graphics/color driver for pdftex
+)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1352.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1356.
+Package xcolor Info: Model `RGB' extended on input line 1368.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1370.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1371.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1372.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1373.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1374.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1375.
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2021/03/04 v1.4d Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 107.
+)
+\Gin@req@height=\dimen156
+\Gin@req@width=\dimen157
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
+(/usr/local/texlive/2022/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/local/texlive/2022/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.te
+x
+\pgfutil@everybye=\toks25
+\pgfutil@tempdima=\dimen158
+\pgfutil@tempdimb=\dimen159
+
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/utilities/pgfutil-common-li
+sts.tex))
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
+\pgfutil@abb=\box52
+) (/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/pgf.revision.tex)
+Package: pgfrcs 2021/05/15 v3.1.9a (3.1.9a)
+))
+Package: pgf 2021/05/15 v3.1.9a (3.1.9a)
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/local/texlive/2022/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+Package: pgfsys 2021/05/15 v3.1.9a (3.1.9a)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+\pgfkeys@pathtoks=\toks26
+\pgfkeys@temptoks=\toks27
+
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/utilities/pgfkeysfiltered.c
+ode.tex
+\pgfkeys@tmptoks=\toks28
+))
+\pgf@x=\dimen160
+\pgf@y=\dimen161
+\pgf@xa=\dimen162
+\pgf@ya=\dimen163
+\pgf@xb=\dimen164
+\pgf@yb=\dimen165
+\pgf@xc=\dimen166
+\pgf@yc=\dimen167
+\pgf@xd=\dimen168
+\pgf@yd=\dimen169
+\w@pgf@writea=\write3
+\r@pgf@reada=\read2
+\c@pgf@counta=\count279
+\c@pgf@countb=\count280
+\c@pgf@countc=\count281
+\c@pgf@countd=\count282
+\t@pgf@toka=\toks29
+\t@pgf@tokb=\toks30
+\t@pgf@tokc=\toks31
+\pgf@sys@id@count=\count283
+
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
+File: pgf.cfg 2021/05/15 v3.1.9a (3.1.9a)
+)
+Driver file for pgf: pgfsys-pdftex.def
+
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.d
+ef
+File: pgfsys-pdftex.def 2021/05/15 v3.1.9a (3.1.9a)
+
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-p
+df.def
+File: pgfsys-common-pdf.def 2021/05/15 v3.1.9a (3.1.9a)
+)))
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.
+code.tex
+File: pgfsyssoftpath.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgfsyssoftpath@smallbuffer@items=\count284
+\pgfsyssoftpath@bigbuffer@items=\count285
+)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.
+code.tex
+File: pgfsysprotocol.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+))
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+Package: pgfcore 2021/05/15 v3.1.9a (3.1.9a)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
+\pgfmath@dimen=\dimen170
+\pgfmath@count=\count286
+\pgfmath@box=\box53
+\pgfmath@toks=\toks32
+\pgfmath@stack@operand=\toks33
+\pgfmath@stack@operation=\toks34
+)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.
+tex
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic
+.code.tex)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigo
+nometric.code.tex)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.rando
+m.code.tex)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.compa
+rison.code.tex)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.
+code.tex)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round
+.code.tex)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.
+code.tex)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integ
+erarithmetics.code.tex)))
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
+\c@pgfmathroundto@lastzeros=\count287
+)) (/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfint.code.tex)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.co
+de.tex
+File: pgfcorepoints.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgf@picminx=\dimen171
+\pgf@picmaxx=\dimen172
+\pgf@picminy=\dimen173
+\pgf@picmaxy=\dimen174
+\pgf@pathminx=\dimen175
+\pgf@pathmaxx=\dimen176
+\pgf@pathminy=\dimen177
+\pgf@pathmaxy=\dimen178
+\pgf@xx=\dimen179
+\pgf@xy=\dimen180
+\pgf@yx=\dimen181
+\pgf@yy=\dimen182
+\pgf@zx=\dimen183
+\pgf@zy=\dimen184
+)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconst
+ruct.code.tex
+File: pgfcorepathconstruct.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgf@path@lastx=\dimen185
+\pgf@path@lasty=\dimen186
+)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage
+.code.tex
+File: pgfcorepathusage.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgf@shorten@end@additional=\dimen187
+\pgf@shorten@start@additional=\dimen188
+)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.co
+de.tex
+File: pgfcorescopes.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgfpic=\box54
+\pgf@hbox=\box55
+\pgf@layerbox@main=\box56
+\pgf@picture@serial@count=\count288
+)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicst
+ate.code.tex
+File: pgfcoregraphicstate.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgflinewidth=\dimen189
+)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransform
+ations.code.tex
+File: pgfcoretransformations.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgf@pt@x=\dimen190
+\pgf@pt@y=\dimen191
+\pgf@pt@temp=\dimen192
+)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.cod
+e.tex
+File: pgfcorequick.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.c
+ode.tex
+File: pgfcoreobjects.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathproce
+ssing.code.tex
+File: pgfcorepathprocessing.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.co
+de.tex
+File: pgfcorearrows.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgfarrowsep=\dimen193
+)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.cod
+e.tex
+File: pgfcoreshade.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgf@max=\dimen194
+\pgf@sys@shading@range@num=\count289
+\pgf@shadingcount=\count290
+)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.cod
+e.tex
+File: pgfcoreimage.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.
+code.tex
+File: pgfcoreexternal.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgfexternal@startupbox=\box57
+))
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.co
+de.tex
+File: pgfcorelayers.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretranspare
+ncy.code.tex
+File: pgfcoretransparency.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.
+code.tex
+File: pgfcorepatterns.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.
+tex
+File: pgfcorerdf.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)))
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.cod
+e.tex
+File: pgfmoduleshapes.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgfnodeparttextbox=\box58
+)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.
+tex
+File: pgfmoduleplot.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
+-0-65.sty
+Package: pgfcomp-version-0-65 2021/05/15 v3.1.9a (3.1.9a)
+\pgf@nodesepstart=\dimen195
+\pgf@nodesepend=\dimen196
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
+-1-18.sty
+Package: pgfcomp-version-1-18 2021/05/15 v3.1.9a (3.1.9a)
+))
+(/usr/local/texlive/2022/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
+(/usr/local/texlive/2022/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex)
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/pgf/math/pgfmath.sty
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex))
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex
+Package: pgffor 2021/05/15 v3.1.9a (3.1.9a)
+
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex)
+\pgffor@iter=\dimen197
+\pgffor@skip=\dimen198
+\pgffor@stack=\toks35
+\pgffor@toks=\toks36
+))
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.cod
+e.tex
+Package: tikz 2021/05/15 v3.1.9a (3.1.9a)
+
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothan
+dlers.code.tex
+File: pgflibraryplothandlers.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgf@plot@mark@count=\count291
+\pgfplotmarksize=\dimen199
+)
+\tikz@lastx=\dimen256
+\tikz@lasty=\dimen257
+\tikz@lastxsaved=\dimen258
+\tikz@lastysaved=\dimen259
+\tikz@lastmovetox=\dimen260
+\tikz@lastmovetoy=\dimen261
+\tikzleveldistance=\dimen262
+\tikzsiblingdistance=\dimen263
+\tikz@figbox=\box59
+\tikz@figbox@bg=\box60
+\tikz@tempbox=\box61
+\tikz@tempbox@bg=\box62
+\tikztreelevel=\count292
+\tikznumberofchildren=\count293
+\tikznumberofcurrentchild=\count294
+\tikz@fig@count=\count295
+
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.cod
+e.tex
+File: pgfmodulematrix.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgfmatrixcurrentrow=\count296
+\pgfmatrixcurrentcolumn=\count297
+\pgf@matrix@numberofcolumns=\count298
+)
+\tikz@expandcount=\count299
+
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibrarytopaths.code.tex
+File: tikzlibrarytopaths.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)))
+(/usr/local/texlive/2022/texmf-dist/tex/latex/background/background.sty
+Package: background 2014/03/04 v2.1 background material
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+Package: xkeyval 2020/11/20 v2.8 package option processing (HA)
+
+(/usr/local/texlive/2022/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/local/texlive/2022/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+\XKV@toks=\toks37
+\XKV@tempa@toks=\toks38
+)
+\XKV@depth=\count300
+File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
+))
+(/usr/local/texlive/2022/texmf-dist/tex/latex/everypage/everypage.sty
+Package: everypage 2020/10/17 R2.0b Hooks to run on every page
+
+
+Package everypage Warning: Functionality similar to this package has recently
+(everypage)                been implemented in LaTeX. This package is now in
+(everypage)                legacy status.
+(everypage)                Please, don't use it in new documents and packages.
+
+
+Package everypage Warning: You appear to be running a version of LaTeX
+(everypage)                providing the new functionality.
+(everypage)                Doing the best to deliver the original `everypage`
+(everypage)                interface on top of it. Strict equivalence is
+(everypage)                not possible, breakage may occur.
+(everypage)                If truly needed, Use `everypage-1x` to force the
+(everypage)                loading of an older code base.
+
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/tools/afterpage.sty
+Package: afterpage 2014/10/28 v1.08 After-Page Package (DPC)
+\AP@output=\toks39
+\AP@partial=\box63
+\AP@footins=\box64
+))
+(/usr/local/texlive/2022/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
+Package: fancyhdr 2021/01/28 v4.0.1 Extensive control of page headers and foote
+rs
+\f@nch@headwidth=\skip52
+\f@nch@O@elh=\skip53
+\f@nch@O@erh=\skip54
+\f@nch@O@olh=\skip55
+\f@nch@O@orh=\skip56
+\f@nch@O@elf=\skip57
+\f@nch@O@erf=\skip58
+\f@nch@O@olf=\skip59
+\f@nch@O@orf=\skip60
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/sectsty/sectsty.sty
+Package: sectsty 2002/02/25 v2.0.2 Commands to change all sectional heading sty
+les
+
+
+LaTeX Warning: Command \underbar  has changed.
+               Check if current package is valid.
+
+
+LaTeX Warning: Command \underline  has changed.
+               Check if current package is valid.
+
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/minitoc/minitoc.sty
+Package: minitoc 2018/07/12 v62 Package minitoc
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/minitoc/mtcmess.sty
+Package: mtcmess 2006/03/14
+)
+Package minitoc Info: I0001
+(minitoc)             *** minitoc package, version 62 ***.
+\tf@mtc=\write4
+\mtcindent=\skip61
+\mtcskipamount=\skip62
+Package minitoc Info: I0005
+(minitoc)             compatible with hyperref.
+Package minitoc Info: I0023
+(minitoc)             part level macros available.
+Package minitoc Info: I0003
+(minitoc)             chapter level macros available.
+\mtc@toks=\toks40
+\mtc@strutbox=\box65
+\mtc@hstrutbox=\box66
+Package minitoc Info: I0002
+(minitoc)             Autoconfiguration of extensions.
+\openout4 = `tstextbook.mtc0'.
+
+\openout4 = `tstextbook.mtc'.
+
+
+(./tstextbook.mtc0)
+Package minitoc Info: I0012
+(minitoc)             Long extensions (Unix-like) will be used.
+Package minitoc Info: I0031
+(minitoc)             ==> this version is configured for UNIX-like 
+(minitoc)                 (long extensions) file names.
+\openout4 = `tstextbook.mtc'.
+
+\openout4 = `tstextbook.mtc0'.
+
+\c@mtc=\count301
+\c@minitocdepth=\count302
+\c@ptc=\count303
+\c@parttocdepth=\count304
+\ptcindent=\skip63
+Package minitoc Info: I0010
+(minitoc)             The english language is selected.
+(minitoc)              on input line 4910.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/minitoc/english.mld
+File: english.mld 2006/01/13
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/minitoc/english.mld
+File: english.mld 2006/01/13
+))
+Package minitoc Info: I0024
+(minitoc)             PREPARING MINITOCS FROM tstextbook.toc on input line 141.
+
+Package minitoc Info: I0033
+(minitoc)             Writing tstextbook.mtc1.
+\openout4 = `tstextbook.mtc1'.
+
+Package minitoc Info: I0033
+(minitoc)             Writing tstextbook.mtc2.
+\openout4 = `tstextbook.mtc2'.
+
+Package minitoc Info: I0033
+(minitoc)             Writing tstextbook.mtc3.
+\openout4 = `tstextbook.mtc3'.
+
+Package minitoc Info: I0033
+(minitoc)             Writing tstextbook.mtc4.
+\openout4 = `tstextbook.mtc4'.
+
+Package minitoc Info: I0033
+(minitoc)             Writing tstextbook.mtc5.
+\openout4 = `tstextbook.mtc5'.
+
+Package minitoc Info: I0033
+(minitoc)             Writing tstextbook.mtc6.
+\openout4 = `tstextbook.mtc6'.
+
+Package minitoc Info: I0033
+(minitoc)             Writing tstextbook.mtc7.
+\openout4 = `tstextbook.mtc7'.
+
+Package minitoc Info: I0033
+(minitoc)             Writing tstextbook.mtc8.
+\openout4 = `tstextbook.mtc8'.
+
+Package minitoc Info: I0033
+(minitoc)             Writing tstextbook.mtc9.
+\openout4 = `tstextbook.mtc9'.
+
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/titlesec/titletoc.sty
+Package: titletoc 2021/07/05 v2.14 TOC entries
+\ttl@leftsep=\dimen264
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/amscls/amsthm.sty
+Package: amsthm 2020/05/29 v2.20.6
+\thm@style=\toks41
+\thm@bodyfont=\toks42
+\thm@headfont=\toks43
+\thm@notefont=\toks44
+\thm@headpunct=\toks45
+\thm@preskip=\skip64
+\thm@postskip=\skip65
+\thm@headsep=\skip66
+\dth@everypar=\toks46
+)
+\c@envdefinition=\count305
+\c@envtheorem=\count306
+\c@envlemma=\count307
+\c@envexercise=\count308
+\c@envproblem=\count309
+\c@envprogramming=\count310
+\c@envexample=\count311
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/biblatex/biblatex.sty
+Package: biblatex 2022/02/02 v3.17 programmable bibliographies (PK/MW)
+
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(/usr/local/texlive/2022/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count312
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+Package: kvoptions 2020-10-07 v3.14 Key value format for package options (HO)
+
+(/usr/local/texlive/2022/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty
+Package: kvsetkeys 2019/12/15 v1.18 Key value parser (HO)
+))
+(/usr/local/texlive/2022/texmf-dist/tex/latex/logreq/logreq.sty
+Package: logreq 2010/08/04 v1.0 xml request logger
+\lrq@indent=\count313
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/logreq/logreq.def
+File: logreq.def 2010/08/04 v1.0 logreq spec v1.0
+))
+(/usr/local/texlive/2022/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2020/11/24 v1.1c Standard LaTeX ifthen package (DPC)
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip17
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+\c@tabx@nest=\count314
+\c@listtotal=\count315
+\c@listcount=\count316
+\c@liststart=\count317
+\c@liststop=\count318
+\c@citecount=\count319
+\c@citetotal=\count320
+\c@multicitecount=\count321
+\c@multicitetotal=\count322
+\c@instcount=\count323
+\c@maxnames=\count324
+\c@minnames=\count325
+\c@maxitems=\count326
+\c@minitems=\count327
+\c@citecounter=\count328
+\c@maxcitecounter=\count329
+\c@savedcitecounter=\count330
+\c@uniquelist=\count331
+\c@uniquename=\count332
+\c@refsection=\count333
+\c@refsegment=\count334
+\c@maxextratitle=\count335
+\c@maxextratitleyear=\count336
+\c@maxextraname=\count337
+\c@maxextradate=\count338
+\c@maxextraalpha=\count339
+\c@abbrvpenalty=\count340
+\c@highnamepenalty=\count341
+\c@lownamepenalty=\count342
+\c@maxparens=\count343
+\c@parenlevel=\count344
+\blx@tempcnta=\count345
+\blx@tempcntb=\count346
+\blx@tempcntc=\count347
+\c@blx@maxsection=\count348
+\c@blx@maxsegment@0=\count349
+\blx@notetype=\count350
+\blx@parenlevel@text=\count351
+\blx@parenlevel@foot=\count352
+\c@blx@sectionciteorder@0=\count353
+\blx@entrysetcounter=\count354
+\blx@biblioinstance=\count355
+\labelnumberwidth=\skip67
+\labelalphawidth=\skip68
+\biblabelsep=\skip69
+\bibitemsep=\skip70
+\bibnamesep=\skip71
+\bibinitsep=\skip72
+\bibparsep=\skip73
+\bibhang=\skip74
+\blx@bcfin=\read3
+\blx@bcfout=\write5
+\blx@langwohyphens=\language87
+\c@mincomprange=\count356
+\c@maxcomprange=\count357
+\c@mincompwidth=\count358
+Package biblatex Info: Trying to load biblatex default data model...
+Package biblatex Info: ... file 'blx-dm.def' found.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/biblatex/blx-dm.def
+File: blx-dm.def 2022/02/02 v3.17 biblatex localization (PK/MW)
+)
+Package biblatex Info: Trying to load biblatex custom data model...
+Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
+\c@afterword=\count359
+\c@savedafterword=\count360
+\c@annotator=\count361
+\c@savedannotator=\count362
+\c@author=\count363
+\c@savedauthor=\count364
+\c@bookauthor=\count365
+\c@savedbookauthor=\count366
+\c@commentator=\count367
+\c@savedcommentator=\count368
+\c@editor=\count369
+\c@savededitor=\count370
+\c@editora=\count371
+\c@savededitora=\count372
+\c@editorb=\count373
+\c@savededitorb=\count374
+\c@editorc=\count375
+\c@savededitorc=\count376
+\c@foreword=\count377
+\c@savedforeword=\count378
+\c@holder=\count379
+\c@savedholder=\count380
+\c@introduction=\count381
+\c@savedintroduction=\count382
+\c@namea=\count383
+\c@savednamea=\count384
+\c@nameb=\count385
+\c@savednameb=\count386
+\c@namec=\count387
+\c@savednamec=\count388
+\c@translator=\count389
+\c@savedtranslator=\count390
+\c@shortauthor=\count391
+\c@savedshortauthor=\count392
+\c@shorteditor=\count393
+\c@savedshorteditor=\count394
+\c@labelname=\count395
+\c@savedlabelname=\count396
+\c@institution=\count397
+\c@savedinstitution=\count398
+\c@lista=\count399
+\c@savedlista=\count400
+\c@listb=\count401
+\c@savedlistb=\count402
+\c@listc=\count403
+\c@savedlistc=\count404
+\c@listd=\count405
+\c@savedlistd=\count406
+\c@liste=\count407
+\c@savedliste=\count408
+\c@listf=\count409
+\c@savedlistf=\count410
+\c@location=\count411
+\c@savedlocation=\count412
+\c@organization=\count413
+\c@savedorganization=\count414
+\c@origlocation=\count415
+\c@savedoriglocation=\count416
+\c@origpublisher=\count417
+\c@savedorigpublisher=\count418
+\c@publisher=\count419
+\c@savedpublisher=\count420
+\c@language=\count421
+\c@savedlanguage=\count422
+\c@origlanguage=\count423
+\c@savedoriglanguage=\count424
+\c@pageref=\count425
+\c@savedpageref=\count426
+\shorthandwidth=\skip75
+\shortjournalwidth=\skip76
+\shortserieswidth=\skip77
+\shorttitlewidth=\skip78
+\shortauthorwidth=\skip79
+\shorteditorwidth=\skip80
+\locallabelnumberwidth=\skip81
+\locallabelalphawidth=\skip82
+\localshorthandwidth=\skip83
+\localshortjournalwidth=\skip84
+\localshortserieswidth=\skip85
+\localshorttitlewidth=\skip86
+\localshortauthorwidth=\skip87
+\localshorteditorwidth=\skip88
+Package biblatex Info: Trying to load compatibility code...
+Package biblatex Info: ... file 'blx-compat.def' found.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/biblatex/blx-compat.def
+File: blx-compat.def 2022/02/02 v3.17 biblatex compatibility (PK/MW)
+)
+Package biblatex Info: Trying to load generic definitions...
+Package biblatex Info: ... file 'biblatex.def' found.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/biblatex/biblatex.def
+File: biblatex.def 2022/02/02 v3.17 biblatex compatibility (PK/MW)
+\c@textcitecount=\count427
+\c@textcitetotal=\count428
+\c@textcitemaxnames=\count429
+\c@biburlbigbreakpenalty=\count430
+\c@biburlbreakpenalty=\count431
+\c@biburlnumpenalty=\count432
+\c@biburlucpenalty=\count433
+\c@biburllcpenalty=\count434
+\biburlbigskip=\muskip18
+\biburlnumskip=\muskip19
+\biburlucskip=\muskip20
+\biburllcskip=\muskip21
+\c@smartand=\count435
+)
+Package biblatex Info: Trying to load bibliography style 'numeric'...
+Package biblatex Info: ... file 'numeric.bbx' found.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/biblatex/bbx/numeric.bbx
+File: numeric.bbx 2022/02/02 v3.17 biblatex bibliography style (PK/MW)
+Package biblatex Info: Trying to load bibliography style 'standard'...
+Package biblatex Info: ... file 'standard.bbx' found.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/biblatex/bbx/standard.bbx
+File: standard.bbx 2022/02/02 v3.17 biblatex bibliography style (PK/MW)
+\c@bbx:relatedcount=\count436
+\c@bbx:relatedtotal=\count437
+))
+Package biblatex Info: Trying to load citation style 'numeric'...
+Package biblatex Info: ... file 'numeric.cbx' found.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/biblatex/cbx/numeric.cbx
+File: numeric.cbx 2022/02/02 v3.17 biblatex citation style (PK/MW)
+Package biblatex Info: Redefining '\cite'.
+Package biblatex Info: Redefining '\parencite'.
+Package biblatex Info: Redefining '\footcite'.
+Package biblatex Info: Redefining '\footcitetext'.
+Package biblatex Info: Redefining '\smartcite'.
+Package biblatex Info: Redefining '\supercite'.
+Package biblatex Info: Redefining '\textcite'.
+Package biblatex Info: Redefining '\textcites'.
+Package biblatex Info: Redefining '\cites'.
+Package biblatex Info: Redefining '\parencites'.
+Package biblatex Info: Redefining '\smartcites'.
+)
+Package biblatex Info: Trying to load configuration file...
+Package biblatex Info: ... file 'biblatex.cfg' found.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/biblatex/biblatex.cfg
+File: biblatex.cfg 
+)
+Package biblatex Info: Input encoding 'utf8' detected.
+Package biblatex Info: Document encoding is UTF8 ....
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/l3kernel/expl3.sty
+Package: expl3 2022-02-24 L3 programming layer (loader) 
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2022-02-07 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count438
+\l__pdf_internal_box=\box67
+))
+Package biblatex Info: ... and expl3
+(biblatex)             2022-02-24 L3 programming layer (loader) 
+(biblatex)             is new enough (at least 2020/04/06),
+(biblatex)             setting 'casechanger=expl3'.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/biblatex/blx-case-expl3.sty
+(/usr/local/texlive/2022/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
+Package: xparse 2022-01-12 L3 Experimental document command parser
+)
+Package: blx-case-expl3 2022/02/02 v3.17 expl3 case changing code for biblatex
+))
+(/usr/local/texlive/2022/texmf-dist/tex/latex/base/makeidx.sty
+Package: makeidx 2021/10/04 v1.0m Standard LaTeX package
+)
+\@indexfile=\write6
+\openout6 = `tstextbook.idx'.
+
+
+Writing index file tstextbook.idx
+(/usr/local/texlive/2022/texmf-dist/tex/latex/algorithms/algorithm.sty
+Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
+nment
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count439
+\float@exts=\toks47
+\float@box=\box68
+\@float@everytoks=\toks48
+\@floatcapt=\box69
+)
+\@float@every@algorithm=\toks49
+\c@algorithm=\count440
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/algorithmicx/algpseudocode.sty
+Package: algpseudocode 
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/algorithmicx/algorithmicx.sty
+Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
+
+Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
+\c@ALG@line=\count441
+\c@ALG@rem=\count442
+\c@ALG@nested=\count443
+\ALG@tlm=\skip89
+\ALG@thistlm=\skip90
+\c@ALG@Lnr=\count444
+\c@ALG@blocknr=\count445
+\c@ALG@storecount=\count446
+\c@ALG@tmpcounter=\count447
+\ALG@tmplength=\skip91
+)
+Document Style - pseudocode environments for use with the `algorithmicx' style
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/l3packages/xfrac/xfrac.sty
+(/usr/local/texlive/2022/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty
+Package: l3keys2e 2022-01-12 LaTeX2e option processing using LaTeX3 keys
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/l3packages/xtemplate/xtemplate.st
+y
+Package: xtemplate 2022-01-12 L3 Experimental prototype document functions
+\l__xtemplate_tmp_dim=\dimen265
+\l__xtemplate_tmp_int=\count448
+\l__xtemplate_tmp_muskip=\muskip22
+\l__xtemplate_tmp_skip=\skip92
+)
+Package: xfrac 2022-01-12 L3 Experimental split-level fractions
+\l__xfrac_slash_box=\box70
+\l__xfrac_tmp_box=\box71
+\l__xfrac_denominator_bot_sep_dim=\dimen266
+\l__xfrac_numerator_bot_sep_dim=\dimen267
+\l__xfrac_numerator_top_sep_dim=\dimen268
+\l__xfrac_slash_left_sep_dim=\dimen269
+\l__xfrac_slash_right_sep_dim=\dimen270
+\l__xfrac_slash_left_muskip=\muskip23
+\l__xfrac_slash_right_muskip=\muskip24
+
+Package xtemplate Info: Declaring object type 'xfrac' taking 3 argument(s) on
+(xtemplate)             line 80.
+
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/mathtools/mathtools.sty
+Package: mathtools 2022/02/07 v1.28a mathematical typesetting tools
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count449
+\calc@Bcount=\count450
+\calc@Adimen=\dimen271
+\calc@Bdimen=\dimen272
+\calc@Askip=\skip93
+\calc@Bskip=\skip94
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count451
+\calc@Cskip=\skip95
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/mathtools/mhsetup.sty
+Package: mhsetup 2021/03/18 v1.4 programming setup (MH)
+)
+\g_MT_multlinerow_int=\count452
+\l_MT_multwidth_dim=\dimen273
+\origjot=\skip96
+\l_MT_shortvdotswithinadjustabove_dim=\dimen274
+\l_MT_shortvdotswithinadjustbelow_dim=\dimen275
+\l_MT_above_intertext_sep=\dimen276
+\l_MT_below_intertext_sep=\dimen277
+\l_MT_above_shortintertext_sep=\dimen278
+\l_MT_below_shortintertext_sep=\dimen279
+\xmathstrut@box=\box72
+\xmathstrut@dim=\dimen280
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/wasysym/wasysym.sty
+Package: wasysym 2020/01/19 v2.4 Wasy-2 symbol support package
+\symwasy=\mathgroup9
+LaTeX Font Info:    Overwriting symbol font `wasy' in version `bold'
+(Font)                  U/wasy/m/n --> U/wasy/b/n on input line 93.
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/siunitx/siunitx.sty
+Package: siunitx 2022-02-15 v3.0.49 A comprehensive (SI) units package
+\l__siunitx_angle_tmp_dim=\dimen281
+\l__siunitx_angle_marker_box=\box73
+\l__siunitx_angle_unit_box=\box74
+\l__siunitx_compound_count_int=\count453
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/translations/translations.sty
+Package: translations 2022/02/05 v1.12 internationalization of LaTeX2e packages
+ (CN)
+)
+\l__siunitx_number_exponent_fixed_int=\count454
+\l__siunitx_number_min_decimal_int=\count455
+\l__siunitx_number_min_integer_int=\count456
+\l__siunitx_number_round_precision_int=\count457
+\l__siunitx_number_group_minimum_int=\count458
+\l__siunitx_table_tmp_box=\box75
+\l__siunitx_table_tmp_dim=\dimen282
+\l__siunitx_table_column_width_dim=\dimen283
+\l__siunitx_table_integer_box=\box76
+\l__siunitx_table_decimal_box=\box77
+\l__siunitx_table_before_box=\box78
+\l__siunitx_table_after_box=\box79
+\l__siunitx_table_before_dim=\dimen284
+\l__siunitx_table_carry_dim=\dimen285
+\l__siunitx_unit_tmp_int=\count459
+\l__siunitx_unit_position_int=\count460
+\l__siunitx_unit_total_int=\count461
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/tools/array.sty
+Package: array 2021/10/04 v2.5f Tabular extension package (FMi)
+\col@sep=\dimen286
+\ar@mcellbox=\box80
+\extrarowheight=\dimen287
+\NC@list=\toks50
+\extratabsurround=\skip97
+\backup@length=\skip98
+\ar@cellbox=\box81
+))
+(/usr/local/texlive/2022/texmf-dist/tex/latex/tools/bm.sty
+Package: bm 2021/04/25 v1.2e Bold Symbol Support (DPC/FMi)
+\symboldoperators=\mathgroup10
+\symboldletters=\mathgroup11
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 149.
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/blindtext/blindtext.sty
+Package: blindtext 2012/01/06 V2.0 blindtext-Package
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/tools/xspace.sty
+Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
+)
+\c@blindtext=\count462
+\c@Blindtext=\count463
+\c@blind@countparstart=\count464
+\blind@countxx=\count465
+\blindtext@numBlindtext=\count466
+\blind@countyy=\count467
+\c@blindlist=\count468
+\c@blindlistlevel=\count469
+\c@blindlist@level=\count470
+\blind@listitem=\count471
+\c@blind@listcount=\count472
+\c@blind@levelcount=\count473
+\blind@mathformula=\count474
+\blind@Mathformula=\count475
+\c@blind@randomcount=\count476
+\c@blind@randommax=\count477
+\c@blind@pangramcount=\count478
+\c@blind@pangrammax=\count479
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/tcolorbox/tcolorbox.sty
+Package: tcolorbox 2022/01/07 version 5.0.2 text color boxes
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/tools/verbatim.sty
+Package: verbatim 2020-07-07 v1.5u LaTeX2e package for verbatim enhancements
+\every@verbatim=\toks51
+\verbatim@line=\toks52
+\verbatim@in@stream=\read4
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/environ/environ.sty
+Package: environ 2014/05/04 v0.3 A new way to define environments
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/trimspaces/trimspaces.sty
+Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
+))
+\tcb@titlebox=\box82
+\tcb@upperbox=\box83
+\tcb@lowerbox=\box84
+\tcb@phantombox=\box85
+\c@tcbbreakpart=\count480
+\c@tcblayer=\count481
+\c@tcolorbox@number=\count482
+\tcb@temp=\box86
+\tcb@temp=\box87
+\tcb@temp=\box88
+\tcb@temp=\box89
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/tcolorbox/tcbraster.code.tex
+Library (tcolorbox): 'tcbraster.code.tex' version '5.0.2'
+\c@tcbrastercolumn=\count483
+\c@tcbrasterrow=\count484
+\c@tcbrasternum=\count485
+\c@tcbraster=\count486
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/tcolorbox/tcbskins.code.tex
+Library (tcolorbox): 'tcbskins.code.tex' version '5.0.2'
+\tcb@waterbox=\box90
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/tcolorbox/tcbskinsjigsaw.code.tex
+Library (tcolorbox): 'tcbskinsjigsaw.code.tex' version '5.0.2'
+))
+(/usr/local/texlive/2022/texmf-dist/tex/latex/tcolorbox/tcbbreakable.code.tex
+Library (tcolorbox): 'tcbbreakable.code.tex' version '5.0.2'
+(/usr/local/texlive/2022/texmf-dist/tex/generic/oberdiek/pdfcol.sty
+Package: pdfcol 2019/12/29 v1.6 Handle new color stacks for pdfTeX (HO)
+)
+Package pdfcol Info: New color stack `tcb@breakable' = 1 on input line 23.
+\tcb@testbox=\box91
+\tcb@totalupperbox=\box92
+\tcb@totallowerbox=\box93
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/tcolorbox/tcbhooks.code.tex
+Library (tcolorbox): 'tcbhooks.code.tex' version '5.0.2'
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/tcolorbox/tcbtheorems.code.tex
+Library (tcolorbox): 'tcbtheorems.code.tex' version '5.0.2'
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/tcolorbox/tcbfitting.code.tex
+Library (tcolorbox): 'tcbfitting.code.tex' version '5.0.2'
+\tcbfitdim=\dimen288
+\tcb@lowerfitdim=\dimen289
+\tcb@upperfitdim=\dimen290
+\tcb@cur@hbadness=\count487
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/tcolorbox/tcbxparse.code.tex
+Library (tcolorbox): 'tcbxparse.code.tex' version '5.0.2'
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/tcolorbox/tcblistingsutf8.code.te
+x
+Library (tcolorbox): 'tcblistingsutf8.code.tex' version '5.0.2'
+(/usr/local/texlive/2022/texmf-dist/tex/latex/tcolorbox/tcblistings.code.tex
+Library (tcolorbox): 'tcblistings.code.tex' version '5.0.2'
+(/usr/local/texlive/2022/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count488
+\lst@gtempboxa=\box94
+\lst@token=\toks53
+\lst@length=\count489
+\lst@currlwidth=\dimen291
+\lst@column=\count490
+\lst@pos=\count491
+\lst@lostspace=\dimen292
+\lst@width=\dimen293
+\lst@newlines=\count492
+\lst@lineno=\count493
+\lst@maxwidth=\dimen294
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2020/03/24 1.8d (Carsten Heinz)
+\c@lstnumber=\count494
+\lst@skipnumbers=\count495
+\lst@framebox=\box95
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2020/03/24 1.8d listings configuration
+))
+Package: listings 2020/03/24 1.8d (Carsten Heinz)
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/tcolorbox/tcblistingscore.code.te
+x
+Library (tcolorbox): 'tcblistingscore.code.tex' version '5.0.2'
+(/usr/local/texlive/2022/texmf-dist/tex/latex/tcolorbox/tcbprocessing.code.tex
+Library (tcolorbox): 'tcbprocessing.code.tex' version '5.0.2'
+(/usr/local/texlive/2022/texmf-dist/tex/latex/tools/shellesc.sty
+Package: shellesc 2019/11/08 v1.0c unified shell escape interface for LaTeX
+Package shellesc Info: Restricted shell escape enabled on input line 77.
+))
+\c@tcblisting=\count496
+))
+(/usr/local/texlive/2022/texmf-dist/tex/latex/listingsutf8/listingsutf8.sty
+Package: listingsutf8 2019-12-10 v1.5 Allow UTF-8 in listings input (HO)
+
+(/usr/local/texlive/2022/texmf-dist/tex/generic/stringenc/stringenc.sty
+Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO
+)
+
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
+))))
+(/usr/local/texlive/2022/texmf-dist/tex/latex/tcolorbox/tcbexternal.code.tex
+Library (tcolorbox): 'tcbexternal.code.tex' version '5.0.2'
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/tcolorbox/tcbmagazine.code.tex
+Library (tcolorbox): 'tcbmagazine.code.tex' version '5.0.2'
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/tcolorbox/tcbvignette.code.tex
+Library (tcolorbox): 'tcbvignette.code.tex' version '5.0.2'
+
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibraryfadings.code.tex
+File: tikzlibraryfadings.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+
+(/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/libraries/pgflibraryfadings
+.code.tex
+File: pgflibraryfadings.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)))
+(/usr/local/texlive/2022/texmf-dist/tex/latex/tcolorbox/tcbposter.code.tex
+Library (tcolorbox): 'tcbposter.code.tex' version '5.0.2'
+)) (/usr/local/texlive/2022/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen295
+\lightrulewidth=\dimen296
+\cmidrulewidth=\dimen297
+\belowrulesep=\dimen298
+\belowbottomsep=\dimen299
+\aboverulesep=\dimen300
+\abovetopsep=\dimen301
+\cmidrulesep=\dimen302
+\cmidrulekern=\dimen303
+\defaultaddspace=\dimen304
+\@cmidla=\count497
+\@cmidlb=\count498
+\@aboverulesep=\dimen305
+\@belowrulesep=\dimen306
+\@thisruleclass=\count499
+\@lastruleclass=\count500
+\@thisrulewidth=\dimen307
+))
+(/usr/local/texlive/2022/texmf-dist/tex/latex/tools/tabularx.sty
+Package: tabularx 2020/01/15 v2.11c `tabularx' package (DPC)
+\TX@col@width=\dimen308
+\TX@old@table=\dimen309
+\TX@old@col=\dimen310
+\TX@target=\dimen311
+\TX@delta=\dimen312
+\TX@cols=\count501
+\TX@ftn=\toks54
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2022-02-21 v7.00n Hypertext links for LaTeX
+
+(/usr/local/texlive/2022/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/hycolor/hycolor.sty
+Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty
+Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/auxhook/auxhook.sty
+Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
+)
+\@linkdim=\dimen313
+\Hy@linkcounter=\count502
+\Hy@pagecounter=\count503
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2022-02-21 v7.00n Hyperref: PDFDocEncoding definition (HO)
+Now handling font encoding PD1 ...
+... no UTF-8 mapping file for font encoding PD1
+)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/intcalc/intcalc.sty
+Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
+)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/etexcmds/etexcmds.sty
+Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
+)
+\Hy@SavedSpaceFactor=\count504
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/hyperref/puenc.def
+File: puenc.def 2022-02-21 v7.00n Hyperref: PDF Unicode definition (HO)
+Now handling font encoding PU ...
+... no UTF-8 mapping file for font encoding PU
+)
+Package hyperref Info: Hyper figures OFF on input line 4137.
+Package hyperref Info: Link nesting OFF on input line 4142.
+Package hyperref Info: Hyper index ON on input line 4145.
+Package hyperref Info: Plain pages OFF on input line 4152.
+Package hyperref Info: Backreferencing OFF on input line 4157.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4390.
+\c@Hy@tempcnt=\count505
+LaTeX Info: Redefining \url on input line 4749.
+\XeTeXLinkMargin=\dimen314
+
+(/usr/local/texlive/2022/texmf-dist/tex/generic/bitset/bitset.sty
+Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
+
+(/usr/local/texlive/2022/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
+)
+))
+\Fld@menulength=\count506
+\Field@Width=\dimen315
+\Fld@charsize=\dimen316
+Package hyperref Info: Hyper figures OFF on input line 6027.
+Package hyperref Info: Link nesting OFF on input line 6032.
+Package hyperref Info: Hyper index ON on input line 6035.
+Package hyperref Info: backreferencing OFF on input line 6042.
+Package hyperref Info: Link coloring OFF on input line 6047.
+Package hyperref Info: Link coloring with OCG OFF on input line 6052.
+Package hyperref Info: PDF/A mode OFF on input line 6057.
+LaTeX Info: Redefining \ref on input line 6097.
+LaTeX Info: Redefining \pageref on input line 6101.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/base/atbegshi-ltx.sty
+Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
+package with kernel methods
+)
+\Hy@abspage=\count507
+\c@Item=\count508
+\c@Hfootnote=\count509
+)
+Package hyperref Info: Driver (autodetected): hpdftex.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2022-02-21 v7.00n Hyperref driver for pdfTeX
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/base/atveryend-ltx.sty
+Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend pac
+kage
+with kernel methods
+)
+\Fld@listcount=\count510
+\c@bookmark@seq@number=\count511
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+Package: rerunfilecheck 2019/12/05 v1.9 Rerun checks for auxiliary files (HO)
+
+(/usr/local/texlive/2022/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
+)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
+86.
+)
+\Hy@SectionHShift=\skip99
+) (/usr/local/texlive/2022/texmf-dist/tex/generic/babel/babel.sty
+Package: babel 2022/02/26 3.73 The Babel package
+\babel@savecnt=\count512
+\U@D=\dimen317
+\l@unhyphenated=\language88
+
+(/usr/local/texlive/2022/texmf-dist/tex/generic/babel/txtbabel.def)
+\bbl@readstream=\read5
+\bbl@dirlevel=\count513
+
+(/usr/local/texlive/2022/texmf-dist/tex/generic/babel-dutch/dutch.ldf
+Language: dutch 2021/08/29 v3.8l Dutch support from the babel system
+Package babel Info: Making " an active character on input line 127.
+))
+(/usr/local/texlive/2022/texmf-dist/tex/latex/enumitem/enumitem.sty
+Package: enumitem 2019/06/20 v3.9 Customized lists
+\labelindent=\skip100
+\enit@outerparindent=\dimen318
+\enit@toks=\toks55
+\enit@inbox=\box96
+\enit@count@id=\count514
+\enitdp@description=\count515
+)
+(/usr/local/texlive/2022/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2020/03/24 1.8d listings language file
+)
+\c@envoefening=\count516
+
+
+Package biblatex Warning: 'babel/polyglossia' detected but 'csquotes' missing.
+(biblatex)                Loading 'csquotes' recommended.
+
+\@quotelevel=\count517
+\@quotereset=\count518
+LaTeX Font Info:    Trying to load font information for OT1+jkp on input line 4
+8.
+(/usr/local/texlive/2022/texmf-dist/tex/latex/kpfonts/ot1jkp.fd
+File: ot1jkp.fd 2007/08/30 Fontinst v1.928 font definitions for OT1/jkp.
+)
+(./tstextbook.aux
+
+LaTeX Warning: Label `fig:klassendiagram' multiply defined.
+
+
+LaTeX Warning: Label `fig:exceptiono_hierarchy' multiply defined.
+
+
+LaTeX Warning: Label `fig:klassendiagram' multiply defined.
+
+
+LaTeX Warning: Label `fig:key_value_mappings' multiply defined.
+
+
+LaTeX Warning: Label `fig:core_classes' multiply defined.
+
+
+LaTeX Warning: Label `fig:klassendiagram' multiply defined.
+
+
+LaTeX Warning: Label `fig:core_classes' multiply defined.
+
+
+LaTeX Warning: Label `fig:nested_classes' multiply defined.
+
+
+LaTeX Warning: Label `fig:stream_of' multiply defined.
+
+
+LaTeX Warning: Label `fig:stream_foreach' multiply defined.
+
+
+LaTeX Warning: Label `fig:stream_foreach' multiply defined.
+
+
+LaTeX Warning: Label `fig:stream_foreach' multiply defined.
+
+
+LaTeX Warning: Label `fig:paths' multiply defined.
+
+
+LaTeX Warning: Label `fig:paths' multiply defined.
+
+)
+\openout1 = `tstextbook.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/jkp/m/it on input line 48.
+LaTeX Font Info:    Trying to load font information for OML+jkp on input line 4
+8.
+ (/usr/local/texlive/2022/texmf-dist/tex/latex/kpfonts/omljkp.fd
+File: omljkp.fd 2006/08/15 v1.0
+)
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for OMS/jkp/m/n on input line 48.
+LaTeX Font Info:    Trying to load font information for OMS+jkp on input line 4
+8.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/kpfonts/omsjkp.fd
+File: omsjkp.fd 2006/08/15 v1.0
+)
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for OMX/jkp/m/n on input line 48.
+LaTeX Font Info:    Trying to load font information for OMX+jkp on input line 4
+8.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/kpfonts/omxjkp.fd
+File: omxjkp.fd 2006/08/15 v1.0
+)
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for U/jkpexa/m/n on input line 48.
+LaTeX Font Info:    Trying to load font information for U+jkpexa on input line 
+48.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/kpfonts/ujkpexa.fd
+File: ujkpexa.fd 2006/08/15 v1.0
+)
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: twoside 
+* h-part:(L,W,R)=(85.35826pt, 443.57848pt, 85.35826pt)
+* v-part:(T,H,B)=(71.13188pt, 652.70622pt, 71.13188pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=443.57848pt
+* \textheight=652.70622pt
+* \oddsidemargin=13.08827pt
+* \evensidemargin=13.08827pt
+* \topmargin=-33.0119pt
+* \headheight=15.0pt
+* \headsep=19.8738pt
+* \topskip=11.0pt
+* \footskip=27.46295pt
+* \marginparwidth=31.2982pt
+* \marginparsep=5.69054pt
+* \columnsep=10.0pt
+* \skip\footins=10.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidetrue
+* \@mparswitchtrue
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+(/usr/local/texlive/2022/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count519
+\scratchdimen=\dimen319
+\scratchbox=\box97
+\nofMPsegments=\count520
+\nofMParguments=\count521
+\everyMPshowfont=\toks56
+\MPscratchCnt=\count522
+\MPscratchDim=\dimen320
+\MPnumerator=\count523
+\makeMPintoPDFobject=\count524
+\everyMPtoPDFconversion=\toks57
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+Package minitoc(hints) Info: I0049
+(minitoc(hints))             ==> You requested the hints option. 
+(minitoc(hints))             Some hints are eventually given below.
+
+
+Package minitoc(hints) Warning: W0040
+(minitoc(hints))                --- The titletoc package is loaded. 
+(minitoc(hints))                It is incompatible 
+(minitoc(hints))                with the minitoc package.
+
+
+Package minitoc(hints) Warning: W0030
+(minitoc(hints))                --- The \part command is altered 
+(minitoc(hints))                after minitoc.
+
+
+Package minitoc(hints) Warning: W0023
+(minitoc(hints))                --- It may be the consequence 
+(minitoc(hints))                of loading the ``hyperref'' package.
+
+
+Package minitoc(hints) Warning: W0028
+(minitoc(hints))                --- The \chapter command is altered 
+(minitoc(hints))                after minitoc.
+
+
+Package minitoc(hints) Warning: W0023
+(minitoc(hints))                --- It may be the consequence 
+(minitoc(hints))                of loading the ``hyperref'' package.
+
+Package biblatex Info: Trying to load language 'dutch'...
+Package biblatex Info: ... file 'dutch.lbx' found.
+(/usr/local/texlive/2022/texmf-dist/tex/latex/biblatex/lbx/dutch.lbx
+File: dutch.lbx 2022/02/02 v3.17 biblatex localization (PK/MW)
+)
+Package biblatex Info: Input encoding 'utf8' detected.
+Package biblatex Info: Automatic encoding selection.
+(biblatex)             Assuming data encoding 'utf8'.
+\openout5 = `tstextbook.bcf'.
+
+Package biblatex Info: Trying to load bibliographic data...
+Package biblatex Info: ... file 'tstextbook.bbl' not found.
+
+No file tstextbook.bbl.
+Package biblatex Info: Reference section=0 on input line 48.
+Package biblatex Info: Reference segment=0 on input line 48.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/translations/translations-basic-d
+ictionary-dutch.trsl
+File: translations-basic-dictionary-dutch.trsl (dutch translation file `transla
+tions-basic-dictionary')
+)
+Package translations Info: loading dictionary `translations-basic-dictionary' f
+or `dutch'. on input line 48.
+\c@lstlisting=\count525
+Package hyperref Info: Link coloring OFF on input line 48.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/refcount/refcount.sty
+Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
+)
+(/usr/local/texlive/2022/texmf-dist/tex/generic/gettitlestring/gettitlestring.s
+ty
+Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
+)
+\c@section@level=\count526
+)
+LaTeX Info: Redefining \ref on input line 48.
+LaTeX Info: Redefining \pageref on input line 48.
+LaTeX Info: Redefining \nameref on input line 48.
+ (./tstextbook.out) (./tstextbook.out)
+\@outlinefile=\write7
+\openout7 = `tstextbook.out'.
+
+LaTeX Font Info:    Trying to load font information for OT1+jkpss on input line
+ 56.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/kpfonts/ot1jkpss.fd
+File: ot1jkpss.fd 2007/07/16 Fontinst v1.928 font definitions for OT1/jkpss.
+)
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+<images//cover.jpg, id=577, 1622.06pt x 2319.66624pt>
+File: images//cover.jpg Graphic file (type jpg)
+<use images//cover.jpg>
+Package pdftex.def Info: images//cover.jpg  used on input line 56.
+(pdftex.def)             Requested size: 614.31017pt x 794.97646pt.
+ [1
+
+{/usr/local/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./image
+s//cover.jpg>]
+LaTeX Font Info:    Trying to load font information for TS1+jkp on input line 5
+6.
+ (/usr/local/texlive/2022/texmf-dist/tex/latex/kpfonts/ts1jkp.fd
+File: ts1jkp.fd 2007/08/30 Fontinst v1.928 font definitions for TS1/jkp.
+)
+[2]
+<images//background.jpg, id=589, 1924.18875pt x 882.29625pt>
+File: images//background.jpg Graphic file (type jpg)
+<use images//background.jpg>
+Package pdftex.def Info: images//background.jpg  used on input line 56.
+(pdftex.def)             Requested size: 614.295pt x 281.66743pt.
+ (./tstextbook.toc
+LaTeX Font Info:    Trying to load font information for U+jkpmia on input line 
+34.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/kpfonts/ujkpmia.fd
+File: ujkpmia.fd 2006/08/15 v1.0
+)
+LaTeX Font Info:    Trying to load font information for U+jkpsya on input line 
+34.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/kpfonts/ujkpsya.fd
+File: ujkpsya.fd 2006/08/15 v1.0
+)
+LaTeX Font Info:    Trying to load font information for U+jkpsyb on input line 
+34.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/kpfonts/ujkpsyb.fd
+File: ujkpsyb.fd 2006/08/15 v1.0
+)
+LaTeX Font Info:    Trying to load font information for U+jkpsyc on input line 
+34.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/kpfonts/ujkpsyc.fd
+File: ujkpsyc.fd 2006/08/15 v1.0
+)
+LaTeX Font Info:    Trying to load font information for U+wasy on input line 34
+.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/wasysym/uwasy.fd
+File: uwasy.fd 2020/01/19 v2.4 Wasy-2 symbol font definitions
+) [3
+
+ <./images//background.jpg>] [4]
+Overfull \hbox (0.93066pt too wide) detected at line 174
+ []\OT1/jkp/m/n/10.95 103
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 176
+ []\OT1/jkp/m/n/10.95 103
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 178
+ []\OT1/jkp/m/n/10.95 105
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 180
+ []\OT1/jkp/m/n/10.95 106
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 182
+ []\OT1/jkp/m/n/10.95 107
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 184
+ []\OT1/jkp/m/n/10.95 108
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 186
+ []\OT1/jkp/m/n/10.95 108
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 188
+ []\OT1/jkp/m/n/10.95 108
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 190
+ []\OT1/jkp/m/n/10.95 109
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 194
+ []\OT1/jkp/m/n/10.95 109
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 196
+ []\OT1/jkp/m/n/10.95 109
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 198
+ []\OT1/jkp/m/n/10.95 110
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 202
+ []\OT1/jkp/m/n/10.95 111
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 204
+ []\OT1/jkp/m/n/10.95 112
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 212
+ []\OT1/jkp/m/n/10.95 116
+ []
+
+[5]
+Overfull \hbox (0.93066pt too wide) detected at line 214
+ []\OT1/jkp/m/n/10.95 118
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 216
+ []\OT1/jkp/m/n/10.95 119
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 226
+ []\OT1/jkp/m/n/10.95 120
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 228
+ []\OT1/jkp/m/n/10.95 121
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 230
+ []\OT1/jkp/m/n/10.95 122
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 232
+ []\OT1/jkp/m/n/10.95 123
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 234
+ []\OT1/jkp/m/n/10.95 123
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 240
+ []\OT1/jkp/m/n/10.95 125
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 242
+ []\OT1/jkp/m/n/10.95 126
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 252
+ []\OT1/jkp/m/n/10.95 130
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 254
+ []\OT1/jkp/m/n/10.95 130
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 258
+ []\OT1/jkp/m/n/10.95 131
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 262
+ []\OT1/jkp/m/n/10.95 133
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 264
+ []\OT1/jkp/m/n/10.95 134
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 268
+ []\OT1/jkp/m/n/10.95 139
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 274
+ []\OT1/jkp/m/n/10.95 141
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 278
+ []\OT1/jkp/m/n/10.95 142
+ []
+
+
+Overfull \hbox (0.93066pt too wide) detected at line 280
+ []\OT1/jkp/m/n/10.95 143
+ []
+
+)
+\tf@toc=\write8
+\openout8 = `tstextbook.toc'.
+
+ [6]
+Hoofdstuk 1.
+File: images//background.jpg Graphic file (type jpg)
+<use images//background.jpg>
+Package pdftex.def Info: images//background.jpg  used on input line 66.
+(pdftex.def)             Requested size: 614.295pt x 281.66743pt.
+\openout4 = `tstextbook.mtc'.
+
+\openout4 = `tstextbook.mtc'.
+
+
+Overfull \hbox (130.59818pt too wide) in paragraph at lines 66--66
+[][][]  
+ []
+
+(./tstextbook.mtc1)
+LaTeX Font Info:    Trying to load font information for OT1+jkptt on input line
+ 84.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/kpfonts/ot1jkptt.fd
+File: ot1jkptt.fd 2007/01/26 Fontinst v1.928 font definitions for OT1/jkptt.
+) [7
+
+
+]
+<images/h1/new_java_project.png, id=838, 945.5325pt x 578.16pt>
+File: images/h1/new_java_project.png Graphic file (type png)
+<use images/h1/new_java_project.png>
+Package pdftex.def Info: images/h1/new_java_project.png  used on input line 146
+.
+(pdftex.def)             Requested size: 443.57848pt x 271.2412pt.
+ [8]
+<images//idea.pdf, id=894, 230.39178pt x 230.39178pt>
+File: images//idea.pdf Graphic file (type pdf)
+<use images//idea.pdf>
+Package pdftex.def Info: images//idea.pdf  used on input line 162.
+(pdftex.def)             Requested size: 28.45274pt x 28.45087pt.
+LaTeX Font Info:    Font shape `OT1/jkptt/m/it' in size <10> not available
+(Font)              Font shape `OT1/jkptt/m/sl' tried instead on input line 164
+.
+
+[9 <./images/h1/new_java_project.png> <./images//idea.pdf>] [10] [11] [12]
+[13] [14]
+<images/h1/klassendiagram_final.png, id=1129, 2073.7475pt x 2027.575pt>
+File: images/h1/klassendiagram_final.png Graphic file (type png)
+<use images/h1/klassendiagram_final.png>
+Package pdftex.def Info: images/h1/klassendiagram_final.png  used on input line
+ 477.
+(pdftex.def)             Requested size: 443.57848pt x 433.69258pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [15]
+[16 <./images/h1/klassendiagram_final.png (PNG copy)>]
+Hoofdstuk 2.
+File: images//background.jpg Graphic file (type jpg)
+<use images//background.jpg>
+Package pdftex.def Info: images//background.jpg  used on input line 483.
+(pdftex.def)             Requested size: 614.295pt x 281.66743pt.
+\openout4 = `tstextbook.mtc'.
+
+\openout4 = `tstextbook.mtc'.
+
+
+Overfull \hbox (130.59818pt too wide) in paragraph at lines 483--483
+[][][]  
+ []
+
+(./tstextbook.mtc2) [17
+
+]
+<images/h1/test_directory.png, id=1196, 591.20876pt x 204.765pt>
+File: images/h1/test_directory.png Graphic file (type png)
+<use images/h1/test_directory.png>
+Package pdftex.def Info: images/h1/test_directory.png  used on input line 528.
+(pdftex.def)             Requested size: 443.57848pt x 153.63585pt.
+ [18 <./images/h1/test_directory.png>]
+<images/h1/junit_dependency.png, id=1238, 1102.1175pt x 509.905pt>
+File: images/h1/junit_dependency.png Graphic file (type png)
+<use images/h1/junit_dependency.png>
+Package pdftex.def Info: images/h1/junit_dependency.png  used on input line 562
+.
+(pdftex.def)             Requested size: 443.57848pt x 205.22661pt.
+<images/h1/junit_test_passed.png, id=1239, 977.6525pt x 161.60374pt>
+File: images/h1/junit_test_passed.png Graphic file (type png)
+<use images/h1/junit_test_passed.png>
+Package pdftex.def Info: images/h1/junit_test_passed.png  used on input line 57
+0.
+(pdftex.def)             Requested size: 443.57848pt x 73.32268pt.
+<images/h1/junit_test_failed.png, id=1240, 967.615pt x 164.615pt>
+File: images/h1/junit_test_failed.png Graphic file (type png)
+<use images/h1/junit_test_failed.png>
+Package pdftex.def Info: images/h1/junit_test_failed.png  used on input line 57
+6.
+(pdftex.def)             Requested size: 443.57848pt x 75.46259pt.
+ [19 <./images/h1/junit_dependency.png> <./images/h1/junit_test_passed.png> <./
+images/h1/junit_test_failed.png>] [20] [21] [22
+
+]
+Overfull \hbox (59.32689pt too wide) in paragraph at lines 766--767
+[]\OT1/jkp/m/n/10.95 Hier is een over-zicht van en-kele han-dige sta-tic me-tho
+-den uit de klasse org.junit.jupiter.api.Assertions. 
+ []
+
+[23]
+File: images//idea.pdf Graphic file (type pdf)
+<use images//idea.pdf>
+Package pdftex.def Info: images//idea.pdf  used on input line 862.
+(pdftex.def)             Requested size: 28.45274pt x 28.45087pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [24]
+[25] [26]
+<images/klassendiagram/diagram_H2.png, id=1487, 1436.36626pt x 1448.41125pt>
+File: images/klassendiagram/diagram_H2.png Graphic file (type png)
+<use images/klassendiagram/diagram_H2.png>
+Package pdftex.def Info: images/klassendiagram/diagram_H2.png  used on input li
+ne 956.
+(pdftex.def)             Requested size: 443.57848pt x 447.30109pt.
+ [27
+
+ <./images/klassendiagram/diagram_H2.png (PNG copy)>]
+Hoofdstuk 3.
+File: images//background.jpg Graphic file (type jpg)
+<use images//background.jpg>
+Package pdftex.def Info: images//background.jpg  used on input line 961.
+(pdftex.def)             Requested size: 614.295pt x 281.66743pt.
+\openout4 = `tstextbook.mtc'.
+
+\openout4 = `tstextbook.mtc'.
+
+
+Overfull \hbox (130.59818pt too wide) in paragraph at lines 961--961
+[][][]  
+ []
+
+(./tstextbook.mtc3)
+<images/h1/java_compiler.jpeg, id=1505, 551.05875pt x 508.90125pt>
+File: images/h1/java_compiler.jpeg Graphic file (type jpg)
+<use images/h1/java_compiler.jpeg>
+Package pdftex.def Info: images/h1/java_compiler.jpeg  used on input line 974.
+(pdftex.def)             Requested size: 443.57848pt x 409.66077pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [28
+
+]
+<images/h1/compiletime_errors.png, id=1511, 787.94376pt x 289.08pt>
+File: images/h1/compiletime_errors.png Graphic file (type png)
+<use images/h1/compiletime_errors.png>
+Package pdftex.def Info: images/h1/compiletime_errors.png  used on input line 9
+81.
+(pdftex.def)             Requested size: 443.57848pt x 162.73943pt.
+
+[29 <./images/h1/java_compiler.jpeg> <./images/h1/compiletime_errors.png>]
+[30]
+<images/h1/exception-hierarchy.png, id=1551, 755.82375pt x 382.42876pt>
+File: images/h1/exception-hierarchy.png Graphic file (type png)
+<use images/h1/exception-hierarchy.png>
+Package pdftex.def Info: images/h1/exception-hierarchy.png  used on input line 
+1045.
+(pdftex.def)             Requested size: 443.57848pt x 224.44058pt.
+ [31 <./images/h1/exception-hierarchy.png>]
+<images/h2/java_call_stack.png, id=1559, 142.5325pt x 157.58875pt>
+File: images/h2/java_call_stack.png Graphic file (type png)
+<use images/h2/java_call_stack.png>
+Package pdftex.def Info: images/h2/java_call_stack.png  used on input line 1094
+.
+(pdftex.def)             Requested size: 142.53214pt x 157.58835pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [32]
+Overfull \hbox (4.99312pt too wide) in paragraph at lines 1133--1134
+[]\OT1/jkp/m/n/10.95 De heap size van een Java pro-gramma is de hoe-veel-heid g
+e-heu-gen dat een Java-programma
+ []
+
+<images/h2/jvm_options_xmx.png, id=1577, 739.76375pt x 178.6675pt>
+File: images/h2/jvm_options_xmx.png Graphic file (type png)
+<use images/h2/jvm_options_xmx.png>
+Package pdftex.def Info: images/h2/jvm_options_xmx.png  used on input line 1143
+.
+(pdftex.def)             Requested size: 443.57848pt x 107.13316pt.
+[33 <./images/h2/java_call_stack.png>]
+Overfull \hbox (43.91402pt too wide) in paragraph at lines 1163--1163
+[]\OT1/jkptt/m/n/10.95 Exception in thread "main" java.lang.IllegalArgumentExce
+ption: count is negative: -5 
+ []
+
+[34 <./images/h2/jvm_options_xmx.png>] [35]
+<images/h2/no_such_algorithm_exception.png, id=1662, 703.62875pt x 186.6975pt>
+File: images/h2/no_such_algorithm_exception.png Graphic file (type png)
+<use images/h2/no_such_algorithm_exception.png>
+Package pdftex.def Info: images/h2/no_such_algorithm_exception.png  used on inp
+ut line 1237.
+(pdftex.def)             Requested size: 443.57848pt x 117.69696pt.
+ [36 <./images/h2/no_such_algorithm_exception.png>]
+Overfull \hbox (3.28964pt too wide) in paragraph at lines 1319--1319
+[]\OT1/jkptt/m/n/10.95 at be.pxl.ja.streamingservice.util.PasswordUtil.isValid(
+PasswordUtil.java:24)[] 
+ []
+
+
+Overfull \hbox (43.91402pt too wide) in paragraph at lines 1321--1321
+[]\OT1/jkptt/m/n/10.95 at be.pxl.ja.streamingservice.CheckedExceptionDemo.main(
+CheckedExceptionDemo.java:9)[] 
+ []
+
+<images/h2/exception_call_stack.png, id=1698, 843.15pt x 445.665pt>
+File: images/h2/exception_call_stack.png Graphic file (type png)
+<use images/h2/exception_call_stack.png>
+Package pdftex.def Info: images/h2/exception_call_stack.png  used on input line
+ 1325.
+(pdftex.def)             Requested size: 443.57848pt x 234.46724pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [37]
+[38 <./images/h2/exception_call_stack.png>]
+Overfull \hbox (43.91402pt too wide) in paragraph at lines 1366--1366
+[]\OT1/jkptt/m/n/10.95 at be.pxl.ja.streamingservice.util.PasswordUtil.encodePa
+ssword(PasswordUtil.java:15)[] 
+ []
+
+
+Overfull \hbox (43.91402pt too wide) in paragraph at lines 1369--1369
+[]\OT1/jkptt/m/n/10.95 at be.pxl.ja.streamingservice.CheckedExceptionDemo.main(
+CheckedExceptionDemo.java:8)[] 
+ []
+
+
+Overfull \hbox (43.91402pt too wide) in paragraph at lines 1374--1374
+[]\OT1/jkptt/m/n/10.95 at be.pxl.ja.streamingservice.util.PasswordUtil.encodePa
+ssword(PasswordUtil.java:15)[] 
+ []
+
+
+Overfull \hbox (3.28964pt too wide) in paragraph at lines 1375--1375
+[]\OT1/jkptt/m/n/10.95 at be.pxl.ja.streamingservice.util.PasswordUtil.isValid(
+PasswordUtil.java:25)[] 
+ []
+
+
+Overfull \hbox (43.91402pt too wide) in paragraph at lines 1377--1377
+[]\OT1/jkptt/m/n/10.95 at be.pxl.ja.streamingservice.CheckedExceptionDemo.main(
+CheckedExceptionDemo.java:9)[] 
+ []
+
+
+Overfull \hbox (3.28964pt too wide) in paragraph at lines 1379--1379
+[]\OT1/jkptt/m/n/10.95 at be.pxl.ja.streamingservice.util.PasswordUtil.isValid(
+PasswordUtil.java:25)[] 
+ []
+
+
+Overfull \hbox (43.91402pt too wide) in paragraph at lines 1381--1381
+[]\OT1/jkptt/m/n/10.95 at be.pxl.ja.streamingservice.CheckedExceptionDemo.main(
+CheckedExceptionDemo.java:9)[] 
+ []
+
+[39] [40]
+Overfull \hbox (334.08812pt too wide) in paragraph at lines 1490--1490
+[]\OT1/jkptt/m/n/10.95 Exception in thread "main" java.lang.IllegalArgumentExce
+ption: java.security.NoSuchAlgorithmException: MD4 MessageDigest not available 
+
+ []
+
+
+Overfull \hbox (43.91402pt too wide) in paragraph at lines 1491--1491
+[]\OT1/jkptt/m/n/10.95 at be.pxl.ja.streamingservice.util.PasswordUtil.encodePa
+ssword(PasswordUtil.java:17)[] 
+ []
+
+
+Overfull \hbox (26.50357pt too wide) in paragraph at lines 1495--1495
+[]\OT1/jkptt/m/n/10.95 at java.base/jdk.internal.reflect.NativeMethodAccessorIm
+pl.invoke0(Native Method)[] 
+ []
+
+
+Overfull \hbox (130.96625pt too wide) in paragraph at lines 1496--1496
+[]\OT1/jkptt/m/n/10.95 at java.base/jdk.internal.reflect.NativeMethodAccessorIm
+pl.invoke(NativeMethodAccessorImpl.java:62)[] 
+ []
+
+
+Overfull \hbox (177.3941pt too wide) in paragraph at lines 1497--1497
+[]\OT1/jkptt/m/n/10.95 at java.base/jdk.internal.reflect.DelegatingMethodAccess
+orImpl.invoke(DelegatingMethodAccessorImpl.java:43)[] 
+ []
+
+
+Overfull \hbox (32.30705pt too wide) in paragraph at lines 1500--1500
+[]\OT1/jkptt/m/n/10.95 Caused by: java.security.NoSuchAlgorithmException: MD4 M
+essageDigest not available[] 
+ []
+
+
+Overfull \hbox (43.91402pt too wide) in paragraph at lines 1504--1504
+[]\OT1/jkptt/m/n/10.95 at be.pxl.ja.streamingservice.util.PasswordUtil.encodePa
+ssword(PasswordUtil.java:15)[] 
+ []
+
+[41] [42] [43] [44] [45] [46] [47]
+<images/klassendiagram/diagram_H3.png, id=2149, 1497.595pt x 1435.3625pt>
+File: images/klassendiagram/diagram_H3.png Graphic file (type png)
+<use images/klassendiagram/diagram_H3.png>
+Package pdftex.def Info: images/klassendiagram/diagram_H3.png  used on input li
+ne 1833.
+(pdftex.def)             Requested size: 443.57848pt x 425.13661pt.
+File: images//idea.pdf Graphic file (type pdf)
+<use images//idea.pdf>
+Package pdftex.def Info: images//idea.pdf  used on input line 1838.
+(pdftex.def)             Requested size: 28.45274pt x 28.45087pt.
+ [48 <./images/klassendiagram/diagram_H3.png (PNG copy)>]
+Hoofdstuk 4.
+File: images//background.jpg Graphic file (type jpg)
+<use images//background.jpg>
+Package pdftex.def Info: images//background.jpg  used on input line 1843.
+(pdftex.def)             Requested size: 614.295pt x 281.66743pt.
+\openout4 = `tstextbook.mtc'.
+
+\openout4 = `tstextbook.mtc'.
+
+
+Overfull \hbox (130.59818pt too wide) in paragraph at lines 1843--1843
+[][][]  
+ []
+
+(./tstextbook.mtc4) [49
+
+]
+<images/h3/colls-coreInterfaces.png, id=2181, 903.375pt x 437.38406pt>
+File: images/h3/colls-coreInterfaces.png Graphic file (type png)
+<use images/h3/colls-coreInterfaces.png>
+Package pdftex.def Info: images/h3/colls-coreInterfaces.png  used on input line
+ 1867.
+(pdftex.def)             Requested size: 443.57848pt x 214.76721pt.
+ [50 <./images/h3/colls-coreInterfaces.png>]
+Overfull \hbox (44.1573pt too wide) in paragraph at lines 1915--1927
+[][]
+ []
+
+<images/h3/fifo_lifo.png, id=2189, 385.44pt x 102.6234pt>
+File: images/h3/fifo_lifo.png Graphic file (type png)
+<use images/h3/fifo_lifo.png>
+Package pdftex.def Info: images/h3/fifo_lifo.png  used on input line 1929.
+(pdftex.def)             Requested size: 443.57848pt x 118.1021pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [51]
+<images/h3/key_value_map1.png, id=2194, 250.95331pt x 147.38527pt>
+File: images/h3/key_value_map1.png Graphic file (type png)
+<use images/h3/key_value_map1.png>
+Package pdftex.def Info: images/h3/key_value_map1.png  used on input line 1939.
+
+(pdftex.def)             Requested size: 250.95268pt x 147.38489pt.
+<images/h3/key_value_map2.png, id=2195, 201.75375pt x 149.55875pt>
+File: images/h3/key_value_map2.png Graphic file (type png)
+<use images/h3/key_value_map2.png>
+Package pdftex.def Info: images/h3/key_value_map2.png  used on input line 1940.
+
+(pdftex.def)             Requested size: 201.75325pt x 149.55838pt.
+
+Overfull \hbox (11.25175pt too wide) in paragraph at lines 1939--1941
+[][] [] 
+ []
+
+<images/h3/collection-framework-hierarchy-in-java.jpg, id=2196, 825.0825pt x 57
+8.16pt>
+File: images/h3/collection-framework-hierarchy-in-java.jpg Graphic file (type j
+pg)
+<use images/h3/collection-framework-hierarchy-in-java.jpg>
+Package pdftex.def Info: images/h3/collection-framework-hierarchy-in-java.jpg  
+used on input line 1948.
+(pdftex.def)             Requested size: 443.57848pt x 310.83434pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [52 <./images/h3/fifo_lifo.png> <./images/h3/key_value_map1.png> <./images/h3/
+key_value_map2.png>]
+<images/h3/choose-java-collection-interface.jpg, id=2206, 397.485pt x 212.29312
+pt>
+File: images/h3/choose-java-collection-interface.jpg Graphic file (type jpg)
+<use images/h3/choose-java-collection-interface.jpg>
+Package pdftex.def Info: images/h3/choose-java-collection-interface.jpg  used o
+n input line 1954.
+(pdftex.def)             Requested size: 397.48402pt x 212.2926pt.
+
+Overfull \hbox (54.7687pt too wide) in paragraph at lines 1960--1971
+[]
+ []
+
+[53 <./images/h3/collection-framework-hierarchy-in-java.jpg> <./images/h3/choos
+e-java-collection-interface.jpg>]
+Overfull \hbox (14.92545pt too wide) in paragraph at lines 1972--1986
+[][]
+ []
+
+[54] [55]
+Overfull \hbox (3.51491pt too wide) in paragraph at lines 2084--2086
+[]\OT1/jkp/m/n/10.95 De out-put van dit pro-gramma is af-han-ke-lijk van de im-
+ple-men-ta-tie van de equals-methode
+ []
+
+[56] [57]
+Overfull \hbox (20.70009pt too wide) in paragraph at lines 2187--2187
+[]\OT1/jkptt/m/n/10.95 at java.base/java.util.ArrayList$Itr.checkForComodificat
+ion(ArrayList.java:1013)[] 
+ []
+
+[58]
+<images/h3/linkedlist-in-java.png, id=2407, 423.5825pt x 133.49875pt>
+File: images/h3/linkedlist-in-java.png Graphic file (type png)
+<use images/h3/linkedlist-in-java.png>
+Package pdftex.def Info: images/h3/linkedlist-in-java.png  used on input line 2
+266.
+(pdftex.def)             Requested size: 443.57848pt x 139.80502pt.
+ [59 <./images/h3/linkedlist-in-java.png>] [60]
+<images/klassendiagram/diagram_H4.png, id=2457, 3029.3175pt x 3193.9325pt>
+File: images/klassendiagram/diagram_H4.png Graphic file (type png)
+<use images/klassendiagram/diagram_H4.png>
+Package pdftex.def Info: images/klassendiagram/diagram_H4.png  used on input li
+ne 2362.
+(pdftex.def)             Requested size: 443.57848pt x 467.66512pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [61]
+[62 <./images/klassendiagram/diagram_H4.png (PNG copy)>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [63]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [64]
+[65]
+
+LaTeX Font Warning: Font shape `OML/jkp/m/n' undefined
+(Font)              using `OML/jkp/m/it' instead
+(Font)              for symbol `textless' on input line 2590.
+
+[66] [67]
+File: images//idea.pdf Graphic file (type pdf)
+<use images//idea.pdf>
+Package pdftex.def Info: images//idea.pdf  used on input line 2663.
+(pdftex.def)             Requested size: 28.45274pt x 28.45087pt.
+ [68]
+Hoofdstuk 5.
+File: images//background.jpg Graphic file (type jpg)
+<use images//background.jpg>
+Package pdftex.def Info: images//background.jpg  used on input line 2668.
+(pdftex.def)             Requested size: 614.295pt x 281.66743pt.
+\openout4 = `tstextbook.mtc'.
+
+\openout4 = `tstextbook.mtc'.
+
+
+Overfull \hbox (130.59818pt too wide) in paragraph at lines 2668--2668
+[][][]  
+ []
+
+(./tstextbook.mtc5) [69
+
+]
+Overfull \hbox (20.70009pt too wide) in paragraph at lines 2713--2713
+[]\OT1/jkptt/m/n/10.95 Exception in thread "main" java.lang.ClassCastException:
+ class java.lang.Integer 
+ []
+
+
+Overfull \hbox (20.70009pt too wide) in paragraph at lines 2714--2714
+[]\OT1/jkptt/m/n/10.95 cannot be cast to class java.lang.Double (java.lang.Inte
+ger and java.lang.Double[] 
+ []
+
+[70]
+Overfull \hbox (14.8966pt too wide) in paragraph at lines 2792--2792
+[]\OT1/jkptt/m/n/10.95 Error:(16, 30) java: incompatible types: be.pxl.ja.strea
+mingservice.model.Movie 
+ []
+
+[71]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 2855.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 2855.
+
+
+Overfull \hbox (4.34546pt too wide) in paragraph at lines 2860--2863
+[]\OT1/jkp/m/n/10.95 Als een klasse de in-ter-face $\OML/jkp/m/n/10.95 Comparab
+le < T >$ \OT1/jkp/m/n/10.95 im-ple-men-teert, dan vul je de type-parameter
+ []
+
+[72]
+<images/h4/javadoc_compareTo.png, id=2892, 930.47626pt x 751.80875pt>
+File: images/h4/javadoc_compareTo.png Graphic file (type png)
+<use images/h4/javadoc_compareTo.png>
+Package pdftex.def Info: images/h4/javadoc_compareTo.png  used on input line 28
+72.
+(pdftex.def)             Requested size: 443.57848pt x 358.39769pt.
+ [73 <./images/h4/javadoc_compareTo.png>] [74] [75] [76] [77]
+Overfull \hbox (12.47208pt too wide) in paragraph at lines 3148--3149
+[]\OT1/jkp/m/n/10.95 De me-thode to-tal-Du-ra-tion kan en-kel aan-ge-roe-pen wo
+r-den met een List met Movie-objecten.
+ []
+
+[78] [79]
+<images/h4/bounds_exercise_diagram.png, id=3184, 394.47375pt x 376.40625pt>
+File: images/h4/bounds_exercise_diagram.png Graphic file (type png)
+<use images/h4/bounds_exercise_diagram.png>
+Package pdftex.def Info: images/h4/bounds_exercise_diagram.png  used on input l
+ine 3278.
+(pdftex.def)             Requested size: 394.47278pt x 376.40532pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 3284--3285
+[]\OT1/jkp/m/n/10.95 Pas de ge-ne-rieke klasse Wor-king-Place aan zo-dat je Wor
+kingPlace-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3284--3285
+\OT1/jkp/m/n/10.95 objecten kan ma-ken om Mo-to-ri-zed ob-jec-ten te her-stel-l
+en (dus wel
+ []
+
+
+Underfull \hbox (badness 1117) in paragraph at lines 3285--3287
+[]\OT1/jkp/m/n/10.95 Pas de ge-ne-rieke klasse Wor-king-Place aan zo-dat je Wor
+kingPlace-objecten
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [80]
+[81 <./images/h4/bounds_exercise_diagram.png>]
+File: images//idea.pdf Graphic file (type pdf)
+<use images//idea.pdf>
+Package pdftex.def Info: images//idea.pdf  used on input line 3347.
+(pdftex.def)             Requested size: 28.45274pt x 28.45087pt.
+
+Overfull \hbox (3.54771pt too wide) in paragraph at lines 3347--3350
+ \OT1/jkp/m/it/10 Meer we-ten over ge-ne-rics in java, kijk op plu-ral-sight: [
+]$\OT1/jkptt/m/sl/10 https : / / app . pluralsight . com / player ? course =
+ []
+
+[82]
+Underfull \hbox (badness 10000) in paragraph at lines 3355--3357
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3358--3360
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3370--3372
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3373--3376
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3378--3380
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3381--3383
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3384--3386
+
+ []
+
+[83]
+Hoofdstuk 6.
+File: images//background.jpg Graphic file (type jpg)
+<use images//background.jpg>
+Package pdftex.def Info: images//background.jpg  used on input line 3391.
+(pdftex.def)             Requested size: 614.295pt x 281.66743pt.
+\openout4 = `tstextbook.mtc'.
+
+\openout4 = `tstextbook.mtc'.
+
+
+Overfull \hbox (130.59818pt too wide) in paragraph at lines 3391--3391
+[][][]  
+ []
+
+(./tstextbook.mtc6)
+<images/h5/nested-classes.png, id=3289, 777.90625pt x 329.23pt>
+File: images/h5/nested-classes.png Graphic file (type png)
+<use images/h5/nested-classes.png>
+Package pdftex.def Info: images/h5/nested-classes.png  used on input line 3399.
+
+(pdftex.def)             Requested size: 443.57848pt x 187.73839pt.
+ [84
+
+ <./images/h5/nested-classes.png>]
+<images/h5/oefening1.png, id=3300, 236.885pt x 245.91875pt>
+File: images/h5/oefening1.png Graphic file (type png)
+<use images/h5/oefening1.png>
+Package pdftex.def Info: images/h5/oefening1.png  used on input line 3469.
+(pdftex.def)             Requested size: 142.26378pt x 147.69121pt.
+ [85] [86 <./images/h5/oefening1.png>]
+<images/h5/nested_enum.png, id=3393, 516.93124pt x 317.185pt>
+File: images/h5/nested_enum.png Graphic file (type png)
+<use images/h5/nested_enum.png>
+Package pdftex.def Info: images/h5/nested_enum.png  used on input line 3553.
+(pdftex.def)             Requested size: 227.62204pt x 139.66829pt.
+ [87 <./images/h5/nested_enum.png>] [88] [89] [90]
+<images/h5/javadoc_eventhandler.png, id=3556, 816.04875pt x 791.95876pt>
+File: images/h5/javadoc_eventhandler.png Graphic file (type png)
+<use images/h5/javadoc_eventhandler.png>
+Package pdftex.def Info: images/h5/javadoc_eventhandler.png  used on input line
+ 3760.
+(pdftex.def)             Requested size: 443.57848pt x 430.49118pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [91]
+[92 <./images/h5/javadoc_eventhandler.png>]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 3831.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 3831.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 3831.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 3831.
+
+[93]
+Underfull \hbox (badness 1389) in paragraph at lines 3849--3849
+[]|\OT1/jkp/m/n/10.95 It re-turns a com-po-sed pre-di-
+ []
+
+
+Underfull \hbox (badness 2932) in paragraph at lines 3849--3849
+\OT1/jkp/m/n/10.95 cate that re-pre-sents a short-
+ []
+
+
+Underfull \hbox (badness 1389) in paragraph at lines 3849--3849
+[]|\OT1/jkp/m/n/10.95 It re-turns a com-po-sed pre-di-
+ []
+
+
+Underfull \hbox (badness 2932) in paragraph at lines 3849--3849
+\OT1/jkp/m/n/10.95 cate that re-pre-sents a short-
+ []
+
+[94]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 3921.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 3921.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 3921.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 3921.
+
+[95]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 3978.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 3978.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 3978.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 3978.
+
+[96] [97] [98]
+Underfull \hbox (badness 10000) in paragraph at lines 4105--4109
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 4110--4111
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 4112--4113
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 4114--4118
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 4119--4124
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 4137--4138
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 4139--4141
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 4142--4148
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 4149--4156
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 4157--4161
+
+ []
+
+[99] [100]
+Hoofdstuk 7.
+File: images//background.jpg Graphic file (type jpg)
+<use images//background.jpg>
+Package pdftex.def Info: images//background.jpg  used on input line 4168.
+(pdftex.def)             Requested size: 614.295pt x 281.66743pt.
+\openout4 = `tstextbook.mtc'.
+
+\openout4 = `tstextbook.mtc'.
+
+
+Overfull \hbox (130.59818pt too wide) in paragraph at lines 4168--4168
+[][][]  
+ []
+
+(./tstextbook.mtc7)
+<images/h6/stream_pipeline.png, id=3782, 794.97pt x 299.1175pt>
+File: images/h6/stream_pipeline.png Graphic file (type png)
+<use images/h6/stream_pipeline.png>
+Package pdftex.def Info: images/h6/stream_pipeline.png  used on input line 4201
+.
+(pdftex.def)             Requested size: 443.57848pt x 166.90674pt.
+ [101
+
+]
+<images/h6/external_iteration.png, id=3796, 498.86375pt x 188.705pt>
+File: images/h6/external_iteration.png Graphic file (type png)
+<use images/h6/external_iteration.png>
+Package pdftex.def Info: images/h6/external_iteration.png  used on input line 4
+212.
+(pdftex.def)             Requested size: 443.57848pt x 167.79718pt.
+<images/h6/internal_iteration.png, id=3797, 495.8525pt x 183.68625pt>
+File: images/h6/internal_iteration.png Graphic file (type png)
+<use images/h6/internal_iteration.png>
+Package pdftex.def Info: images/h6/internal_iteration.png  used on input line 4
+218.
+(pdftex.def)             Requested size: 443.57848pt x 164.32387pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [102 <./images/h6/stream_pipeline.png> <./images/h6/external_iteration.png>]
+<images/h6/stream_of.png, id=3806, 881.2925pt x 57.21375pt>
+File: images/h6/stream_of.png Graphic file (type png)
+<use images/h6/stream_of.png>
+Package pdftex.def Info: images/h6/stream_of.png  used on input line 4248.
+(pdftex.def)             Requested size: 443.57848pt x 28.7971pt.
+<images/h6/illustration_filter.png, id=3807, 490.83376pt x 192.72pt>
+File: images/h6/illustration_filter.png Graphic file (type png)
+<use images/h6/illustration_filter.png>
+Package pdftex.def Info: images/h6/illustration_filter.png  used on input line 
+4260.
+(pdftex.def)             Requested size: 443.57848pt x 174.17273pt.
+ [103 <./images/h6/internal_iteration.png> <./images/h6/stream_of.png>]
+<images/h6/stream_filter.png, id=3833, 863.225pt x 79.29625pt>
+File: images/h6/stream_filter.png Graphic file (type png)
+<use images/h6/stream_filter.png>
+Package pdftex.def Info: images/h6/stream_filter.png  used on input line 4266.
+(pdftex.def)             Requested size: 443.57848pt x 40.74666pt.
+ [104 <./images/h6/illustration_filter.png> <./images/h6/stream_filter.png>]
+<images/h6/stream_forEach.png, id=3862, 884.30376pt x 53.19875pt>
+File: images/h6/stream_forEach.png Graphic file (type png)
+<use images/h6/stream_forEach.png>
+Package pdftex.def Info: images/h6/stream_forEach.png  used on input line 4364.
+
+(pdftex.def)             Requested size: 443.57848pt x 26.68535pt.
+ [105]
+<images/h6/illustration_map.png, id=3908, 492.84125pt x 187.70125pt>
+File: images/h6/illustration_map.png Graphic file (type png)
+<use images/h6/illustration_map.png>
+Package pdftex.def Info: images/h6/illustration_map.png  used on input line 440
+6.
+(pdftex.def)             Requested size: 443.57848pt x 168.94675pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [106 <./images/h6/stream_forEach.png>]
+<images/h6/stream_map.png, id=3938, 1112.155pt x 63.23625pt>
+File: images/h6/stream_map.png Graphic file (type png)
+<use images/h6/stream_map.png>
+Package pdftex.def Info: images/h6/stream_map.png  used on input line 4412.
+(pdftex.def)             Requested size: 443.57848pt x 25.22166pt.
+ [107 <./images/h6/illustration_map.png> <./images/h6/stream_map.png>] [108]
+<images/h6/intstream_range.png, id=3993, 1218.5525pt x 116.435pt>
+File: images/h6/intstream_range.png Graphic file (type png)
+<use images/h6/intstream_range.png>
+Package pdftex.def Info: images/h6/intstream_range.png  used on input line 4551
+.
+(pdftex.def)             Requested size: 443.57848pt x 42.38382pt.
+
+Overfull \hbox (52.70746pt too wide) in paragraph at lines 4549--4554
+\OT1/jkp/m/n/10.95 De sta-tic me-tho-den range() en ran-ge-Clo-sed() zijn be-sc
+hik-baar in de in-ter-fa-ces java.util.stream.IntStream
+ []
+
+[109]
+<images/h6/intstream_max_min.png, id=4020, 917.4275pt x 116.435pt>
+File: images/h6/intstream_max_min.png Graphic file (type png)
+<use images/h6/intstream_max_min.png>
+Package pdftex.def Info: images/h6/intstream_max_min.png  used on input line 45
+65.
+(pdftex.def)             Requested size: 443.57848pt x 56.29678pt.
+<images/h6/intstream_average.png, id=4021, 1115.16624pt x 65.24374pt>
+File: images/h6/intstream_average.png Graphic file (type png)
+<use images/h6/intstream_average.png>
+Package pdftex.def Info: images/h6/intstream_average.png  used on input line 45
+71.
+(pdftex.def)             Requested size: 443.57848pt x 25.95168pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 4599--4601
+[]$\OT1/jkptt/m/n/10.95 https : / / www . codingame . com / playgrounds / 20782
+ / java-[]guild-[]meeting-[]52018 /
+ []
+
+[110 <./images/h6/intstream_range.png> <./images/h6/intstream_max_min.png> <./i
+mages/h6/intstream_average.png>]
+<images/h6/stream_reduce.png, id=4048, 728.7225pt x 376.40625pt>
+File: images/h6/stream_reduce.png Graphic file (type png)
+<use images/h6/stream_reduce.png>
+Package pdftex.def Info: images/h6/stream_reduce.png  used on input line 4633.
+(pdftex.def)             Requested size: 443.57848pt x 229.11926pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [111]
+<images/h6/stream_flatmap.png, id=4072, 797.98125pt x 377.41pt>
+File: images/h6/stream_flatmap.png Graphic file (type png)
+<use images/h6/stream_flatmap.png>
+Package pdftex.def Info: images/h6/stream_flatmap.png  used on input line 4654.
+
+(pdftex.def)             Requested size: 443.57848pt x 209.79327pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [112 <./images/h6/stream_reduce.png>] [113 <./images/h6/stream_flatmap.png>] [
+114]
+Hoofdstuk 8.
+File: images//background.jpg Graphic file (type jpg)
+<use images//background.jpg>
+Package pdftex.def Info: images//background.jpg  used on input line 4707.
+(pdftex.def)             Requested size: 614.295pt x 281.66743pt.
+\openout4 = `tstextbook.mtc'.
+
+\openout4 = `tstextbook.mtc'.
+
+
+Overfull \hbox (130.59818pt too wide) in paragraph at lines 4707--4707
+[][][]  
+ []
+
+(./tstextbook.mtc8) [115
+
+]
+<images/h8/path_of.png, id=4126, 1251.67625pt x 72.27pt>
+File: images/h8/path_of.png Graphic file (type png)
+<use images/h8/path_of.png>
+Package pdftex.def Info: images/h8/path_of.png  used on input line 4790.
+(pdftex.def)             Requested size: 443.57848pt x 25.61136pt.
+ [116 <./images/h8/path_of.png>]
+<images/h8/opgave1.png, id=4138, 888.31876pt x 625.33624pt>
+File: images/h8/opgave1.png Graphic file (type png)
+<use images/h8/opgave1.png>
+Package pdftex.def Info: images/h8/opgave1.png  used on input line 4846.
+(pdftex.def)             Requested size: 415.12578pt x 292.22871pt.
+
+Underfull \vbox (badness 3189) has occurred while \output is active []
+
+ [117]
+[118 <./images/h8/opgave1.png>] [119] [120]
+<images/h8/stream_reader.png, id=4251, 666.49pt x 423.5825pt>
+File: images/h8/stream_reader.png Graphic file (type png)
+<use images/h8/stream_reader.png>
+Package pdftex.def Info: images/h8/stream_reader.png  used on input line 4986.
+(pdftex.def)             Requested size: 443.57848pt x 281.91797pt.
+ [121 <./images/h8/stream_reader.png>] [122]
+Overfull \hbox (4.91089pt too wide) in paragraph at lines 5091--5092
+\OT1/jkp/m/n/10.95 De Buf-fe-re-dRea-der heeft als ba-sis een In-putStream-Rea-
+der waar-aan ex-tra func-ti-o-na-li-teit wordt
+ []
+
+[123]
+Overfull \hbox (8.54091pt too wide) in paragraph at lines 5161--5163
+[]\OT1/jkp/m/n/10.95 Je zal zien dat er na het uit-voe-ren van het pro-gramma e
+en be-stand \OT1/jkp/m/it/10.95 re-sour-ces-/-con-fig.properties
+ []
+
+[124] [125]
+Underfull \hbox (badness 10000) in paragraph at lines 5256--5257
+
+ []
+
+
+LaTeX Warning: Command \textellipsis invalid in math mode on input line 5261.
+
+[126]
+Underfull \hbox (badness 10000) in paragraph at lines 5279--5280
+
+ []
+
+[127]
+Hoofdstuk 9.
+File: images//background.jpg Graphic file (type jpg)
+<use images//background.jpg>
+Package pdftex.def Info: images//background.jpg  used on input line 5296.
+(pdftex.def)             Requested size: 614.295pt x 281.66743pt.
+\openout4 = `tstextbook.mtc'.
+
+\openout4 = `tstextbook.mtc'.
+
+
+Overfull \hbox (130.59818pt too wide) in paragraph at lines 5296--5296
+[][][]  
+ []
+
+(./tstextbook.mtc9)
+<images/h9/process_threads.png, id=4460, 781.92125pt x 396.48125pt>
+File: images/h9/process_threads.png Graphic file (type png)
+<use images/h9/process_threads.png>
+Package pdftex.def Info: images/h9/process_threads.png  used on input line 5313
+.
+(pdftex.def)             Requested size: 443.57848pt x 224.91978pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [128
+
+]
+<images/h9/process_with_two_threads.png, id=4465, 234.8775pt x 263.98625pt>
+File: images/h9/process_with_two_threads.png Graphic file (type png)
+<use images/h9/process_with_two_threads.png>
+Package pdftex.def Info: images/h9/process_with_two_threads.png  used on input 
+line 5319.
+(pdftex.def)             Requested size: 234.87692pt x 263.9856pt.
+
+[129 <./images/h9/process_threads.png> <./images/h9/process_with_two_threads.pn
+g>] [130] [131]
+<images/h9/thread_life_cycle.png, id=4539, 710.655pt x 325.215pt>
+File: images/h9/thread_life_cycle.png Graphic file (type png)
+<use images/h9/thread_life_cycle.png>
+Package pdftex.def Info: images/h9/thread_life_cycle.png  used on input line 54
+55.
+(pdftex.def)             Requested size: 443.57848pt x 203.00082pt.
+
+Underfull \vbox (badness 7151) has occurred while \output is active []
+
+ [132]
+[133 <./images/h9/thread_life_cycle.png>]
+Underfull \hbox (badness 2961) in paragraph at lines 5498--5505
+[][][][]\OT1/jkpss/b/n/10 Oefening  9.1  [][][]\OT1/jkp/m/n/10.95 Maak een klas
+se Tal-ker die een sub-klasse is van de klasse
+ []
+
+
+Underfull \hbox (badness 1052) in paragraph at lines 5498--5505
+\OT1/jkp/m/n/10.95 java.util.Thread. Je voor-ziet een ei-gen-schap id (int) in 
+deze sub-klasse en een
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 5498--5505
+
+ []
+
+[134] [135] [136]
+<images/h9/koekjesdoos.png, id=4676, 1416.29124pt x 892.33376pt>
+File: images/h9/koekjesdoos.png Graphic file (type png)
+<use images/h9/koekjesdoos.png>
+Package pdftex.def Info: images/h9/koekjesdoos.png  used on input line 5681.
+(pdftex.def)             Requested size: 443.57848pt x 279.46632pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [137]
+[138 <./images/h9/koekjesdoos.png>] [139] [140] [141]
+Overfull \hbox (200.60803pt too wide) in paragraph at lines 5885--5885
+[]\OT1/jkptt/m/n/10.95 Exception in thread "Thread-4" java.lang.ArrayIndexOutOf
+BoundsException: Index 113 out of bounds for length 109 
+ []
+
+
+Overfull \hbox (84.53839pt too wide) in paragraph at lines 5888--5888
+[]\OT1/jkptt/m/n/10.95 at be.pxl.multithreading.collections.ConcurrentCollectio
+n.run(ConcurrentCollection.java:20)[] 
+ []
+
+[142] [143] [144] [145]
+<images/h9/opgave_producer_consumer.png, id=5017, 626.34pt x 324.21124pt>
+File: images/h9/opgave_producer_consumer.png Graphic file (type png)
+<use images/h9/opgave_producer_consumer.png>
+Package pdftex.def Info: images/h9/opgave_producer_consumer.png  used on input 
+line 6132.
+(pdftex.def)             Requested size: 415.12578pt x 214.88539pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [146]
+[147 <./images/h9/opgave_producer_consumer.png>]
+No file tstextbook.ind.
+[148]
+Package minitoc Info: I0009
+(minitoc)             Listing minitoc auxiliary files. 
+(minitoc)             Creating the tstextbook.maf file.
+\openout4 = `tstextbook.maf'.
+
+Package minitoc(hints) Info: I0053
+(minitoc(hints))             You have loaded the float package; 
+(minitoc(hints))             please be aware that the minitoc package 
+(minitoc(hints))             facilities can not be used for new types 
+(minitoc(hints))             of floats defined by the float package.
+
+
+Package minitoc(hints) Warning: W0024
+(minitoc(hints))                Some hints have been written 
+(minitoc(hints))                in the tstextbook.log file.
+
+[149
+
+] (./tstextbook.aux)
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+
+LaTeX Warning: There were multiply-defined labels.
+
+Package rerunfilecheck Info: File `tstextbook.out' has not changed.
+(rerunfilecheck)             Checksum: D0CDB721CEA4464728DDCE30D2530B1C;21647.
+Package logreq Info: Writing requests to 'tstextbook.run.xml'.
+\openout1 = `tstextbook.run.xml'.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 50532 strings out of 478268
+ 1001823 string characters out of 5846348
+ 2142390 words of memory out of 5000000
+ 64085 multiletter control sequences out of 15000+600000
+ 547799 words of font info for 190 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 99i,15n,110p,1163b,2370s stack positions out of 10000i,1000n,20000p,200000b,200000s
+{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/kpfonts/kpfonts-expert.en
+c}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
+exlive/2022/texmf-dist/fonts/type1/public/kpfonts/jkpbn8a.pfb></usr/local/texli
+ve/2022/texmf-dist/fonts/type1/public/kpfonts/jkpbne.pfb></usr/local/texlive/20
+22/texmf-dist/fonts/type1/public/kpfonts/jkpmi.pfb></usr/local/texlive/2022/tex
+mf-dist/fonts/type1/public/kpfonts/jkpmit8a.pfb></usr/local/texlive/2022/texmf-
+dist/fonts/type1/public/kpfonts/jkpmite.pfb></usr/local/texlive/2022/texmf-dist
+/fonts/type1/public/kpfonts/jkpmn8a.pfb></usr/local/texlive/2022/texmf-dist/fon
+ts/type1/public/kpfonts/jkpmnc.pfb></usr/local/texlive/2022/texmf-dist/fonts/ty
+pe1/public/kpfonts/jkpmne.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/p
+ublic/kpfonts/jkpssbn8a.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/pub
+lic/kpfonts/jkpssmn8a.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/publi
+c/kpfonts/jkpssmsc8a.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public
+/kpfonts/jkpsy.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/kpfon
+ts/jkpttbn8a.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/kpfonts
+/jkpttmn8a.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/kpfonts/j
+kpttmn8a.pfb>
+Output written on tstextbook.pdf (149 pages, 7765267 bytes).
+PDF statistics:
+ 5850 PDF objects out of 6186 (max. 8388607)
+ 5377 compressed objects within 54 object streams
+ 3641 named destinations out of 4296 (max. 500000)
+ 1491 words of extra memory for PDF output out of 10000 (max. 10000000)
+
