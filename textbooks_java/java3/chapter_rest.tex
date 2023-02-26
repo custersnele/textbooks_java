@@ -1,0 +1,715 @@
+\chapter{REST}
+
+\fcolorbox{black}[HTML]{E9F0E9}{\parbox{\textwidth}{%
+\noindent \textbf{Learning goals}\\
+The junior-colleague
+\begin{enumerate}[nolistsep]
+\item can build RESTful services in Spring Boot
+\item can explain how HTTP requests are handled by Spring Boot
+\item can describe what REST is
+\item can explain what a REST request is
+\item can explain what a REST response is
+\item can provide examples of HTTP response codes
+\item can design a RESTful service \cite{codecademy-rest}
+\item can implement error handling for a RESTful service
+\item can implement unit tests for Spring Boot controllers
+\end{enumerate}}}
+
+\section{CRUD REST API in Spring Boot}
+
+We start this chapter with a discussion on SuperheroController.
+In this class you will find the REST endpoints for CRUD operations for superheroes.
+
+A REST controller in Spring is used to represent REST-endpoints that your application offers to outside systems.
+In Spring, this can easily be achieved by annotating a class using the @RestController.
+In order to map the controller to a specific http endpoint path, we will also need to configure the path using the @RequestMapping annotation.
+
+\begin{lstlisting}[language=java, frame=single]
+package be.pxl.superhero.rest;
+
+import be.pxl.superhero.api.SuperheroDTO;
+import be.pxl.superhero.api.SuperheroRequest;
+import be.pxl.superhero.service.SuperheroService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+import java.util.List;
+
+@RestController
+@RequestMapping("/superheroes")
+public class SuperheroController {
+
+	private final SuperheroService superheroService;
+
+	@Autowired
+	public SuperheroController(SuperheroService superheroService) {
+		this.superheroService = superheroService;
+	}
+
+	@GetMapping
+	public List<SuperheroDTO> getSuperheroes() {
+		return superheroService.findAllSuperheroes();
+	}
+
+	@GetMapping("/{superheroId}")
+	public SuperheroDTO getSuperheroById(@PathVariable Long superheroId) {
+		return superheroService.findSuperheroById(superheroId);
+	}
+	
+	@PostMapping
+	public ResponseEntity<SuperheroDTO> createSuperhero(@Valid @RequestBody SuperheroRequest superheroRequest) {
+		return new ResponseEntity<>(superheroService.createSuperhero(superheroRequest), HttpStatus.CREATED);
+	}
+	
+	@PutMapping("/{superheroId}")
+	public SuperheroDTO updateSuperhero(@PathVariable Long superheroId, @Valid @RequestBody SuperheroRequest superheroRequest) {
+		return superheroService.updateSuperhero(superheroId, superheroRequest);
+	}
+	
+	@DeleteMapping("/{superheroId}")
+	public ResponseEntity<Void> deleteSuperhero(@PathVariable Long superheroId) {
+		boolean deleted = superheroService.deleteSuperhero(superheroId);
+		return deleted? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+}
+\end{lstlisting}
+
+The class ResponseEntity is used to represent a response to an HTTP request. In other words, it is used as the return type of controller methods which serve REST requests. It is usually preferred to use a ResponseEntity object as the response because it offers us a lot of control over the response we sent to the REST endpoint caller.
+
+Let us take a look into different HTTP methods, also called HTTP verbs, and their usage: 
+
+\begin{itemize}
+\item \textbf{GET:} The HTTP GET method is typically used to fetch items. You usually provide the identifier of the item you would like to fetch as a path variable. This is a variable that you can see in the HTTP URI, as part of the path. For example, if you would like to fetch a superhero with the identifier 212, then the URI would look like: http://localhost:8080/superheroes/212.
+\item \textbf{POST:} The HTTP POST method is typically used to create new instances. The HTTP request body will contain the data for those new instances. 
+\item \textbf{PUT:} The HTTP PUT method is used to update an existing instance.  The identifier of the instance to be updated is provided as a path variable, the data for the instance is contained in the HTTP request body. 
+\item \textbf{DELETE:} The HTTP DELETE method is used to delete an existing instance. The object identifier should be provided as a path variable.
+\end{itemize}
+
+Other HTTP verbs are out of scope for this course.
+
+For every HTTP verb we have an annotation to map map the HTTP POST method to a Spring Controller’s method.
+
+The @PathVariable annotation is used to indicate that a method argument is a path variable passed by the REST endpoint caller. 
+
+Incoming request bodies are in JSON format.  \textbf{Jackson} JSON ObjectMapper is the default HTTP Converter used by Spring.  Jackson converts the incoming JSON Request body to the Java objects.  The @RequestBody annotation is used to mark the parameter which contains the data of incoming request body.
+The HTTP responses are also in JSON format. Here Jackson is reponsible for converting the Java objects to JSON responses. 
+The process of converting Java objects to JSON is called \textbf{marshalling}, or serialization. When you convert JSON to Java objects it is called \textbf{unmarshalling},  or deserialization.
+
+When Spring receives an HTTP request, the data must be validated. 
+Spring validation offers  standard predefined validators.  
+
+\begin{lstlisting}
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-validation</artifactId>
+</dependency>
+\end{lstlisting}
+
+When Spring finds an argument of an HTTP method annotated with @Valid, it automatically validates the argument.  In this example, the SuperheroRequest is validated. 
+The @NotBlank annotation checks that a String's trimmed length is not empty.
+The @Size annotation validates that the length of the string is between min and max.
+
+Here is a list of some common validation annotations.
+
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+@NotNull & to say that a field must not be null. \\
+@NotEmpty & to say that a list field must not empty. \\
+@NotBlank & to say that a string field must not be the empty string. \\
+@Min and @Max & to say that a numerical field is only valid when it’s value is above or below a certain value.\\
+@Size & to validate the length of a string field. \\
+@Email & to say that a string field must be a valid email address.\\
+\hline
+\end{tabularx}
+
+\begin{lstlisting}[language=java, frame=single]
+package be.pxl.superhero.api;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
+public class SuperheroRequest {
+
+	private final String firstName;
+	@NotBlank(message = "lastName must not be blank")
+	@Size(message="lastName must have at least 2 characters.", min=2)
+	private final String lastName;
+	@NotBlank(message = "Superhero name must not be blank")
+	private final String superheroName;
+
+	public SuperheroRequest(String firstName, String lastName, String superheroName) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.superheroName = superheroName;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public String getSuperheroName() {
+		return superheroName;
+	}
+}
+\end{lstlisting}
+
+When the target argument fails the validation, Spring Boot throws a MethodArgumentNotValidException exception.
+
+\section{Exception handling}
+
+In Spring Boot there are several ways to convert an exception to an HTTP response status.
+One of the simplest ways is to mark an exception with @ResponseStatus. 
+When Spring catches the marked exception, it uses the settings provided in @ResponseStatus to create the HTTP response.
+
+\begin{lstlisting}[language=java, frame=single]
+package be.pxl.superhero.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class ResourceNotFoundException extends RuntimeException {
+
+	private final String resourceName;
+    private final String fieldName;
+    private final Object fieldValue;
+
+    public ResourceNotFoundException( String resourceName, String fieldName, Object fieldValue) {
+        super(String.format("%s not found with %s : '%s'", resourceName, fieldName, fieldValue));
+        this.resourceName = resourceName;
+        this.fieldName = fieldName;
+        this.fieldValue = fieldValue;
+    }
+
+    public String getResourceName() {
+        return resourceName;
+    }
+
+    public String getFieldName() {
+        return fieldName;
+    }
+
+    public Object getFieldValue() {
+        return fieldValue;
+    }
+}
+\end{lstlisting}
+
+When handling the MethodArgumentNotValidException thrown by Spring validation we want to be able to manipulate the response.
+In this case the solution is using a @ControllerAdvice.
+
+\begin{lstlisting}[language=java, frame=single]
+package be.pxl.superhero.rest.advice;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@ControllerAdvice
+public class ValidatedExceptionHandler {
+
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<ErrorResponseBody> handleValidationExceptions(
+			MethodArgumentNotValidException ex) {
+		List<String> errors = new ArrayList<>();
+		ex.getBindingResult().getAllErrors().forEach((error) -> {
+			String errorMessage = error.getDefaultMessage();
+			errors.add(errorMessage);
+		});
+		return new ResponseEntity<>(new ErrorResponseBody("Validation failed.", errors), HttpStatus.BAD_REQUEST);
+	}
+
+
+	private static class ErrorResponseBody {
+		private final String message;
+		private final List<String> errors;
+
+		public ErrorResponseBody(String message, List<String> errors) {
+			this.message = message;
+			this.errors = errors;
+		}
+
+		public String getMessage() {
+			return message;
+		}
+
+		public List<String> getErrors() {
+			return errors;
+		}
+	}
+}
+\end{lstlisting}
+
+We implement methods annotated with @ExceptionHandler for handling specific exception classes. 
+
+The @ControllerAdvice is a global component in the application for error handling. The actual mechanism is simple but also very flexible: it gives us full control over the body of the response as well as the status code.  Several exceptions can be handled by the same method.
+
+There a more possibilities for handling exceptions in Spring Boot  than the two discussed here \cite{exhand}.
+
+\section{Unit testing}
+
+MockMvc is defined as the main entry point for server-side Spring MVC testing.
+Tests annotated with @WebMvcTest will auto-configure Spring Security and MockMvc.  These tests will also auto-configure all classes relevant to MVC tests (e.g. @Controller,  @ControllerAdvice, ...).  Using the annotation @MockBean we can provide mock objects for the @Service components.
+By default, @WebMvcTest adds all @Controller beans to the application context. We can specify a subset of controllers by using the controllers attribute, as we have done in the examples discussed here. 
+The method perform in the class MockMvc performs a request and returns a type that allows chaining further actions,  such as asserting expectations,  on the result.
+When implementing unit tests, we pass the path parameters using MockMvcRequestBuilders and verify the status response codes and response content using MockMvcResultMatchers and MockMvcResultHandlers.
+
+\begin{lstlisting}[language=java, frame=single]
+package be.pxl.superhero.rest;
+
+import be.pxl.superhero.api.SuperheroDetailDTO;
+import be.pxl.superhero.builder.SuperheroDetailDTOBuilder;
+import be.pxl.superhero.exception.ResourceNotFoundException;
+import be.pxl.superhero.service.SuperheroService;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import static be.pxl.superhero.builder.SuperheroDTOBuilder.FIRSTNAME;
+import static be.pxl.superhero.builder.SuperheroDTOBuilder.LASTNAME;
+import static be.pxl.superhero.builder.SuperheroDTOBuilder.SUPERHERO_ID;
+import static be.pxl.superhero.builder.SuperheroDTOBuilder.SUPERHERO_NAME;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@WebMvcTest(controllers = SuperheroController.class)
+public class SuperheroControllerGetSuperheroTest {
+
+	@MockBean
+	private SuperheroService superheroService;
+
+	@Autowired
+	private MockMvc mockMvc;
+
+	@Test
+	public void getSuperheroByIdReturnsExistingSuperhero() throws Exception {
+		SuperheroDetailDTO superheroDetailDTO = SuperheroDetailDTOBuilder
+				.aSuperheroDetailDTO()
+				.withId(SUPERHERO_ID)
+				.build();
+		when(superheroService.findSuperheroById(SUPERHERO_ID))
+				.thenReturn(superheroDetailDTO);
+		mockMvc.perform(MockMvcRequestBuilders
+						.get("/superheroes/{id}", SUPERHERO_ID)
+						.accept(MediaType.APPLICATION_JSON))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.id").value(SUPERHERO_ID))
+				.andExpect(jsonPath("$.firstName").value(FIRSTNAME))
+				.andExpect(jsonPath("$.lastName").value(LASTNAME))
+				.andExpect(jsonPath("$.superheroName").value(SUPERHERO_NAME));
+	}
+
+	@Test
+	public void getSuperheroByIdReturnsNotFoundWhenResourceNotFoundExceptionIsThrown() throws Exception {
+		doThrow(ResourceNotFoundException.class)
+				.when(superheroService)
+				.findSuperheroById(SUPERHERO_ID);
+		mockMvc.perform(MockMvcRequestBuilders
+						.get("/superheroes/{id}", SUPERHERO_ID)
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound());
+	}
+}
+
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=java, frame=single]
+package be.pxl.superhero.rest;
+
+import be.pxl.superhero.api.SuperheroRequest;
+import be.pxl.superhero.builder.SuperheroRequestBuilder;
+import be.pxl.superhero.service.SuperheroService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import static be.pxl.superhero.builder.SuperheroRequestBuilder.FIRSTNAME;
+import static be.pxl.superhero.builder.SuperheroRequestBuilder.LASTNAME;
+import static be.pxl.superhero.builder.SuperheroRequestBuilder.SUPERHERO_NAME;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@WebMvcTest(controllers = SuperheroController.class)
+public class SuperheroControllerCreateSuperheroTest {
+	@MockBean
+	private SuperheroService superheroService;
+
+	@Autowired
+	private MockMvc mockMvc;
+
+	@Captor
+	private ArgumentCaptor<SuperheroRequest> superheroRequestCaptor;
+
+	@Test
+	public void testLastNameIsRequired() throws Exception {
+		SuperheroRequest superheroRequest = SuperheroRequestBuilder
+				.aSuperheroRequest()
+				.withLastName("")
+				.build();
+		mockMvc.perform(MockMvcRequestBuilders.post("/superheroes")
+						.content(asJsonString(superheroRequest))
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isBadRequest());
+	}
+
+	@Test
+	public void testLastNameWithOneCharacterIsNotValid() throws Exception {
+		SuperheroRequest superheroRequest = SuperheroRequestBuilder
+				.aSuperheroRequest()
+				.withLastName("A")
+				.build();
+		mockMvc.perform(MockMvcRequestBuilders.post("/superheroes")
+						.content(asJsonString(superheroRequest))
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isBadRequest());
+	}
+
+
+	@Test
+	public void testSuperheroNameIsRequired() throws Exception {
+		SuperheroRequest superheroRequest = SuperheroRequestBuilder
+				.aSuperheroRequest()
+				.withSuperheroName("")
+				.build();
+		mockMvc.perform(MockMvcRequestBuilders.post("/superheroes")
+						.content(asJsonString(superheroRequest))
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isBadRequest());
+	}
+
+	@Test
+	public void testSuperheroIsCreatedWhenAllConstraintsSatified() throws Exception {
+		SuperheroRequest superheroRequest = SuperheroRequestBuilder.aSuperheroRequest().build();
+		mockMvc.perform(MockMvcRequestBuilders.post("/superheroes")
+						.content(asJsonString(superheroRequest))
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isCreated());
+		verify(superheroService).createSuperhero(superheroRequestCaptor.capture());
+		
+		SuperheroRequest createdSuperhero = superheroRequestCaptor.getValue();
+		assertThat(createdSuperhero.getFirstName()).isEqualTo(FIRSTNAME);
+		assertThat(createdSuperhero.getLastName()).isEqualTo(LASTNAME);
+		assertThat(createdSuperhero.getSuperheroName()).isEqualTo(SUPERHERO_NAME);
+	}
+
+	public static String asJsonString(final Object obj) {
+		try {
+			return new ObjectMapper().writeValueAsString(obj);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+}
+
+\end{lstlisting}
+
+If you want to print the JSON result, you can use the MockMvcResultHandler.print() method.
+
+\begin{lstlisting}[language=java, frame=single]
+@Test
+public void getSuperheroByIdReturnsExistingSuperhero() throws Exception {
+	SuperheroDetailDTO superheroDetailDTO = SuperheroDetailDTOBuilder
+			.aSuperheroDetailDTO()
+			.withId(SUPERHERO_ID)
+			.build();
+	when(superheroService.findSuperheroById(SUPERHERO_ID))
+			.thenReturn(superheroDetailDTO);
+	mockMvc.perform(MockMvcRequestBuilders
+					.get("/superheroes/{id}", SUPERHERO_ID)
+					.accept(MediaType.APPLICATION_JSON))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.id").value(SUPERHERO_ID))
+			.andExpect(jsonPath("$.firstName").value(FIRSTNAME))
+			.andExpect(jsonPath("$.lastName").value(LASTNAME))
+			.andExpect(jsonPath("$.superheroName").value(SUPERHERO_NAME));
+}
+\end{lstlisting}
+	
+	
+Additional examples can be found in online blogs \cite{mockmvc} or Spring documentations. 	
+
+\section{Exercise: Superheroes}
+
+We expand the superheroes application.  First, we implement CRUD operations for missions.  Next, we will add an endpoint to add a superhero to a mission. 
+
+Change the database configuration to use a mysql or mariadb database, so you will not lose your data every time you restart the Spring boot backend.
+You may need to introduce multiple DTOs to implement the different responses (e.g. MissionDTO and MissionDetailDTO).
+
+\subsection{CRUD operations for missions}
+
+\begin{apiRoute}{post}{/api/missions/}{create a new mission}
+	\begin{routeParameter}
+		\noRouteParameter{no parameter}
+	\end{routeParameter}
+	\begin{routeRequest}{application/json}
+		\begin{routeRequestBody}
+{
+	"missionName": "Secret Mission X"
+}
+		\end{routeRequestBody}
+	\end{routeRequest}
+	\begin{routeResponse}{application/json}
+		\begin{routeResponseItem}{200}{ok}
+			\begin{routeResponseItemBody}
+{
+	"id": 5,
+	"missionName": "Secret Mission X",
+	"completed": false,
+	"deleted": false,
+	"superheroes": []
+}
+			\end{routeResponseItemBody}
+		\end{routeResponseItem}
+	\begin{routeResponseItem}{400}{error: validation error}
+	\begin{routeResponseItemBody}
+	{
+	"message": "Validation failed.",
+	"errors": [
+		"missionName must not be blank"
+	]
+   }
+   \end{routeResponseItemBody}
+	\end{routeResponseItem}
+	
+	\end{routeResponse}
+\end{apiRoute}
+
+\begin{apiRoute}{get}{/api/missions/}{retrieve all missions. Deleted missions are available in the response.}
+	\begin{routeParameter}
+		\noRouteParameter{no parameter}
+	\end{routeParameter}
+	\begin{routeResponse}{application/json}
+		\begin{routeResponseItem}{200}{ok}
+			\begin{routeResponseItemBody}
+[
+	{
+		"id": 1,
+		"missionName": "Sercret Mission X",
+		"completed": true,
+		"deleted": false
+	},
+	{
+		"id": 2,
+		"missionName": "Secret Mission Y",
+		"completed": false,
+		"deleted": false
+	}
+]
+			\end{routeResponseItemBody}
+		\end{routeResponseItem}
+	\end{routeResponse}
+\end{apiRoute}
+
+\begin{apiRoute}{get}{/api/missions/\{missionId\}}{retrieve details of a mission}
+	\begin{routeParameter}
+		\routeParamItem{missionId}{unique id of a mission}
+	\end{routeParameter}
+	\begin{routeResponse}{application/json}
+		\begin{routeResponseItem}{200}{ok}
+			\begin{routeResponseItemBody}
+{
+	"id": 3,
+	"missionName": "Secret Mission X",
+	"completed": false,
+	"deleted": false,
+	"superheroes": [
+		{
+			"id": 4,
+			"firstName": "Hero 1",
+			"lastName": "Karma",
+			"superheroName": "June"
+		},
+		{
+			"id": 5,
+			"firstName": "Hero 2",
+			"lastName": "Leon",
+			"superheroName": "Semois"
+		}
+	]
+}
+			\end{routeResponseItemBody}
+		\end{routeResponseItem}
+	\begin{routeResponseItem}{400}{error: validation error}
+	\end{routeResponseItem}
+	\end{routeResponse}
+\end{apiRoute}
+
+
+\begin{apiRoute}{put}{/api/missions/\{missionId\}}{update a mission}
+	\begin{routeParameter}
+		\routeParamItem{missionId}{unique id of a mission}
+	\end{routeParameter}
+	\begin{routeRequest}{application/json}
+		\begin{routeRequestBody}
+{
+	"missionName": "Secret Mission Y",
+	"completed": true
+}
+		\end{routeRequestBody}
+	\end{routeRequest}
+	\begin{routeResponse}{application/json}
+		\begin{routeResponseItem}{200}{ok}
+			\begin{routeResponseItemBody}
+{
+	"id": 3,
+	"missionName": "Secret Mission Y",
+	"completed": true,
+	"deleted": false,
+	"superheroes": [
+		{
+			"id": 4,
+			"firstName": "Hero 1",
+			"lastName": "Karma",
+			"superheroName": "June"
+		},
+		{
+			"id": 5,
+			"firstName": "Hero 2",
+			"lastName": "Leon",
+			"superheroName": "Semois"
+		}
+	]
+}
+			\end{routeResponseItemBody}
+		\end{routeResponseItem}
+	\begin{routeResponseItem}{400}{error: validation error}
+	\begin{routeResponseItemBody}
+	{
+	"message": "Validation failed.",
+	"errors": [
+		"missionName must not be blank"
+	]
+   }
+   \end{routeResponseItemBody}
+	\end{routeResponseItem}
+	
+	\end{routeResponse}
+\end{apiRoute}
+
+\begin{apiRoute}{put}{/api/missions/\{missionId\}}{update a mission (additional response)}
+	\begin{routeParameter}
+		\routeParamItem{missionId}{unique id of a mission}
+	\end{routeParameter}
+	\begin{routeResponse}{application/json}
+	\begin{routeResponseItem}{404}{error: mission not found}
+			\begin{routeResponseItemBody}
+{
+	"timestamp": "2022-04-13T14:39:13.675+00:00",
+	"status": 404,
+	"error": "Not Found",
+	"message": "Mission not found with ID : '5'",
+	"path": "/api/missions/5"
+}
+			\end{routeResponseItemBody}
+		\end{routeResponseItem}
+	\end{routeResponse}
+\end{apiRoute}
+
+\begin{apiRoute}{delete}{/api/missions/\{missionId\}}{delete a mission. The status of the mission is updated to deleted.}
+	\begin{routeParameter}
+		\routeParamItem{missionId}{unique id of a mission}
+	\end{routeParameter}
+	\begin{routeResponse}{application/json}
+		\begin{routeResponseItem}{200}{ok}
+		\end{routeResponseItem}
+		\begin{routeResponseItem}{400}{error: mission is already deleted}
+		\end{routeResponseItem}
+	\begin{routeResponseItem}{404}{error: mission not found}
+			\begin{routeResponseItemBody}
+{
+	"timestamp": "2022-04-13T14:39:13.675+00:00",
+	"status": 404,
+	"error": "Not Found",
+	"message": "Mission not found with ID : '5'",
+	"path": "/api/missions/5"
+}
+			\end{routeResponseItemBody}
+		\end{routeResponseItem}
+	\end{routeResponse}
+\end{apiRoute}
+
+\subsection{Add superhero to mission}
+
+
+\begin{apiRoute}{post}{/api/superheroes/add-superhero-to-mission}{add a superhero to a mission}
+	\begin{routeParameter}
+		\noRouteParameter{no parameter}
+	\end{routeParameter}
+	\begin{routeRequest}{application/json}
+		\begin{routeRequestBody}
+{
+  "missionId": 15,
+  "superheroId": 31
+}
+		\end{routeRequestBody}
+	\end{routeRequest}
+	\begin{routeResponse}{application/json}
+		\begin{routeResponseItem}{200}{ok}
+		\end{routeResponseItem}
+	\begin{routeResponseItem}{400}{error: validation error mission is deleted}
+	\begin{routeResponseItemBody}
+	{
+	"message": "Validation failed.",
+	"errors": [
+		"mission is deleted"
+	]
+   }
+   \end{routeResponseItemBody}
+	\end{routeResponseItem}
+	
+	\begin{routeResponseItem}{404}{error: mission or superhero not found}
+			\begin{routeResponseItemBody}
+{
+	"timestamp": "2022-04-13T14:39:13.675+00:00",
+	"status": 404,
+	"error": "Not Found",
+	"message": "Mission not found with ID : '5'"
+}
+			\end{routeResponseItemBody}
+		\end{routeResponseItem}
+	\end{routeResponse}
+\end{apiRoute}

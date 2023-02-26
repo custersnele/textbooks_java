@@ -1,0 +1,284 @@
+\chapter{Annotations}
+
+\fcolorbox{black}[HTML]{E9F0E9}{\parbox{\textwidth}{%
+\noindent \textbf{Learning goals}\\
+The junior-colleague
+\begin{enumerate}[nolistsep]
+\item can describe what an annotation is.
+\item can describe built-in annotation and their usage.
+\item can install an artifact in the local Maven repository.
+\item can use an artifact from the local Maven repository.
+\item can apply annotations.
+\end{enumerate}}}
+
+\section{Built-in annotations}
+
+Java annotations are used to provide metadata about your code.
+We first look at two annotations we've used before: \textbf{@Override} and \textbf{@FunctionalInterface}.  Then we write a custom annotation get a better understanding on annotations.
+
+\subsection{@Override}
+
+Overriding is a technique to redefine the implementation of a method that is already provided in a super-class.  The class java.lang.Object already offers an implementation for the methode \textit{String toString()}.  If you don't like the default implementation, you can provide a new implementation for your own classes.  Method overriding is one of the basic programming techniques in Java to achieve runtime polymorphism. 
+
+The annotation \textbf{@Override} is used for helping the developer.  It checks whether the developer is actually overriding a method of a parent class or an interface. 
+For example, when the name of the super class method is changed or an extra parameter is introduced, the compiler will notify the developer that he's no longer overriding.  Whithout the annotation the developer may introduce a bug.
+
+\begin{lstlisting}[frame=single,language=java]
+package be.pxl.paj.domain;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+public class Superhero {
+
+	private static final Logger LOGGER = LogManager.getLogger(Superhero.class);
+	private String firstName;
+	private String lastName;
+	private String superheroName;
+
+	public Superhero(String firstName, String lastName, String superheroName) {
+		LOGGER.debug("Creating a new superhero...");
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.superheroName = superheroName;
+	}
+
+	public String getFirstName() {
+		LOGGER.trace("FirstName of " + superheroName + " was revealed.");
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		LOGGER.fatal("LastName of " + superheroName + " was revealed.");
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getSuperheroName() {
+		return superheroName;
+	}
+
+	public void setSuperheroName(String superheroName) {
+		this.superheroName = superheroName;
+	}
+
+	@Override
+	public String toString() {
+		return "Superhero{" +
+				"superheroName='" + superheroName + '\'' +
+				'}';
+	}
+}
+\end{lstlisting}
+
+\subsection{@FunctionalInterface}
+
+The annotation \textbf{@FunctionalInterface} is used to make sure a functional interface can only have one abstract method.  It's good practice to use this annotation.
+
+\begin{lstlisting}[frame=single,language=java]
+@FunctionalInterface
+public interface PersonFactory {
+    Person getPerson(int age);
+}
+\end{lstlisting}
+
+
+\section{Annotation types}
+
+Java annotations are typically used to provide extra instructions for the compiler (e.g. @Override),  during build-time or at runtime.
+
+A build tool like maven may scan your Java code for specific annotations and generate source code or other files based on these annotations.  Normally, Java annotations are not present in your Java code after compilation. It is possible, however, to define your own annotations that are available at runtime. These annotations can then be accessed via Java Reflection, and used to add extra instructions to your program.
+
+\section{Custom annotations}
+
+To understand how annotations work, it's a good idea to write a simple custom annotation. 
+
+You start with creating a new Maven project for your custom annotation and it's processor.
+
+Here are the new project's coordinates:
+
+\begin{verbatim}
+groupId=be.pxl.annotations
+artifactId=ClassifiedAnnotation
+version=1.0-SNAPSHOT
+\end{verbatim}
+
+
+We want to be able to add classification information to our classes, methods and fields.
+We have an enum class for different levels of classified information.
+
+\begin{lstlisting}[frame=single,language=java]
+package be.pxl.annotations;
+
+public enum Level {
+	TOP_SECRET, SECRET, CONFIDENTIAL, RESTRICTED;
+}
+\end{lstlisting}
+
+Now we create an annotation. This annotation can be used for the following elements: classes,  methods and fields.  When an element is classified, the default level is confidential.
+
+\begin{lstlisting}[frame=single,language=java]
+package be.pxl.annotations;
+
+public @interface Classified {
+	Level level() default Level.CONFIDENTIAL;
+}
+\end{lstlisting}
+
+
+We add another class: the ClassifiedInformationProcessor. This processor is responsible for handling all elements in a program that are annotated @Classified.
+To keep the implementation simple, the processor will only print a warning for the classified elements and their classification level.
+The ClassifiedInformationProcessor extends the AbstractProcessor class from the \textit{javax.annotation.processing} package. AbstractProcessor is a superclass for  annotation processors that contains necessary methods for processing annotations.
+
+\begin{lstlisting}[frame=single,language=java]
+package be.pxl.annotations;
+
+import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.RoundEnvironment;
+import javax.annotation.processing.SupportedAnnotationTypes;
+import javax.annotation.processing.SupportedSourceVersion;
+import javax.lang.model.SourceVersion;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.TypeElement;
+import javax.tools.Diagnostic;
+import java.util.Set;
+
+@SupportedAnnotationTypes("be.pxl.annotations.Classified")
+@SupportedSourceVersion(SourceVersion.RELEASE_17)
+public class ClassifiedInformationProcessor extends AbstractProcessor {
+
+	@Override
+	public boolean process(Set<? extends TypeElement> typeElements, RoundEnvironment roundEnvironment) {
+		processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Starting classified information processor");
+		for (Element element : roundEnvironment.getElementsAnnotatedWith(Classified.class)) {
+			Element classElement= element.getEnclosingElement();
+			Classified classified = element.getAnnotation(Classified.class);
+             processingEnv.getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, classElement + "#" + element + " is classified [" + classified.level()  + "]");
+		}
+		return true;
+	}
+}
+\end{lstlisting}
+
+Now the annotation project is finished and you can install it in the local Maven repository to make it available for other projects.
+You can do this by running \fbox{\strut \$mvn clean install}.
+
+\fcolorbox{black}[HTML]{ADD8E6}{\parbox{\textwidth}{%
+\noindent \textbf{Source code}\\
+We will use the annotation @Classified in the project SampleLoggingProject which we created in \autoref{chap:maven}. 
+}}
+
+Once you've opened the SampleLoggingProject, you start with adding the extra dependency. You add the dependency ClassifiedAnnotation which you installed a few moments ago in your local repository.
+
+\begin{lstlisting}[frame=single, language=xml]
+<dependency>
+	  <groupId>be.pxl.annotations</groupId>
+	  <artifactId>ClassifiedAnnotation</artifactId>
+	  <version>1.0-SNAPSHOT</version>
+</dependency>
+\end{lstlisting}
+
+Following, you make sure the ClassifiedInformationProcessor is invoked during compile phase. Add the following instructions in the pom.xml.
+
+\begin{lstlisting}[frame=single, language=xml]
+<build>
+  <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.8.0</version>
+	        <configuration>
+		        <annotationProcessors>
+			        <annotationProcessor>
+				        be.pxl.annotations.
+				                   ClassifiedInformationProcessor
+			        </annotationProcessor>
+		        </annotationProcessors>
+	        </configuration>
+        </plugin>
+    </plugins>
+  </pluginManagement>
+</build>
+\end{lstlisting}
+
+Now you can start using the annotation @Classified.
+
+
+\begin{lstlisting}[frame=single,language=java]
+package be.pxl.paj.domain;
+
+import be.pxl.annotations.Classified;
+import be.pxl.annotations.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+@Classified
+public class Superhero {
+
+	private static final Logger LOGGER = LogManager.getLogger(Superhero.class);
+	private String firstName;
+	private String lastName;
+	private String superheroName;
+
+
+	public Superhero(String firstName, String lastName, String superheroName) {
+		LOGGER.debug("Creating a new superhero...");
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.superheroName = superheroName;
+	}
+
+	public String getFirstName() {
+		LOGGER.trace("FirstName of " + superheroName + " was revealed.");
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	@Classified(level = Level.TOP_SECRET)
+	public String getLastName() {
+		LOGGER.fatal("LastName of " + superheroName + " was revealed.");
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getSuperheroName() {
+		return superheroName;
+	}
+
+	public void setSuperheroName(String superheroName) {
+		this.superheroName = superheroName;
+	}
+
+	@Override
+	public String toString() {
+		return "Superhero{" +
+				"superheroName='" + superheroName + '\'' +
+				'}';
+	}
+}
+\end{lstlisting}
+
+When you execute a Maven build \fbox{\strut \$mvn clean package},  you will notice the ClassifiedInformationProcessor runs during compile phase.
+
+
+\begin{verbatim}
+[INFO] --- maven-compiler-plugin:3.8.0:compile (default-compile) @ SampleLoggingProject ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 2 source files to /Users/nelec/PXL/courses/ProgAdvJava/SampleLoggingProject/target/classes
+[WARNING] be.pxl.paj.domain#be.pxl.paj.domain.Superhero is classified [CONFIDENTIAL]
+[WARNING] be.pxl.paj.domain.Superhero#getLastName() is classified [TOP_SECRET]
+\end{verbatim}
+
