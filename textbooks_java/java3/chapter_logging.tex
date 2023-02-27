@@ -1,5 +1,14 @@
 \chapter{Logging}
+\label{chap:logging}
 
+\fcolorbox{black}[HTML]{E9F0E9}{\parbox{\textwidth}{%
+\noindent \textbf{Learning goals}\\
+The junior-colleague
+\begin{enumerate}[nolistsep]
+\item can explain why a logging framework is used.
+\item can configure and use a log4j2 in a Spring boot application.
+\item can apply good practices when using a logging framework.
+\end{enumerate}}}
 
 \section{Logging Framework}
 
@@ -44,12 +53,11 @@ TRACE &  the most fine-grained information only used in rare cases where you nee
 \hline
 \end{tabular}
 
-\section{Logging in Spring Boot \footnote{\url{https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.logging}}}
+\section{Logging in Spring Boot}
 
-Spring Boot uses Apache Commons logging for all internal logging. Commons logging is a bridge to a the logging implementation of your choice. You can choose the logging system you like: log4j2, SLF4J, LogBack, etc.
+Spring Boot uses Apache Commons logging for all internal logging \footnote{\url{https://docs.spring.io/spring-boot/docs/current/reference/html/features.html\#features.logging}}. Commons logging is a bridge to the logging implementation of your choice. You can choose a logging system you like: log4j2, SLF4J, LogBack, etc.
 
 By default, if you use the `Starters', Logback is used for logging. It is pre-configured to use console output.
-
 
 Add the following controller to an existing Spring Boot application and trigger the logging lines by visiting \url{http://localhost:{port}/loglevels}.
 
@@ -81,15 +89,11 @@ In the file application.properties you can change the log level by using logging
 
 \section{Log4j2 Configuration Logging}
 
-However, we will separate specifications for console and file output. We would like a decent rolling policy to avoid huge log files.
+In a production environment, all your logging should be written in files. A decent rolling file policy is necessary to avoid huge log files.
 
-In this course we will use log4j2.  End 2021 a critical vulnerability was found in log4j which affected millions of systems \footnote{\url{https://cisomag.eccouncil.org/log4j-explained}}.  Make sure you use the latest version in your applications.
+In this course we will use log4j2.  End 2021 a critical vulnerability was found in log4j which affected millions of systems \footnote{\url{https://cisomag.eccouncil.org/log4j-explained}}.  Make sure you use the latest version in your applications!
 
-Apache's website on Log4j 2 shows which dependencies to add in your pom.xml to start using Log4j 2.   The website's URL is \url{https://logging.apache.org/log4j/2.x/maven-artifacts.html}. 
-
-To start using log4j2 in you Spring boot application, you must update the dependencies in pom.xml.
-
-Exclude the default logging and add the starter for log4j2.\\
+To start using log4j2 in your Spring boot application, you update the dependencies in pom.xml. Exclude the default logging and add the starter for log4j2.\\
 
 \begin{lstlisting}
 <dependency>
@@ -109,61 +113,100 @@ Exclude the default logging and add the starter for log4j2.\\
 \end{lstlisting}
 
 
-\begin{} 
-
-Here is an example of a configuration file:
+In the resources folder you create the file log4j2-spring.xml or log4j2.xml. This is the log4j2 configuration file. Here is an example of a configuration file which can be found at \url{https://www.baeldung.com/spring-boot-logging}.
 
 \begin{lstlisting}[language=xml, frame=single]
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="WARN">
-	<Appenders>
-		<File name="LogToFile" fileName="logs/superhero.log">
-			<PatternLayout>
-				<Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
-			</PatternLayout>
-		</File>
-		<Console name="LogToConsole" target="SYSTEM_OUT">
-			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
-		</Console>
-	</Appenders>
-	<Loggers>
-		<Logger name="be.pxl.paj.domain" level="debug" additivity="false">
-			<AppenderRef ref="LogToFile"/>
-		</Logger>
-		<Root level="all">
-			<AppenderRef ref="LogToConsole"/>
-		</Root>
-	</Loggers>
+<Configuration>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout
+                pattern="%style{%d{ISO8601}}{black} %highlight{%-5level }[%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: %msg%n%throwable" />
+        </Console>
+
+        <RollingFile name="RollingFile"
+            fileName="./logs/spring-boot-logger-log4j2.log"
+            filePattern="./logs/$${date:yyyy-MM}/spring-boot-logger-log4j2-%d{-dd-MMMM-yyyy}-%i.log.gz">
+            <PatternLayout>
+                <pattern>%d %p %C{1.} [%t] %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <!-- rollover on startup, daily and when the file reaches 
+                    10 MegaBytes -->
+                <OnStartupTriggeringPolicy />
+                <SizeBasedTriggeringPolicy
+                    size="10 MB" />
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <!-- LOG everything at INFO level -->
+        <Root level="info">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="RollingFile" />
+        </Root>
+
+        <!-- LOG "be.pxl.superhero*" at TRACE level -->
+        <Logger name="be.pxl.superhero" level="trace"></Logger>
+    </Loggers>
+
 </Configuration>
 \end{lstlisting}
 
-The logging level used in the tag \xml{Configuration} is for Log4j 2 internal events.
+The logging level used in the tag \xml{Configuration} is for log4j2 internal events.
 We created 2 Appenders, one Appender uses the console, the other Appender uses a file. 
-The description of the logging patterns can be found in the Javadoc of the class PatternLayout (\url{https://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/PatternLayout.html}).
-The logging for all classes in the package be.pxl.paj.domain is added to the file. All other logging can be found in the console.
+The description of the logging patterns can be found in the Log4j2 documentation (\url{https://logging.apache.org/log4j/2.x/manual/layouts.html}).
+
 
 \begin{lstlisting}[language=java, frame=single]
-package be.pxl.paj.domain;
+package be.pxl.superhero.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+
+@Entity
+@Table(name="superheroes")
 public class Superhero {
 
 	private static final Logger LOGGER = LogManager.getLogger(Superhero.class);
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
 	private String firstName;
 	private String lastName;
 	private String superheroName;
 
+	public Superhero() {
+		// JPA only
+	}
+
 	public Superhero(String firstName, String lastName, String superheroName) {
-		LOGGER.debug("Creating a new superhero...");
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Creating a new superhero...");
+		}
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.superheroName = superheroName;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
 	public String getFirstName() {
-		LOGGER.trace("FirstName of " + superheroName + " was revealed.");
+		if (LOGGER.isTraceEnabled()) {
+			LOGGER.trace(String.format("FirstName of %s was revealed.", superheroName));
+		}
 		return firstName;
 	}
 
@@ -172,7 +215,9 @@ public class Superhero {
 	}
 
 	public String getLastName() {
-		LOGGER.fatal("LastName of " + superheroName + " was revealed.");
+		if (LOGGER.isFatalEnabled()) {
+			LOGGER.fatal(String.format("LastName of %s was revealed.", superheroName));
+		}
 		return lastName;
 	}
 
@@ -187,41 +232,24 @@ public class Superhero {
 	public void setSuperheroName(String superheroName) {
 		this.superheroName = superheroName;
 	}
-}
-\end{lstlisting}
 
- \begin{lstlisting}[language=java,frame=single]
-package be.pxl.paj;
-
-import be.pxl.paj.domain.Superhero;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-public class App {
-
-	private static final Logger LOGGER = LogManager.getLogger(App.class);
-
-	public static void main(String[] args) {
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Starting app on " + System.getProperty("os.name") + "...");
-		}
-		Superhero superhero = new Superhero("Clark", "Kent", "Superman");
-		LOGGER.info(superhero.getFirstName());
-		LOGGER.info(superhero.getLastName());
-		LOGGER.warn("Stopping app....");
+	@Override
+	public String toString() {
+		return superheroName;
 	}
 }
 \end{lstlisting}
 
 Always declare a static Logger reference, the creation of a Logger comes with an overhead. 
-It is good practice to use isDebugEnabled() when creating debug log because it will save potential String concatenation activity.
+It is good practice to invoke logging conditionally. This will minimize the impact of the log messages (it will save for example potential String concatenations).
 
 \begin{oefening}
+
 \begin{todolist}
-\item Add Log4j 2 to your maven project SampleLoggingProject.
-\item Add the Log4j 2 configuration file from the textbook to your application. 
-\item Create the class Superhero in the package be.pxl.paj.domain.
-\item Implement the main-class as defined above.
-\item Run the application and examin all logging. Change log levels in the configuration file and run the application again.  What happens with the data in the superhero.log file when you rerun the application?
+\item Add log4j2 to your superhero-backend project.
+\item Add the log4j2 configuration file from the textbook to your application. 
+\item Add logging for the class Superhero and the utility class SuperheroIdCardGenerator.
+\item Add a log message with level debug in the main-method of the spring boot application.
+\item Run the application and look into the log files. Change log levels in the configuration file and run the application again.
 \end{todolist}
 \end{oefening}

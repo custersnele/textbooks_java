@@ -15,12 +15,11 @@ The junior-colleague
 \item can describe the different dependency scopes.
 \item can explain what a transitive dependency is.
 \item can explain what a dependency tree is.
-\item can create a Maven project.
 \item can execute maven commands from CLI.
 \item can manage dependencies with Maven.
-\item can explain why a logging framework is used.
-\item can configure and use a logging framework.
-\item can apply good practices when using a logging framework.
+\item can create a REST endpoint that provides an image or a file.
+\item can run code analysis on a Spring boot project (with SonarQube).
+\item can fix bugs, vulnerabilities and code smells detected by SonarQube.
 \end{enumerate}}}
 
 \section{What is Maven?}
@@ -63,18 +62,6 @@ OS name: "mac os x", version: "11.5.2", arch: "x86_64", family: "mac"
 \end{lstlisting}
 
 
-\section{A Sample Maven Project}
-
-Archetype is a Maven toolkit for project templating. An archetype is defined as \textit{an original pattern or model from which all other projects of the same kind are made}. Maven provides several templates to create a new project. 
-
-The archetype \textbf{maven-archetype-quickstart} is an archetype you can use for starting a simple Java project. The quickstart archetype is often out-of-date. So you often have to adjust the generated Maven configuration.
-
-\begin{oefening}
-
-Create a new Java project named SampleLoggingProject using Maven in a terminal window. Open your newly created project in IntelliJ IDEA.  You definitely will need to update the pom.xml of the generated project and update all the versions to the latest ones.
-\end{oefening}
-
-
 \section{Maven Standard Directory Layout}
 
 When you create a new Maven project, a directory which name matches the artifactId is generated. This directory is known as the project’s base directory. 
@@ -84,36 +71,13 @@ The project’s unit tests are located in \textbf{src/test}.
 The target folder is the Maven default output folder. You can delete all the target's folder content with the \fbox{\strut \$mvn clean} command.
 
 
-\section{Project Coordinates}
-
-\begin{lstlisting}[language=xml, frame=single]
-<?xml version="1.0" encoding="UTF-8"?>
-<project ...>
- <modelVersion>4.0.0</modelVersion>
-
- <groupId>be.pxl.paj</groupId>
- <artifactId>SimpleMavenProject</artifactId>
- <version>1.0-SNAPSHOT</version>
-
- <name>SampleLoggingProject</name>
-
- <properties>
-   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-   <maven.compiler.source>17</maven.compiler.source>
-   <maven.compiler.target>17</maven.compiler.target>
- </properties>
-
-</project>
-\end{lstlisting}
-
 \section{Maven architecture}
 
 \includegraphics[width=\textwidth]{./images/chapter3/maven-architecture} 
 
-
 Central repository is provided by the Maven community. This Central repository contains a large number of common libraries.  Whenever you specify a dependency in pom.xml,  Maven will look for it in the local repository first. If the necessary dependency  isn't included in the local repository, Maven will download it from the Central repository and copy it to your local repository.  Remote repository is a place where developers (or Jenkins) can copy the final packages, so other developer can use these final packages as a dependency in their projects.
 
-Acces to internet is recommended when using Maven, however it is possible to work offline if all  dependencies are available in your local repository.
+Acces to internet is recommended when using Maven, however it is possible to work offline if all dependencies are available in your local repository.
 
 
 \section{Maven built-in life cycles}
@@ -121,11 +85,11 @@ Acces to internet is recommended when using Maven, however it is possible to wor
 There are three built-in life cycles defined in Maven.  The \textit{default} build life cycle is the main build life cycle.
 
 \begin{tabularx}{\textwidth}{ |l|X|l| } 
- \hline
- clean & handles the cleanup of directories and files generated during the build process & mvn clean \\ 
- default & handles the build and distribution of the project & mvn [plugin:goal]* [phase]* \\ 
- site & create project documentation & mvn site \\ 
- \hline
+\hline
+clean & handles the cleanup of directories and files generated during the build process & mvn clean \\ 
+default & handles the build and distribution of the project & mvn [plugin:goal]* [phase]* \\ 
+site & create project documentation & mvn site \\ 
+\hline
 \end{tabularx}
 
 To run a specific goal, without executing the entire phase (and the preceding phases) the command \fbox{\strut \$mvn [plugin:goal]} can be used.  Phases on the other hand are executed in a specific order and all the preceding phases are executed as well!
@@ -166,15 +130,15 @@ The compile goal from the compiler plugin is bound to the compile phase and is r
 You can generate an overview of all the phases and the specific goals bounded to these phases by running the command \fbox{\strut \$mvn help:describe -Dcmd=PHASENAME}
 
 \begin{lstlisting}[language=bash, frame=single]
-$ cd SampleProject/
+$ cd superhero-backend/
 $ mvn help:describe -Dcmd=compile
 [INFO] Scanning for projects...
 [INFO] 
-[INFO] ------------------------< be.pxl:SampleProject >------------------------
-[INFO] Building SampleProject 1.0-SNAPSHOT
+[INFO] ----------------------< be.pxl:superhero-backend >----------------------
+[INFO] Building superhero-backend 0.0.1-SNAPSHOT
 [INFO] --------------------------------[ jar ]---------------------------------
-[INFO] 
-[INFO] --- maven-help-plugin:3.2.0:describe (default-cli) @ SampleProject ---
+[INFO]
+[INFO] --- maven-help-plugin:3.3.0:describe (default-cli) @ superhero-backend ---
 [INFO] 'compile' is a phase corresponding to this plugin:
 org.apache.maven.plugins:maven-compiler-plugin:3.1:compile
 
@@ -206,8 +170,8 @@ It is a part of the lifecycle for the POM packaging 'jar'. This lifecycle includ
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  0.689 s
-[INFO] Finished at: 2022-02-27T14:03:09+01:00
+[INFO] Total time:  0.896 s
+[INFO] Finished at: 2023-02-26T17:19:03+01:00
 [INFO] ------------------------------------------------------------------------
 \end{lstlisting}
 
@@ -281,54 +245,248 @@ All dependencies listed in another pom are included.\\
 \hline
 \end{tabularx}
 
-
-
 \section{Exercise}
 
-
-\begin{oefening}
-Create a new Maven project with artifactId BudgetPlanner.  The other project coordinates can be choosen freely.   
-
-Add Log4j 2 to your project. All messages must be written to a seperate file (you may configure a directory and file of your choice.). Your solution may not include System.out.println instructions.
-    
-The file transactions.csv is provided. This file contains information about financial transactions. 
-        
-\begin{lstlisting}[frame=single]
-firstname;lastname;IBAN;category;amount;name;description;date
-\end{lstlisting}
-    
-For every bankaccount there are multiple transactions available.
-
-\begin{lstlisting}[frame=single]
-Laura;Succamore;BE06 8908 3856 3290;Grocery;-145,23;Roob-Smith;erat quisque erat eros;28/06/2020
-Laura;Succamore;BE06 8908 3856 3521;Computers;46,25;Botsford, Bosco and Schmidt;vulputate justo in dolorsit;14/02/2020
-\end{lstlisting}
-
-The final deliverable of this exercise is an executable jar. This executable jar can be started from CLI as follows:
+In the exercise we implement a REST endpoint that returns a PDF file.
 
 \begin{lstlisting}
-java -jar BudgetPlanner-1.0-SNAPSHOT-jar-with-dependencies.jar ./transactions.csv 2 2020
+@GetMapping(value = "/pdfreport", produces = MediaType.APPLICATION_PDF_VALUE)
+public @ResponseBody byte[] createPdfReport() {
+
+    ByteArrayInputStream bis = GeneratePdfReport.createReport();
+
+	return bis.readAllBytes();
+}
 \end{lstlisting}
 
-There are three program arguments: the path to the transactions file, a number of a month and a year. 
-The program first reads the transactions file. If an error is encountered while reading the file,  an entry is added to the log-file with an appropriate message and log level. The line with the error is ignored.
-It is good practice to use exceptions. You should use DecimalFormat and DateTimeFormatter to parse the data in the file. Every account can have multiple transactions. Once the file is read, you generate a report in pdf-format for the given month and year. \textbf{itext} is a library that can be used to create pdf files.  Lookup the itext dependency and add this dependency to your project. 
+In the example above we assume to have a helper class GeneratePdfReport that has a method returning a ByteArrayInputStream with the data of your PDF file. We use the @ResponseBody annotation on the controller method to indicate that the object returned by the method should be marshaled directly to the HTTP response body.
 
-The class MonthlyReportPdfWriter is available and can be used to create the report. 
-Several other classes are also provided, but they are incomplete. You need to implement the methods that currently throw an UnsupportedOperationException. Write unit tests for the methods you implement. 
+For creating PDF files in Java, we'll use itextpdf: \url{https://mvnrepository.com/artifact/com.itextpdf/itextpdf}.
 
-Additional information on creating executable jar's: \url{https://www.baeldung.com/executable-jar-with-maven}.
+For creating the qr code we will use the ZXing (`Zebra Crossing') API, a popular API for QR code processing in Java. You'll need to include 2 artifacts to be able to generate QR codes.
 
-\includegraphics[width=\textwidth]{./images/chapter3/exercise-class-diagram} 
+\begin{lstlisting}
+<dependency>
+	<groupId>com.google.zxing</groupId>
+	<artifactId>core</artifactId>
+	<version>3.4.0</version>
+</dependency>
+<dependency>
+	<groupId>com.google.zxing</groupId>
+	<artifactId>javase</artifactId>
+	<version>3.4.0</version>
+</dependency>
+\end{lstlisting}
 
+Here is the full code for filling the name and QR code in the PDF template.
+
+\begin{lstlisting}
+package be.pxl.superhero.service.impl;
+
+import be.pxl.superhero.api.SuperheroDTO;
+import be.pxl.superhero.commons.Cipher;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
+import org.springframework.stereotype.Component;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+@Component
+public class SuperheroIdCardGenerator {
+
+    public ByteArrayInputStream superheroIdCard(SuperheroDTO superhero) {
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        try {
+            Path path = 
+                Paths.get(ClassLoader.getSystemResource("superheroidcard.pdf").toURI());
+            PdfReader pdfReader = new PdfReader(path.toUri().toURL());
+            PdfStamper pdfStamper = new PdfStamper(pdfReader, out);
+            PdfContentByte canvas = pdfStamper.getOverContent(1);
+            ColumnText.showTextAligned(canvas, Element.ALIGN_LEFT, new Phrase(superhero.firstName() + " " + superhero.lastName()), 200, 620, 0);
+            ColumnText.showTextAligned(canvas, Element.ALIGN_LEFT, new Phrase(superhero.superheroName()), 200, 550, 0);
+            byte[] qrCodeImage = getQRCodeImage(Cipher.skipALetter(superhero.superheroName());
+            Image qrCode = Image.getInstance(qrCodeImage, 130, 130));
+            qrCode.setAbsolutePosition(190, 360);
+            canvas.addImage(qrCode);
+            pdfStamper.close();
+            pdfReader.close();
+        } catch (DocumentException | URISyntaxException | IOException | WriterException ex) {
+            // TODO: add logging - see next chapter
+            throw new PdfCreationException(ex);
+        }
+        return new ByteArrayInputStream(out.toByteArray());
+    }
+
+    public static byte[] getQRCodeImage(String text, int width, int height) throws WriterException, IOException {
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
+
+        ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
+
+        MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream);
+        return pngOutputStream.toByteArray();
+    }
+}
+\end{lstlisting}
+
+The PdfReader first opens the PDF template file. The PdfStamper is used for adding the full name, the alias and the
+QR code (as an image) to the template. The newly generated PDF is returned as a ByteArrayInputStream.
+
+\begin{oefening}
+
+All superheroes need an id card. Your job as a developer is to create a REST endpoint where we can download a pdf with the id card.
+
+\includegraphics[width=5cm]{./images/chapter3/superhero_id_card.png}
+
+The pdf template can be found in blackboard. 
+
+$\square$ Download the pdf template and add it to the resources directory of your superhero-backend project.
+
+\vspace{5mm}
+
+We will include the full name, the superhero name and a unique QR code in the template.
+The generated pdf will be available at the endpoint:
+\url{http://localhost:<port>/api/superheroes/<superheroId>/idcard}
+
+The QR code will contain the scrambled alias of a superhero. 
+
+\vspace{5mm}
+
+$\square$ Create the utility class Cipher with a static method skipALetter which takes a String as a parameter and returns the scrambled String. To encrypt a sentence you divide each word into half. If a word has an odd number of letters, the first group of letters contains one letter extra. Take the first letter of the first group, followed by the first letter of the second group. Then, write the second letter of the first group and the second letter of the second group, and so on, until all the words are encrypted. For example, if your sentence is `SECRET CODES', it will be encrypted as `SREECT CEOSD'.
+
+Write unit tests to test your implementation. 
+\begin{itemize}
+\item unit test for one word with even length
+\item unit test for one word with odd length
+\item unit test for a sentence with multiple words with odd and even length
+\item unit test for an empty string (should return an empty string)
+\end{itemize}
+
+\vspace{5mm}
+
+$\square$ Implement the REST endpoint for retrieving a superhero's id card.  
 \end{oefening}
 
 \section{Code quality with SonarQube}
 
+We would like to deliver high quality Java code. SonarQube is a Java analyzer that checks the quality of our code and detects code smells.
 
+\begin{oefening}
 
-Some code quality rules to pay attention to:
-https://rules.sonarsource.com/java/RSPEC-5786
+Create a docker container with SonarQube. Run the following command in a terminal window:
+
+\fbox{\strut docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 sonarqube}
+
+Open \url{http://localhost:9000} in a browser. You can login with the default username `admin' and password `admin'. Next you have to update the default password (you have to choose a new password!).
+
+\vspace{5mm}
+
+Create a new SonarQube project for the superhero-backend application. Click on the button `Manually', fill out the project details and choose to analyze your project locally. A token will be generated.
+
+\includegraphics{./images/chapter3/sonarqube_create_project.png}
+
+Now we can update the pom.xml file of our superhero-backend to run the code analysis.
+
+First we need a sonar profile to provide the url, project key and token.
+
+\begin{lstlisting}
+<profiles>
+	<profile>
+		<id>sonar</id>
+		<activation>
+			<activeByDefault>true</activeByDefault>
+		</activation>
+		<properties>
+			<sonar.host.url>http://localhost:9000</sonar.host.url>
+			<sonar.projectKey>superhero-backend</sonar.projectKey>
+			<sonar.login>sqp_6319ae2795ccdc24baa3a994962a8bbaa0b0cc16</sonar.login>
+		</properties>
+	</profile>
+</profiles>
+\end{lstlisting}
+
+Run the following maven command to perform the code analysis:
+\fbox{\strut \$mvn clean verify sonar:sonar}
+
+\vspace{5mm}
+
+Open the SonarQube dashboard \url{http://localhost:9000/dashboard?id=superhero-backend} to get an overview of possible bugs, vulnerabilities and code smells.
+You can get a more in-depth explanation of the code quality rules including examples at \url{https://rules.sonarsource.com/java}. Namely, \url{https://rules.sonarsource.com/java/RSPEC-5786} is an interesting code smell to look at.
+
+\vspace{5mm}
+
+\includegraphics[width=\textwidth]{./images/chapter3/sonarqube.png}
+
+When you look at the dashboard, you'll see the code coverage is always 0.0\%. JaCoCo is needed to generate an extra report to display the code coverage.
+
+First add the property jacoco.version in the pom.xml file:
+
+\begin{lstlisting}
+<properties>
+	<java.version>17</java.version>
+	<jacoco.version>0.8.7</jacoco.version>
+</properties>
+\end{lstlisting}
+
+Next, add the JaCoCo maven plugin to your project.
+
+\begin{lstlisting}
+<build>
+	<plugins>
+		<plugin>
+			<groupId>org.jacoco</groupId>
+			<artifactId>jacoco-maven-plugin</artifactId>
+			<version>${jacoco.version}</version>
+			<executions>
+				<execution>
+					<id>prepare-agent</id>
+					<goals>
+						<goal>prepare-agent</goal>
+					</goals>
+				</execution>
+				<execution>
+					<id>report</id>
+					<phase>test</phase>
+					<goals>
+						<goal>report</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+	</plugins>
+	<pluginManagement>
+		<plugins>
+			...
+		</plugins>
+	</pluginManagement>
+</build>
+\end{lstlisting}
+
+During the test phase JaCoCo will generate a report and save it in the directory target/site/jacoco/jacoco.xml. SonarQube will automatically check this location and the report will be picked up.
+First remove the empty, automatically created Spring Boot test from your test folder.
+Run the Maven command again and check your code coverage.
+
+\end{oefening}
+
+\includegraphics[width=\textwidth]{./images/chapter3/sonarqube-report.png}
 
 \section{Maven commands}
 
