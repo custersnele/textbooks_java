@@ -1,0 +1,145 @@
+\babel@toc {dutch}{}\relax 
+\contentsline {chapter}{\numberline {1}Herhaling}{7}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Klasse}{7}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Enum}{9}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Overerving of inheritance}{11}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Interface}{13}{section.1.4}%
+\contentsline {section}{\numberline {1.5}Polymorfisme}{15}{section.1.5}%
+\contentsline {chapter}{\numberline {2}Unit testing}{17}{chapter.2}%
+\contentsline {section}{\numberline {2.1}JUnit}{17}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Unit test voor een constructor}{17}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Unit test voor een setter}{20}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Unit test voor een getter}{22}{section.2.4}%
+\contentsline {chapter}{\numberline {3}Foutafhandeling}{28}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Compile-time vs runtime errors}{28}{section.3.1}%
+\contentsline {section}{\numberline {3.2}First catch}{30}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Java exception hi\"erarchie}{31}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Errors}{31}{subsection.3.3.1}%
+\contentsline {subsubsection}{StackOverflowError}{32}{section*.2}%
+\contentsline {subsubsection}{OutOfMemoryError}{33}{section*.3}%
+\contentsline {subsection}{\numberline {3.3.2}Runtime exceptions}{34}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Checked exceptions}{35}{subsection.3.3.3}%
+\contentsline {section}{\numberline {3.4}Multi-catch blok en finally}{41}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Zelf exceptions opgooien}{43}{section.3.5}%
+\contentsline {section}{\numberline {3.6}Zelf exception-klassen schrijven}{45}{section.3.6}%
+\contentsline {chapter}{\numberline {4}Collections}{49}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Het Java Collections Framework}{49}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Interfaces}{50}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Collection}{50}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Set}{50}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}List}{51}{subsection.4.2.3}%
+\contentsline {subsection}{\numberline {4.2.4}Queue}{51}{subsection.4.2.4}%
+\contentsline {subsection}{\numberline {4.2.5}Deque (lees als deck)}{51}{subsection.4.2.5}%
+\contentsline {subsection}{\numberline {4.2.6}Map}{52}{subsection.4.2.6}%
+\contentsline {section}{\numberline {4.3}Concrete klassen}{53}{section.4.3}%
+\contentsline {section}{\numberline {4.4}De klasse ArrayList}{54}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Constructor}{54}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}contains en equals}{55}{subsection.4.4.2}%
+\contentsline {subsection}{\numberline {4.4.3}Iterator}{57}{subsection.4.4.3}%
+\contentsline {subsection}{\numberline {4.4.4}Klasse Collection\textbf {s}}{58}{subsection.4.4.4}%
+\contentsline {section}{\numberline {4.5}De klasse LinkedList}{59}{section.4.5}%
+\contentsline {subsection}{\numberline {4.5.1}LinkedList als FIFO}{59}{subsection.4.5.1}%
+\contentsline {subsection}{\numberline {4.5.2}LinkedList als LIFO}{60}{subsection.4.5.2}%
+\contentsline {subsection}{\numberline {4.5.3}LinkedList en ArrayDeque}{61}{subsection.4.5.3}%
+\contentsline {subsection}{\numberline {4.5.4}Performantie van ArrayList en LinkedList}{62}{subsection.4.5.4}%
+\contentsline {section}{\numberline {4.6}De klasse HashSet}{65}{section.4.6}%
+\contentsline {section}{\numberline {4.7}De klasse PriorityQueue}{65}{section.4.7}%
+\contentsline {section}{\numberline {4.8}De klasse HashMap}{66}{section.4.8}%
+\contentsline {subsection}{\numberline {4.8.1}Gebruik}{66}{subsection.4.8.1}%
+\contentsline {subsection}{\numberline {4.8.2}Hashmap for caching}{67}{subsection.4.8.2}%
+\contentsline {chapter}{\numberline {5}Generics}{69}{chapter.5}%
+\contentsline {section}{\numberline {5.1}V\'o\'or generics}{69}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Zelf generieke klassen schrijven}{71}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Naamgeving}{72}{subsection.5.2.1}%
+\contentsline {section}{\numberline {5.3}Generieke interfaces}{72}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Interface $Comparable<T>$}{72}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Eigen generieke interface}{75}{subsection.5.3.2}%
+\contentsline {section}{\numberline {5.4}Generieke functies}{76}{section.5.4}%
+\contentsline {section}{\numberline {5.5}Wildcards en bounds}{77}{section.5.5}%
+\contentsline {subsection}{\numberline {5.5.1}Bounded wildcards}{77}{subsection.5.5.1}%
+\contentsline {subsection}{\numberline {5.5.2}Bounds}{79}{subsection.5.5.2}%
+\contentsline {subsection}{\numberline {5.5.3}Upper bound, lower bound en unbounded wildcard}{79}{subsection.5.5.3}%
+\contentsline {section}{\numberline {5.6}Erasure en problemen}{82}{section.5.6}%
+\contentsline {section}{\numberline {5.7}Oefening}{83}{section.5.7}%
+\contentsline {chapter}{\numberline {6}Geneste klassen en lambda expressies}{84}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Geneste klassen}{84}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}Inner classes}{84}{subsection.6.1.1}%
+\contentsline {subsection}{\numberline {6.1.2}Static nested class}{86}{subsection.6.1.2}%
+\contentsline {subsubsection}{Geneste enum}{87}{section*.4}%
+\contentsline {subsection}{\numberline {6.1.3}Local inner class}{87}{subsection.6.1.3}%
+\contentsline {subsection}{\numberline {6.1.4}Anonymous inner class}{88}{subsection.6.1.4}%
+\contentsline {section}{\numberline {6.2}Functionele interfaces}{89}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Event handling}{91}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Standaard functionele interfaces}{93}{section.6.4}%
+\contentsline {subsection}{\numberline {6.4.1}Verschillende manieren om lambda expressies te schrijven}{93}{subsection.6.4.1}%
+\contentsline {subsection}{\numberline {6.4.2}Predicate$<$T$>$}{94}{subsection.6.4.2}%
+\contentsline {subsection}{\numberline {6.4.3}Function$<$T, R$>$}{95}{subsection.6.4.3}%
+\contentsline {subsection}{\numberline {6.4.4}Consumer$<$T$>$}{96}{subsection.6.4.4}%
+\contentsline {section}{\numberline {6.5}Method reference}{97}{section.6.5}%
+\contentsline {subsection}{\numberline {6.5.1}Static methods}{97}{subsection.6.5.1}%
+\contentsline {subsection}{\numberline {6.5.2}Instance method (unbounded)}{98}{subsection.6.5.2}%
+\contentsline {subsection}{\numberline {6.5.3}Instance method (bounded)}{98}{subsection.6.5.3}%
+\contentsline {subsection}{\numberline {6.5.4}Constructor}{98}{subsection.6.5.4}%
+\contentsline {section}{\numberline {6.6}Oefeningen}{99}{section.6.6}%
+\contentsline {chapter}{\numberline {7}Streams}{101}{chapter.7}%
+\contentsline {section}{\numberline {7.1}External en internal iterators}{101}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Intermediate en terminal operations}{103}{section.7.2}%
+\contentsline {subsection}{\numberline {7.2.1}Terminal operation .collect()}{103}{subsection.7.2.1}%
+\contentsline {subsection}{\numberline {7.2.2}Intermediate operation .filter()}{103}{subsection.7.2.2}%
+\contentsline {subsection}{\numberline {7.2.3}Terminal operation .forEach()}{105}{subsection.7.2.3}%
+\contentsline {subsection}{\numberline {7.2.4}Intermediate operation .map()}{106}{subsection.7.2.4}%
+\contentsline {subsection}{\numberline {7.2.5}Intermediate operation .sorted()}{107}{subsection.7.2.5}%
+\contentsline {subsection}{\numberline {7.2.6}Intermediate operation .distinct()}{108}{subsection.7.2.6}%
+\contentsline {subsection}{\numberline {7.2.7}Intermediate operation .limit()}{108}{subsection.7.2.7}%
+\contentsline {subsection}{\numberline {7.2.8}Intermediate operation peek()}{108}{subsection.7.2.8}%
+\contentsline {subsection}{\numberline {7.2.9}Terminal operation .count()}{109}{subsection.7.2.9}%
+\contentsline {section}{\numberline {7.3}Intstream, LongStream en DoubleStream}{109}{section.7.3}%
+\contentsline {subsection}{\numberline {7.3.1}sum()}{109}{subsection.7.3.1}%
+\contentsline {subsection}{\numberline {7.3.2}range() en rangeClosed()}{109}{subsection.7.3.2}%
+\contentsline {subsection}{\numberline {7.3.3}min(), max() en average()}{110}{subsection.7.3.3}%
+\contentsline {section}{\numberline {7.4}Geavanceerdere operations}{111}{section.7.4}%
+\contentsline {subsection}{\numberline {7.4.1}Terminal operation .reduce()}{111}{subsection.7.4.1}%
+\contentsline {subsection}{\numberline {7.4.2}Intermediate operation .flatMap()}{112}{subsection.7.4.2}%
+\contentsline {section}{\numberline {7.5}Oefeningen}{113}{section.7.5}%
+\contentsline {chapter}{\numberline {8}Java I/O}{115}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Toegang tot bestanden en directories}{115}{section.8.1}%
+\contentsline {subsection}{\numberline {8.1.1}De klasse FileSystem en de interface Path}{116}{subsection.8.1.1}%
+\contentsline {subsection}{\numberline {8.1.2}Het factory ontwerppatroon}{118}{subsection.8.1.2}%
+\contentsline {subsection}{\numberline {8.1.3}De utility klasse Files}{119}{subsection.8.1.3}%
+\contentsline {subsubsection}{Directories en bestanden aanmaken}{119}{section*.5}%
+\contentsline {subsubsection}{Bestanden lezen (kleine bestanden)}{119}{section*.6}%
+\contentsline {subsubsection}{Bestanden kopi\"eren}{120}{section*.7}%
+\contentsline {section}{\numberline {8.2}Tekstbestanden}{120}{section.8.2}%
+\contentsline {subsection}{\numberline {8.2.1}I/O Streams}{120}{subsection.8.2.1}%
+\contentsline {subsection}{\numberline {8.2.2}BufferedReader}{121}{subsection.8.2.2}%
+\contentsline {subsection}{\numberline {8.2.3}BufferedWriter}{122}{subsection.8.2.3}%
+\contentsline {subsection}{\numberline {8.2.4}Character sets}{123}{subsection.8.2.4}%
+\contentsline {subsection}{\numberline {8.2.5}Het decorator patroon}{123}{subsection.8.2.5}%
+\contentsline {section}{\numberline {8.3}Programma attributen}{123}{section.8.3}%
+\contentsline {section}{\numberline {8.4}Byte stream}{125}{section.8.4}%
+\contentsline {subsection}{\numberline {8.4.1}Object serialization}{125}{subsection.8.4.1}%
+\contentsline {subsection}{\numberline {8.4.2}Object deserialization}{126}{subsection.8.4.2}%
+\contentsline {section}{\numberline {8.5}Oefeningen}{126}{section.8.5}%
+\contentsline {chapter}{\numberline {9}Multithreading}{128}{chapter.9}%
+\contentsline {section}{\numberline {9.1}Wat zijn threads?}{128}{section.9.1}%
+\contentsline {section}{\numberline {9.2}Threads zijn objecten}{130}{section.9.2}%
+\contentsline {subsection}{\numberline {9.2.1}Subklasse van Thread}{130}{subsection.9.2.1}%
+\contentsline {subsection}{\numberline {9.2.2}De interface Runnable implementeren}{130}{subsection.9.2.2}%
+\contentsline {subsubsection}{Runnable als lambda expressie}{131}{section*.8}%
+\contentsline {subsection}{\numberline {9.2.3}Thread class versus Runnable Interface}{131}{subsection.9.2.3}%
+\contentsline {section}{\numberline {9.3}Thread life cycle}{132}{section.9.3}%
+\contentsline {subsection}{\numberline {9.3.1}Thread.sleep()}{133}{subsection.9.3.1}%
+\contentsline {subsection}{\numberline {9.3.2}referencedThread.join()}{134}{subsection.9.3.2}%
+\contentsline {section}{\numberline {9.4}Thread synchronization}{135}{section.9.4}%
+\contentsline {subsection}{\numberline {9.4.1}Status WAITING, TIMED\_WAITING en BLOCKED}{139}{subsection.9.4.1}%
+\contentsline {section}{\numberline {9.5}Timer en TimerTask}{140}{section.9.5}%
+\contentsline {section}{\numberline {9.6}Concurrency framework}{141}{section.9.6}%
+\contentsline {subsection}{\numberline {9.6.1}Concurrent collections}{141}{subsection.9.6.1}%
+\contentsline {subsubsection}{Producer-consumer probleem}{142}{section*.9}%
+\contentsline {subsection}{\numberline {9.6.2}Atomic variables}{142}{subsection.9.6.2}%
+\contentsline {subsection}{\numberline {9.6.3}ExecutorService framework}{143}{subsection.9.6.3}%
+\contentsline {subsubsection}{Runnable}{143}{section*.10}%
+\contentsline {subsubsection}{Callable}{144}{section*.11}%
+\contentsline {section}{\numberline {9.7}Parallel streams}{145}{section.9.7}%
+\contentsline {section}{\numberline {9.8}Oefeningen}{146}{section.9.8}%
+\contentsfinish 

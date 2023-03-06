@@ -322,8 +322,8 @@ public class SuperheroIdCardGenerator {
             PdfContentByte canvas = pdfStamper.getOverContent(1);
             ColumnText.showTextAligned(canvas, Element.ALIGN_LEFT, new Phrase(superhero.firstName() + " " + superhero.lastName()), 200, 620, 0);
             ColumnText.showTextAligned(canvas, Element.ALIGN_LEFT, new Phrase(superhero.superheroName()), 200, 550, 0);
-            byte[] qrCodeImage = getQRCodeImage(Cipher.skipALetter(superhero.superheroName());
-            Image qrCode = Image.getInstance(qrCodeImage, 130, 130));
+            byte[] qrCodeImage = getQRCodeImage(Cipher.skipALetter(superhero.superheroName()), 130, 130);
+            Image qrCode = Image.getInstance(qrCodeImage);
             qrCode.setAbsolutePosition(190, 360);
             canvas.addImage(qrCode);
             pdfStamper.close();
@@ -393,7 +393,7 @@ We would like to deliver high quality Java code. SonarQube is a Java analyzer th
 
 Create a docker container with SonarQube. Run the following command in a terminal window:
 
-\fbox{\strut docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 sonarqube}
+\fbox{\strut docker run -d -{}-name sonarqube -p 9000:9000 -p 9092:9092 sonarqube}
 
 Open \url{http://localhost:9000} in a browser. You can login with the default username `admin' and password `admin'. Next you have to update the default password (you have to choose a new password!).
 

@@ -6,6 +6,7 @@
 The junior-colleague
 \begin{enumerate}[nolistsep]
 \item can describe what JDBC is.
+\item can explain the benefits of JPA over JDBC.
 \item can identify the base interfaces of JDBC.
 \item can use JDBC to connect to a database.
 \item can use JDBC to query a database.
@@ -20,6 +21,30 @@ The junior-colleague
 \end{enumerate}}}
 
 TODO REVIEW https://www.marcobehler.com/guides/jdbc
+
+\fcolorbox{black}[HTML]{ADD8E6}{\parbox{\textwidth}{%
+\noindent \textbf{Source for this chapter:}\\
+SampleJPAProject: \url{https://github.com/custersnele/SampleJPAProject}
+This project uses the mysql music database used in chapter \ref{chap:jdbc}. 
+}}
+
+\section{Why not JDBC?}
+
+JDBC is a low-level API. When using JDBC you have to write quite some boilerplate code.
+Take for example the code for mapping the data from the ResultSet to your actual objects.
+
+\begin{lstlisting}[frame=single, language=java]
+List<User> users = new ArrayList<User>();
+while(rs.next()) {
+     User user = new User();
+     user.setId(rs.getString("userid"));
+     user.setName(rs.getString("firstname"));
+     user.setEmail(rs.getString("email"));
+     users.add(user);
+ }
+ \end{lstlisting}
+
+With JDBC, your SQL statement interwine with your Java code,  which makes your code  hard to refactor and your datasources or DAOs might end up messy (e.g.  MusicDatasource).
 
 \section{What is JDBC?}
 
