@@ -10,237 +10,127 @@ The junior-colleague
 
 \section{Mocking with Mockito}
 
-\fcolorbox{black}[HTML]{ADD8E6}{\parbox{\textwidth}{%
-\noindent \textbf{Source for this section:}\\
-mocking\_example: \url{https://github.com/PXLJavaAdvanced2/mocking_example.git}
-}}
+Mockito is a popular open source framework for mocking objects in software test.
 
-While writing unit tests,  you spend quite some time creating the initial test data. Using the builder pattern makes your test code more readable and maintainable.
+\begin{lstlisting}
+package be.pxl.superhero.service;
 
-Located in the test-folder, you will find the SuperheroBuilder in the package be.pxl.superhero.builder.
-There are plugins for IntelliJ IDEA that generate builder-classes (e.g.  Generate Builder plugin).
+public class MyService {
 
-\begin{lstlisting}[frame=single,language=java]
-package be.pxl.superhero.builder;
+    private final OtherService otherService;
 
-import be.pxl.superhero.domain.Superhero;
+    public MyService(OtherService otherService) {
+        this.otherService = otherService;
+    }
 
-public final class SuperheroBuilder {
-
-	private String firstName;
-	private String lastName;
-	private String superheroName;
-	private String phoneNumber;
-
-	private SuperheroBuilder() {}
-
-	public static SuperheroBuilder aSuperhero() {return new SuperheroBuilder();}
-
-	public SuperheroBuilder withFirstName(String firstName) {
-		this.firstName = firstName;
-		return this;
-	}
-
-	public SuperheroBuilder withLastName(String lastName) {
-		this.lastName = lastName;
-		return this;
-	}
-
-	public SuperheroBuilder withSuperheroName(String superheroName) {
-		this.superheroName = superheroName;
-		return this;
-	}
-
-	public SuperheroBuilder withPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-		return this;
-	}
-
-	public Superhero build() {
-		Superhero superhero = new Superhero(firstName, lastName, superheroName);
-		superhero.setPhoneNumber(phoneNumber);
-		return superhero;
-	}
+    public int doCalculation(int value) {
+        return value * otherService.getValue();
+    }
 }
 \end{lstlisting}
 
-\begin{oefening}
-Change the property ironman.phonenumber in the file application.properties to your own phone number.
-Run the main-class CallIronManApp. Investigate the source code and debug if necessary to learn to understand the program.
-The SmsService uses Textbelt to send an SMS.  Using the API key textbelt one test SMS per day is allowed.
-\end{oefening}
+\begin{lstlisting}
+package be.pxl.superhero.service;
 
-Next, we want to test the methods in the class CallService.  The CallService uses the SMSService, but while executing the unit tests, we don't want to use the actual SMSService. The solution here is mocking. 
-To create tests with Mockito, we add the annotation @ExtendWith(MockitoExtension.class) to the test class.
-We mock the SMSService and inject the mock in the CallService under test. The mock is a dummy for the SMSService.
-The test smsServiceIsUsedOnCall verifies that the dummy SMSService is called with the correct arguments.
+public interface OtherService {
 
+    int getValue();
+}
+\end{lstlisting}
 
-\begin{lstlisting}[frame=single, language=java]
-package be.pxl.superhero.mocking;
+When writing a unit test for the method doCalculation() we need an object of the class OtherService. We don't need an object of an actual implementation of the interface. We can just mock the OtherService-object and tell it what it should return when it's called.
 
-import be.pxl.superhero.CallService;
-import be.pxl.superhero.SmsService;
-import be.pxl.superhero.builder.SuperheroBuilder;
-import be.pxl.superhero.domain.Superhero;
+\begin{lstlisting}
+package be.pxl.superhero.service;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class CallServiceTest {
+public class MyServiceTest {
 
-	@Mock
-	private SmsService smsService;
+    @Mock
+    private OtherService otherService;
+    @InjectMocks
+    private MyService myService;
 
-	@InjectMocks
-	private CallService callService;
-
-	private final Superhero hero1 = SuperheroBuilder.aSuperhero().withSuperheroName("Hero 1").withPhoneNumber("123456").build();
-
-	@Test
-	public void smsServiceIsUsedOnCall() {
-		callService.call(hero1, "TestMessage");
-		Mockito.verify(smsService).sendSms( "TestMessage", "123456");
-	}
+    @Test
+    public void doCalculationTest() {
+        when(otherService.getValue()).thenReturn(5);
+        assertEquals(500, myService.doCalculation(100));
+    }
 }
 \end{lstlisting}
 
-\begin{oefening}
-Implement the CallServiceTest-class.  Add extra unit tests to test all methods and functionality of the CallService-class.
-\end{oefening}
+\section{Unit testing the service-layer methods}
 
 
-\section{Testing SupheroService}
-
-\fcolorbox{black}[HTML]{ADD8E6}{\parbox{\textwidth}{%
-\noindent \textbf{Source for this section:}\\
-superhero-backend
-}}
-
-We started with a simple example.  However, in practice we use Mockito when we test the Service-layer of our application. In this section we discuss more complex unit tests with Mockito.
+We use Mockito when we test the Service-layer of an application. In this section we discuss more complex unit tests with Mockito.
 
 The name of a superhero must be unique. To accomplish this, we add the unique constraint to our database column. 
 However, it is good practice to implement this business rule in the service layer.
 Database constraints are the last line of defence, not the only. 
 
-\begin{lstlisting}[frame=single,language=java]
-package be.pxl.superhero.domain;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table(name="superheroes")
-public class Superhero {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
-	private String firstName;
-	private String lastName;
-	@Column(unique = true)
-	private String superheroName;
-
-	public Superhero() {
-		// JPA only
-	}
-
-	public Superhero(String firstName, String lastName, String superheroName) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.superheroName = superheroName;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getSuperheroName() {
-		return superheroName;
-	}
-
-	public void setSuperheroName(String superheroName) {
-		this.superheroName = superheroName;
-	}
-}
-\end{lstlisting}
-
-
 
 \begin{lstlisting}[frame=single, language=java]
 package be.pxl.superhero.service.impl;
 
+import be.pxl.superhero.api.MissionDTO;
 import be.pxl.superhero.api.SuperheroDTO;
+import be.pxl.superhero.api.SuperheroDetailDTO;
 import be.pxl.superhero.api.SuperheroRequest;
+import be.pxl.superhero.domain.Mission;
 import be.pxl.superhero.domain.Superhero;
 import be.pxl.superhero.exception.ResourceNotFoundException;
+import be.pxl.superhero.repository.MissionRepository;
 import be.pxl.superhero.repository.SuperheroRepository;
 import be.pxl.superhero.service.SuperheroService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.ValidationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.ValidationException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class SuperheroServiceImpl implements SuperheroService {
 
-	private final SuperheroRepository superheroRepository;
+    private final SuperheroRepository superheroRepository;
+    private final MissionRepository missionRepository;
 
-	@Autowired
-	public SuperheroServiceImpl(SuperheroRepository superheroRepository) {
-		this.superheroRepository = superheroRepository;
-	}
+    public SuperheroServiceImpl(SuperheroRepository superheroRepository,
+                                MissionRepository missionRepository) {
+        this.superheroRepository = superheroRepository;
+        this.missionRepository = missionRepository;
+    }
 
-	public SuperheroDTO createSuperhero(SuperheroRequest superheroRequest) {
-		Optional<Superhero> existingSuperhero = superheroRepository.findSuperheroBySuperheroName(superheroRequest.getSuperheroName());
-		existingSuperhero.ifPresent(s -> {
-			throw new ValidationException("This superhero name is already taken.");
-		});
-		Superhero superhero = new Superhero();
-		superhero.setFirstName(superheroRequest.getFirstName());
-		superhero.setLastName(superheroRequest.getLastName());
-		superhero.setSuperheroName(superheroRequest.getSuperheroName());
-		Superhero newSuperhero = superheroRepository.save(superhero);
-		return new SuperheroDTO(newSuperhero);
-	}
-	
-	// other methods intenionally left out
+    public Long createSuperhero(SuperheroRequest superheroRequest) {
+        Optional<Superhero> existingSuperhero = 
+            superheroRepository.findSuperheroBySuperheroName(superheroRequest.getSuperheroName());
+        existingSuperhero.ifPresent(s -> {
+            throw new ValidationException("This superhero name is already taken.");
+        });
+            
+        Superhero superhero = new Superhero();
+        superhero.setFirstName(superheroRequest.firstName());
+        superhero.setLastName(superheroRequest.lastName());
+        superhero.setSuperheroName(superheroRequest.superheroName());
+        Superhero newSuperhero = superheroRepository.save(superhero);
+        return newSuperhero.getId();
+    }
 
+    // other methods intentionally left out
 }
 \end{lstlisting}
 
 
-Now we need unit tests for the method \textit{createSuperhero}. There's one problem, we need a SuperheroRepository to thoroughly test the method.  The solution is mocking the database layer. Here,  mocking means create a dummy layer and no actual operation will happen during database save or fetch. 
+Now we need unit tests for the method \textit{createSuperhero}. There's one problem, we need a SuperheroRepository to thoroughly test the method.  The solution is to mock the database layer. Here,  mocking means create a dummy layer and no actual database operation will be executed. 
 
 In Mockito we can mock methods in 2 different ways:
 
@@ -253,8 +143,7 @@ For mocked objects it is best practice to use when-then option as it provides re
 
 For mocking void methods, there is no when-then option. We have to use do-when syntax.
 
- 
- \begin{lstlisting}[frame=single, language=java]
+\begin{lstlisting}[frame=single, language=java]
 package be.pxl.superhero.service.impl;
 
 import be.pxl.superhero.api.SuperheroDTO;
@@ -262,24 +151,18 @@ import be.pxl.superhero.api.SuperheroRequest;
 import be.pxl.superhero.builder.SuperheroBuilder;
 import be.pxl.superhero.domain.Superhero;
 import be.pxl.superhero.repository.SuperheroRepository;
+import jakarta.validation.ValidationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.AdditionalAnswers;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.validation.ValidationException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.LONG_STREAM;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
@@ -290,9 +173,12 @@ public class SuperheroServiceImplTest {
 	private static final String SUPERHERO_NAME = "Superman";
 	private static final String FIRST_NAME = "Clark";
 	private static final String LAST_NAME = "Kent";
+	private static final long SUPERHERO_ID = 115;
 
 	@Mock
 	private SuperheroRepository superheroRepository;
+	@Mock
+	private Superhero newSuperhero;
 
 	@Captor
 	private ArgumentCaptor<Superhero> superheroCaptor;
@@ -308,21 +194,25 @@ public class SuperheroServiceImplTest {
 
 	@Test
 	public void throwsValidationExceptionWhenSuperheroNameIsNotUnique() {
-		when(superheroRepository.findSuperheroBySuperheroName(SUPERHERO_NAME)).thenReturn(Optional.of(superhero));
+		when(superheroRepository.findSuperheroBySuperheroName(SUPERHERO_NAME))
+		    .thenReturn(Optional.of(superhero));
 		SuperheroRequest request = new SuperheroRequest(FIRST_NAME, LAST_NAME, SUPERHERO_NAME);
-		ValidationException validationException = assertThrows(ValidationException.class, () -> superheroService.createSuperhero(request));
+		ValidationException validationException = assertThrows(ValidationException.class, 
+		    () -> superheroService.createSuperhero(request));
 		assertEquals("This superhero name is already taken.", validationException.getMessage());
 	}
 
 	@Test
 	public void savesSuperheroWhenSuperheroNameIsUnique() {
-		when(superheroRepository.findSuperheroBySuperheroName(SUPERHERO_NAME)).thenReturn(Optional.empty());
-		when(superheroRepository.save(Mockito.any(Superhero.class))).thenAnswer(AdditionalAnswers.returnsFirstArg());
+		when(superheroRepository.findSuperheroBySuperheroName(SUPERHERO_NAME))
+		    .thenReturn(Optional.empty());
+		when(newSuperhero.getId())
+		    .thenReturn(SUPERHERO_ID);
+		when(superheroRepository.save(Mockito.any(Superhero.class)))
+		    .thenReturn(newSuperhero);
 		SuperheroRequest request = new SuperheroRequest(FIRST_NAME, LAST_NAME, SUPERHERO_NAME);
-		SuperheroDTO result = superheroService.createSuperhero(request);
-		assertEquals(FIRST_NAME, result.getFirstName());
-		assertEquals(LAST_NAME, result.getLastName());
-		assertEquals(SUPERHERO_NAME, result.getSuperheroName());
+		Long newId = superheroService.createSuperhero(request);
+		assertEquals(SUPERHERO_ID, newId);
 		Mockito.verify(superheroRepository).save(superheroCaptor.capture());
 		Superhero savedSuperhero = superheroCaptor.getValue();
 		assertEquals(FIRST_NAME, savedSuperhero.getFirstName());
@@ -332,11 +222,16 @@ public class SuperheroServiceImplTest {
 
 	@Test
 	public void findAllSuperheroes() {
-		Superhero hero1 = SuperheroBuilder.aSuperhero().withSuperheroName("Batman").build();
-		Superhero hero2 = SuperheroBuilder.aSuperhero().withSuperheroName("Superman").build();
+		Superhero hero1 = SuperheroBuilder.aSuperhero()
+		                                  .withSuperheroName("Batman")
+		                                  .build();
+		Superhero hero2 = SuperheroBuilder.aSuperhero()
+		                                  .withSuperheroName("Superman")
+		                                  .build();
 		when(superheroRepository.findAll()).thenReturn(Arrays.asList(hero1, hero2));
 		List<SuperheroDTO> allSuperheroes = superheroService.findAllSuperheroes();
-		assertThat(allSuperheroes.stream().map(SuperheroDTO::getSuperheroName).collect(Collectors.toList()))
+		assertThat(allSuperheroes.stream().map(SuperheroDTO::superheroName)
+		                                  .collect(Collectors.toList()))
 				.hasSize(2)
 				.containsExactly("Batman", "Superman");
 	}
@@ -350,17 +245,13 @@ This dummy SuperheroRepsitory should be used by the SuperheroService under test.
 The test throwsValidationExceptionWhenSuperheroNameIsNotUnique is a test for the scenario where the superhero is already saved in the database. Our dummy SuperheroRepository will return this existing superhero when he is retrieved by his superheroName.
 During the test we call the method createSuperhero with test data but we expect the method to throw a ValidationException.  If the exception is not thrown, the test will fail. Finally, the error message of the exception is verified.
 
-
 The test savesSuperheroWhenSuperheroNameIsUnique is a test for the scenario where the superhero doesn't exist yet.
 The dummy SuperheroRepository will return an empty Optional.  While executing the test, the save method of the SuperheroRepository is called.  The result of this save method is used for creating the SuperheroDTO that is returned by the SuperheroService under test.
 The save-method cannot return null, it would cause our test to end with a NullPointerException. Therefore, we make our dummy SuperheroRepository return something useful. We verify the return value of the method under test (createSuperhero). We verify the save() method is called with the expected argument.  This is accomplished with an argument captor. 
 
 The third test is a test for the method findAllSuperheroes.  We test that the results retrieved from the dummy SuperheroRepository are mapped correctly to SuperheroDTOs.  This test uses AssertJ for the assertions. This is a useful library for writing readable assertions. 
  
- \begin{oefening}
- Open the superhero-backend project.
-Install the Generate Builder-plugin in IntelliJ IDEA. 
-Create the SuperheroBuilder and place it in the test-folder in package be.pxl.superhero.builder.
+\begin{oefening}
 Add the class SuperheroServiceTest to your project and run (and debug!) the tests. 
 Create a new test class with the name SuperheroServiceUpdateSuperheroTest.
 Write unit tests for the method updateSuperhero in the class SuperheroServiceTest. 

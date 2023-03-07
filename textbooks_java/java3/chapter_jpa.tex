@@ -267,7 +267,6 @@ When a managed entity is removed within an active transaction, the state changes
 An entity gets detached when it is no longer managed by the persistence context but still represents a record in the database.
 Detached objects are limited in functionality.
 
-
  
 Programmatically we need to use the entitymanager to change the state of the entity object in the persistence context which results in changes or updates in our database. 
 
@@ -303,19 +302,32 @@ In the interface SuperheroRepository you add a method for retrieving a Superhero
 
 Spring Data JPA offers an annotation @DataJpaTest which makes repository testing possible with a minimum of configuration. 
 
+Add the h2 dependency with scope test in your pom.xml. This way the unit test for your repository will use the h2 database to test your queries.
+
+\begin{lstlisting}
+<dependency>
+	<groupId>com.h2database</groupId>
+	<artifactId>h2</artifactId>
+	<scope>test</scope>
+</dependency>
+\end{lstlisting}
+
+The builder pattern is used in this example to create entity objects for testing purpose. These entity objects are stored in the in-memory database. There is an IntelliJ IDEA plugin that generates the builder-classes for you (Generate Builder plugin).
+
+The test uses the entity managers, which is injected in the test with the @PersistenceContext annotation. The flush() forces to synchronize the persistence context to the database. The clear() empties the persistence context. Therefore, all entities are detached and can be fetched again from the database.
 
 \begin{lstlisting}[frame=single, language=java]
 package be.pxl.superhero.repository;
 
 import be.pxl.superhero.builder.SuperheroBuilder;
 import be.pxl.superhero.domain.Superhero;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -332,7 +344,11 @@ public class SuperheroRepositoryTest {
 	@Autowired
 	private SuperheroRepository superheroRepository;
 
-	private Superhero superhero = SuperheroBuilder.aSuperhero().withFirstName("Clark").withLastName("Kent").withSuperheroName(SUPERHERO_NAME).build();
+	private final Superhero superhero = SuperheroBuilder.aSuperhero()
+			.withFirstName("Clark")
+			.withLastName("Kent")
+			.withSuperheroName(SUPERHERO_NAME)
+			.build();
 
 	@BeforeEach
 	public void init() {
@@ -357,11 +373,248 @@ public class SuperheroRepositoryTest {
 		assertTrue(superheroUnderTest.isEmpty());
 	}
 }
-
 \end{lstlisting}
+
+\begin{oefening}
+You should be able to find a mission by it's name from the database. Add this query in the MissionRepository and test the query.
+\end{oefening}
 
 
 \section{Relationships}
+
+From a database perspective, table relationships can be:
+\begin{itemize}
+\item one-to-many
+\item one-to-one
+\item many-to-many
+\end{itemize}
+
+JPA defines multiple annotations for mapping table relationships. For the superhero-backend we'll use a many-to-many relationship between superheroes and missions. A superhero can participate in multiple missions and multiple superheroes bundle forces in one mission. A link table is necessary to store the data.
+
+Relationships can be either unidirectional of bidirectional. Only one party in a relationship is the owner of the relationship. 
+ 
+
+\subsection{Many-to-many bidirectional relationship}
+
+The Superhero class is owner of the relationship between Mission and Superhero. Because the relationship is bidirectional, we always maintain a set of a superhero's missions and in a mission we maintain a set of the superheroes participating.
+When you add a mission to a superhero, you have to make sure the superhero is also added to the mission's list of superheroes.
+Study the code below.
+
+
+\begin{lstlisting}
+package be.pxl.superhero.domain;
+
+import jakarta.persistence.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name="superheroes")
+public class Superhero {
+
+	private static final Logger LOGGER = LogManager.getLogger(Superhero.class);
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	private String firstName;
+	private String lastName;
+	@Column(unique = true)
+	private String superheroName;
+	@Column(name="notes")
+	private String description;
+	@ManyToMany
+	private List<Mission> missions = new ArrayList<>();
+
+	public Superhero() {
+		// JPA only
+	}
+
+	public Superhero(String firstName, String lastName, String superheroName) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Creating a new superhero...");
+		}
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.superheroName = superheroName;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getFirstName() {
+		if (LOGGER.isTraceEnabled()) {
+			LOGGER.trace(String.format("FirstName of %s was revealed.", superheroName));
+		}
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		if (LOGGER.isFatalEnabled()) {
+			LOGGER.fatal(String.format("LastName of %s was revealed.", superheroName));
+		}
+		return lastName;
+	}
+
+	public void addMission(Mission mission) {
+		if (mission.isCompleted()) {
+			throw new IllegalArgumentException("This mission was already completed.");
+		}
+		if (onMission(mission)) {
+			throw new IllegalArgumentException("This mission was already assigned.");
+		}
+		missions.add(mission);
+		mission.addSuperhero(this);
+	}
+
+	public boolean onMission(Mission mission) {
+		return missions.stream().anyMatch(m -> m.getName().equals(mission.getName()));
+	}
+
+	public List<Mission> getMissions() {
+		return missions;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getSuperheroName() {
+		return superheroName;
+	}
+
+	public void setSuperheroName(String superheroName) {
+		this.superheroName = superheroName;
+	}
+
+	@Override
+	public String toString() {
+		return superheroName;
+	}
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+package be.pxl.superhero.domain;
+
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+public class Mission {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@Column(unique = true)
+	private String name;
+
+	private boolean completed;
+
+	@ManyToMany(mappedBy = "missions")
+	private List<Superhero> superheroes = new ArrayList<>();
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public boolean isCompleted() {
+		return completed;
+	}
+
+	public void setCompleted(boolean completed) {
+		this.completed = completed;
+	}
+
+	public void addSuperhero(Superhero superhero) {
+		superheroes.add(superhero);
+	}
+
+	public List<Superhero> getSuperheroes() {
+		return superheroes;
+	}
+
+
+}
+\end{lstlisting}
+
+
+\begin{oefening}
+Create the bidirectional many-to-many relationship between superhero and mission in your project. 
+Write unit tests for the methode addMission() in the class Superhero.
+\end{oefening}
+
+\section{Transactions}
+
+Next, we create the REST-endpoint to add a mission to a superhero.
+
+\includegraphics[width=\textwidth]{./images/chapter-jpa/superhero_controller_add_superhero_to_mission}
+
+\begin{lstlisting}
+package be.pxl.superhero.service.impl;
+
+import be.pxl.superhero.api.SuperheroDTO;
+import be.pxl.superhero.api.SuperheroRequest;
+import be.pxl.superhero.domain.Mission;
+import be.pxl.superhero.domain.Superhero;
+import be.pxl.superhero.exception.ResourceNotFoundException;
+import be.pxl.superhero.repository.MissionRepository;
+import be.pxl.superhero.repository.SuperheroRepository;
+import be.pxl.superhero.service.SuperheroService;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+public class SuperheroServiceImpl implements SuperheroService {
+
+    private final SuperheroRepository superheroRepository;
+    private final MissionRepository missionRepository;
+
+    public SuperheroServiceImpl(SuperheroRepository superheroRepository,
+                                MissionRepository missionRepository) {
+        this.superheroRepository = superheroRepository;
+        this.missionRepository = missionRepository;
+    }
+
+   
+    // other methods not included 
+
+    @Transactional
+    public void addSuperheroToMission(Long superheroId, Long missionId) {
+        Superhero superhero = superheroRepository.findById(superheroId).orElseThrow(() -> new ResourceNotFoundException("Superhero", "ID", superheroId));
+        Mission mission = missionRepository.findById(missionId).orElseThrow(() -> new ResourceNotFoundException("Mission", "ID", missionId));
+        superhero.addMission(mission);
+    }
+}
+\end{lstlisting}
+
+In the service-layer we retrieve our superhero and mission entity objects (and throw an exception if they don't exist). Then, the mission entity object is added to the superhero's mission and otherwise. Thanks to the @Transactional annotation, all this runs in one transaction. When the transaction is commited, the updated superhero entity is synchronized with the database and the changes are stored in the database. In other words, a record is saved in the link table when no exception occurs. If an exception occurs, the transaction is rolled back.
+
+
+Lastly, we need DTO's with extra fields with the detailed superhero and mission information.
+
+\includegraphics{./images/chapter-jpa/superhero_detail_dto}
 
 
 
