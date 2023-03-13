@@ -1045,6 +1045,8 @@ Replace SuperheroDTO and SuperheroRequest with record classes. Fix the code and 
 
 \include{chapter_mockito}
 
+\include{chapter_jpa_relationships}
+
 \include{chapter_jdbc}
 
 
@@ -1094,6 +1096,31 @@ Additional information on creating executable jar's: \url{https://www.baeldung.c
 
 \includegraphics[width=\textwidth]{./images/chapter3/exercise-class-diagram} 
 
+\end{oefening}
+
+TODO Artist - Song
+
+
+\section{Exercises}
+
+\begin{oefening}
+Implement the entity classes Artist, Album and Song. The relationships between these classes (and the corresponding tables) are shown in the figure below.  Implement these relationships in a bi-directional way.
+
+\includegraphics[width=\textwidth]{./images/chapter6/exercise-schema}
+
+Implement the interface ArtistDao and it's implementation ArtistDaoImpl. The methods you need to implement can be found in the class diagram.
+
+\includegraphics{./images/chapter6/exercise-dao}
+
+Write unit tests for the class ArtistDaoImpl.
+
+Create the program ArtistApp. A user can input the name of an artist. The program displays all the albums of the artist. For each album the songs are displayed ordered by track number.
+\end{oefening}
+
+
+\begin{oefening}
+\textbf{Optional:} 
+https://github.com/bobocode-projects/jpa-hibernate-exercises/tree/master/photo-comment-dao
 \end{oefening}
 
 \begin{thebibliography}{9}

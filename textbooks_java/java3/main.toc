@@ -54,37 +54,44 @@
 \contentsline {chapter}{\numberline {6}Mockito}{71}{chapter.6}%
 \contentsline {section}{\numberline {6.1}Mocking with Mockito}{71}{section.6.1}%
 \contentsline {section}{\numberline {6.2}Unit testing the service-layer methods}{72}{section.6.2}%
-\contentsline {chapter}{\numberline {7}JDBC}{77}{chapter.7}%
-\contentsline {section}{\numberline {7.1}Why not JDBC?}{77}{section.7.1}%
-\contentsline {section}{\numberline {7.2}What is JDBC?}{78}{section.7.2}%
-\contentsline {section}{\numberline {7.3}The database}{78}{section.7.3}%
-\contentsline {section}{\numberline {7.4}JDBC Interfaces}{78}{section.7.4}%
-\contentsline {section}{\numberline {7.5}Slides}{78}{section.7.5}%
-\contentsline {chapter}{\numberline {8}REST}{80}{chapter.8}%
-\contentsline {section}{\numberline {8.1}CRUD REST API in Spring Boot}{80}{section.8.1}%
-\contentsline {section}{\numberline {8.2}Exception handling}{84}{section.8.2}%
-\contentsline {section}{\numberline {8.3}Unit testing}{86}{section.8.3}%
-\contentsline {section}{\numberline {8.4}Exercise: Superheroes}{90}{section.8.4}%
-\contentsline {subsection}{\numberline {8.4.1}CRUD operations for missions}{90}{subsection.8.4.1}%
-\contentsline {subsection}{\numberline {8.4.2}Add superhero to mission}{95}{subsection.8.4.2}%
-\contentsline {chapter}{\numberline {9}Servlets}{97}{chapter.9}%
-\contentsline {section}{\numberline {9.1}What is a Servlet}{97}{section.9.1}%
-\contentsline {section}{\numberline {9.2}Servlet class hierarchy}{98}{section.9.2}%
-\contentsline {section}{\numberline {9.3}Lifecycle of a servlet}{100}{section.9.3}%
-\contentsline {subsection}{\numberline {9.3.1}Example 1}{101}{subsection.9.3.1}%
-\contentsline {subsection}{\numberline {9.3.2}Example 2}{101}{subsection.9.3.2}%
-\contentsline {section}{\numberline {9.4}Session tracking}{103}{section.9.4}%
-\contentsline {subsection}{\numberline {9.4.1}Cookies}{104}{subsection.9.4.1}%
-\contentsline {subsection}{\numberline {9.4.2}HttpSession}{105}{subsection.9.4.2}%
-\contentsline {section}{\numberline {9.5}Spring DispatcherServlet}{107}{section.9.5}%
-\contentsline {subsection}{\numberline {9.5.1}Views}{108}{subsection.9.5.1}%
-\contentsline {section}{\numberline {9.6}@WebFilter}{110}{section.9.6}%
-\contentsline {section}{\numberline {9.7}@WebListener}{112}{section.9.7}%
-\contentsline {section}{\numberline {9.8}Exercises}{112}{section.9.8}%
-\contentsline {chapter}{\numberline {10}Transactions and dependency injection in Spring Boot}{115}{chapter.10}%
-\contentsline {section}{\numberline {10.1}Transactions}{115}{section.10.1}%
-\contentsline {subsection}{\numberline {10.1.1}Create worklog revisited}{116}{subsection.10.1.1}%
-\contentsline {section}{\numberline {10.2}Dependeny injection in Spring}{117}{section.10.2}%
-\contentsline {subsection}{\numberline {10.2.1}IoC and DI}{117}{subsection.10.2.1}%
-\contentsline {subsection}{\numberline {10.2.2}Spring beans vs Java Beans \blx@tocontentsinit {0}\cite {naming_bean}}{117}{subsection.10.2.2}%
-\contentsline {chapter}{\numberline {11}TODO}{119}{chapter.11}%
+\contentsline {chapter}{\numberline {7}Advanced Spring Data JPA}{77}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Relationships}{77}{section.7.1}%
+\contentsline {subsection}{\numberline {7.1.1}One-to-One relationship}{77}{subsection.7.1.1}%
+\contentsline {subsection}{\numberline {7.1.2}Many-to-one relationship}{79}{subsection.7.1.2}%
+\contentsline {subsection}{\numberline {7.1.3}Many-to-many relationship}{84}{subsection.7.1.3}%
+\contentsline {section}{\numberline {7.2}N + 1 query problem}{88}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Exercises}{91}{section.7.3}%
+\contentsline {chapter}{\numberline {8}JDBC}{93}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Why not JDBC?}{93}{section.8.1}%
+\contentsline {section}{\numberline {8.2}What is JDBC?}{94}{section.8.2}%
+\contentsline {section}{\numberline {8.3}The database}{94}{section.8.3}%
+\contentsline {section}{\numberline {8.4}JDBC Interfaces}{94}{section.8.4}%
+\contentsline {section}{\numberline {8.5}Slides}{94}{section.8.5}%
+\contentsline {chapter}{\numberline {9}REST}{96}{chapter.9}%
+\contentsline {section}{\numberline {9.1}CRUD REST API in Spring Boot}{96}{section.9.1}%
+\contentsline {section}{\numberline {9.2}Exception handling}{100}{section.9.2}%
+\contentsline {section}{\numberline {9.3}Unit testing}{102}{section.9.3}%
+\contentsline {section}{\numberline {9.4}Exercise: Superheroes}{106}{section.9.4}%
+\contentsline {subsection}{\numberline {9.4.1}CRUD operations for missions}{106}{subsection.9.4.1}%
+\contentsline {subsection}{\numberline {9.4.2}Add superhero to mission}{111}{subsection.9.4.2}%
+\contentsline {chapter}{\numberline {10}Servlets}{113}{chapter.10}%
+\contentsline {section}{\numberline {10.1}What is a Servlet}{113}{section.10.1}%
+\contentsline {section}{\numberline {10.2}Servlet class hierarchy}{114}{section.10.2}%
+\contentsline {section}{\numberline {10.3}Lifecycle of a servlet}{116}{section.10.3}%
+\contentsline {subsection}{\numberline {10.3.1}Example 1}{117}{subsection.10.3.1}%
+\contentsline {subsection}{\numberline {10.3.2}Example 2}{117}{subsection.10.3.2}%
+\contentsline {section}{\numberline {10.4}Session tracking}{119}{section.10.4}%
+\contentsline {subsection}{\numberline {10.4.1}Cookies}{120}{subsection.10.4.1}%
+\contentsline {subsection}{\numberline {10.4.2}HttpSession}{121}{subsection.10.4.2}%
+\contentsline {section}{\numberline {10.5}Spring DispatcherServlet}{123}{section.10.5}%
+\contentsline {subsection}{\numberline {10.5.1}Views}{124}{subsection.10.5.1}%
+\contentsline {section}{\numberline {10.6}@WebFilter}{126}{section.10.6}%
+\contentsline {section}{\numberline {10.7}@WebListener}{128}{section.10.7}%
+\contentsline {section}{\numberline {10.8}Exercises}{128}{section.10.8}%
+\contentsline {chapter}{\numberline {11}Transactions and dependency injection in Spring Boot}{131}{chapter.11}%
+\contentsline {section}{\numberline {11.1}Transactions}{131}{section.11.1}%
+\contentsline {subsection}{\numberline {11.1.1}Create worklog revisited}{132}{subsection.11.1.1}%
+\contentsline {section}{\numberline {11.2}Dependeny injection in Spring}{133}{section.11.2}%
+\contentsline {subsection}{\numberline {11.2.1}IoC and DI}{133}{subsection.11.2.1}%
+\contentsline {subsection}{\numberline {11.2.2}Spring beans vs Java Beans \blx@tocontentsinit {0}\cite {naming_bean}}{133}{subsection.11.2.2}%
+\contentsline {chapter}{\numberline {12}TODO}{135}{chapter.12}%
