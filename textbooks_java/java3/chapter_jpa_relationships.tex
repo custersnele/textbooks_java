@@ -1,5 +1,17 @@
 \chapter{Relationships with JPA}
 
+
+\fcolorbox{black}[HTML]{E9F0E9}{\parbox{\textwidth}{%
+\noindent \textbf{Learning goals}\\
+The junior-colleague
+\begin{enumerate}[nolistsep]
+\item can implement entity classes.
+\item can implement different types of relationships between entity classes: one-to-one, one-to-many and many-to-many in a unidirectional and bi-directional way.
+\item can implement queries.
+\item can explain, identify and solve the N + 1 query problem.
+\item can use lazy loading, even when OSIV is not enabled.
+\end{enumerate}}}
+
 \section{Relationships}
 
 JPA supports the same associations as you know from relational databases.
@@ -134,10 +146,6 @@ public class Researcher {
 \end{lstlisting}
 
 The meaning of CascadeType.ALL is that the persistence context will propagate (cascade) all EntityManager operations (PERSIST, REMOVE, REFRESH, MERGE, DETACH) to the relating entities.
-
-\begin{oefening}
-TO BE DEFINED 
-\end{oefening}
 
 \subsection{Many-to-one relationship}
 
@@ -429,7 +437,9 @@ public void setProject(Project project) {
 }
 \end{lstlisting}
  
-It's not a good idea to make Project owner of the relationship between Projects and Researchers.  You may end up with an inefficient database schema. More information can be found in this post: \url{https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/}.
+It's not a good idea to make Project owner of the relationship between Projects and Researchers.  You may end up with an inefficient database schema. More information can be found in this post: 
+
+\url{https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/}.
 
 
 \subsection{Many-to-many relationship}
@@ -678,6 +688,8 @@ In application.properties file make sure to enable show-sql.
 
 \begin{lstlisting}
 spring.jpa.show-sql=true
+# Following property can be used to format the sql shown
+# spring.jpa.properties.hibernate.format_sql=true 
 \end{lstlisting}
 
 After we call the endpoint to generate testdata, we retrieve all comments from the database.
@@ -695,9 +707,244 @@ After retrieven the comments from the database, every post that's involved in th
 You should tackle this problem by re-writing the query to retrieve all post comments.
 
 \begin{lstlisting}
+package be.pxl.demo.repository;
 
+import be.pxl.demo.domain.PostComment;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface PostCommentRepository extends JpaRepository<PostComment, Long> {
+
+    @Override
+    @EntityGraph(
+            type = EntityGraph.EntityGraphType.FETCH,
+            attributePaths = {
+                    "post"
+            }
+    )
+    List<PostComment> findAll();
+}
+\end{lstlisting}
+
+When retrieving comments using PostCommentRepository.findAll(), the @EntityGraph annotation causes Spring Data JPA and Hibernate to fetch the associated entities included in attributePaths.
+
+Only one query is executed.
+
+\begin{lstlisting}
+Hibernate: select p1_0.id,p2_0.id,p2_0.title,p1_0.review from post_comment p1_0 left join post p2_0 on p2_0.id=p1_0.post_id
+\end{lstlisting}
+
+Being able to see what Hibernate is actually doing with the database is very important.
+It's good practice to enable SQL output when working on a Spring Boot project, just as a sanity check. 
+You will definitly find problems you were unaware of by examining the SQL output.
+
+An extended example of the N+1 query problem and the solution can be found in this post: \url{https://tech.asimio.net/2020/11/06/Preventing-N-plus-1-select-problem-using-Spring-Data-JPA-EntityGraph.html}.
+
+\section{Lazy loading and OSIV}
+
+The associated entities in a @OneToMany and @ManyToMany relationships are lazy loaded. Loading the data is only done when and if it is needed. Lazy loading improves the performance. You need a transaction (or session) to retrieve the associated data from the database.
+Spring boot however enables a mechanism called OSIV (Open Session in View) by default. In Spring Boot applications using JPA, transactions are created even before requests arrive at the handling restcontroller, even if the request is not doing any database operations at all. Spring OpenSessionInViewInterceptor class manages these sessions. OSIV is really a bad idea from a performance and scalability perspective.
+
+So, make sure that in the application.properties configuration file, you have the following entry:
+
+\begin{lstlisting}
+spring.jpa.open-in-view=false
+\end{lstlisting}
+
+What happens when you retrieve data from a lazy loaded association without this session.
+
+Let's make the association between Post and PostComment bi-directional.
+
+\begin{lstlisting}
+package be.pxl.demo.domain;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
+import java.util.List;
+
+@Entity
+public class Post {
+	@Id
+	@GeneratedValue
+	private Long id;
+	private String title;
+	@OneToMany(mappedBy = "post")
+	private List<PostComment> commentList;
+
+	public Post() {
+		// JPA only
+	}
+
+	public Post(String title) {
+		this.title = title;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public List<PostComment> getCommentList() {
+		return commentList;
+	}
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+package be.pxl.demo.service;
+
+import be.pxl.demo.api.dto.PostCommentDTO;
+import be.pxl.demo.api.dto.PostDTO;
+import be.pxl.demo.domain.Post;
+import be.pxl.demo.domain.PostComment;
+import be.pxl.demo.exception.ResourceNotFoundException;
+import be.pxl.demo.repository.PostCommentRepository;
+import be.pxl.demo.repository.PostRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class PostService {
+
+    private final PostCommentRepository postCommentRepository;
+    private final PostRepository postRepository;
+
+    public PostService(PostCommentRepository postCommentRepository,
+                       PostRepository postRepository) {
+        this.postCommentRepository = postCommentRepository;
+        this.postRepository = postRepository;
+    }
+
+   
+
+    public PostDTO getPost(long postId) {
+        Post post = postRepository.findById(postId)
+               .orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
+        return new PostDTO(post.getTitle(), 
+                 post.getCommentList().stream().map(PostComment::getReview).toList());
+    }
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+package be.pxl.demo.api.dto;
+
+import java.util.List;
+
+public record PostDTO(String title, List<String> review) {
+}
 \end{lstlisting}
 
 
-An extended example of the N+1 query problem and the solution can be found in this post: \url{https://tech.asimio.net/2020/11/06/Preventing-N-plus-1-select-problem-using-Spring-Data-JPA-EntityGraph.html}.
+\begin{lstlisting}
+package be.pxl.demo.api;
+
+import be.pxl.demo.api.dto.PostCommentDTO;
+import be.pxl.demo.api.dto.PostDTO;
+import be.pxl.demo.service.PostService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("posts")
+public class PostController {
+
+    private final PostService postService;
+
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
+
+    @GetMapping(path = "{postId}")
+    public PostDTO getPost(@PathVariable long postId) {
+        return postService.getPost(postId);
+    }
+}
+\end{lstlisting}
+
+
+When we call the endpoint to retrieve a post. The following exception will occur:
+
+\begin{lstlisting}[basicstyle=\tiny]
+org.hibernate.LazyInitializationException: failed to lazily initialize a collection of role: be.pxl.demo.domain.Post.commentList: could not initialize proxy - no Session
+	at org.hibernate.collection.spi.AbstractPersistentCollection.throwLazyInitializationException(AbstractPersistentCollection.java:635) ~[hibernate-core-6.1.7.Final.jar:6.1.7.Final]
+	at org.hibernate.collection.spi.AbstractPersistentCollection.withTemporarySessionIfNeeded(AbstractPersistentCollection.java:218) ~[hibernate-core-6.1.7.Final.jar:6.1.7.Final]
+	at org.hibernate.collection.spi.AbstractPersistentCollection.initialize(AbstractPersistentCollection.java:615) ~[hibernate-core-6.1.7.Final.jar:6.1.7.Final]
+	at org.hibernate.collection.spi.AbstractPersistentCollection.read(AbstractPersistentCollection.java:136) ~[hibernate-core-6.1.7.Final.jar:6.1.7.Final]
+	at org.hibernate.collection.spi.PersistentBag.iterator(PersistentBag.java:366) ~[hibernate-core-6.1.7.Final.jar:6.1.7.Final]
+	at java.base/java.util.Spliterators$IteratorSpliterator.estimateSize(Spliterators.java:1865) ~[na:na]
+	at java.base/java.util.Spliterator.getExactSizeIfKnown(Spliterator.java:414) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.exactOutputSizeIfKnown(AbstractPipeline.java:470) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:574) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.evaluateToArrayNode(AbstractPipeline.java:260) ~[na:na]
+	at java.base/java.util.stream.ReferencePipeline.toArray(ReferencePipeline.java:616) ~[na:na]
+	at java.base/java.util.stream.ReferencePipeline.toArray(ReferencePipeline.java:622) ~[na:na]
+	at java.base/java.util.stream.ReferencePipeline.toList(ReferencePipeline.java:627) ~[na:na]
+	at be.pxl.demo.service.PostService.getPost(PostService.java:39) ~[classes/:na]
+	...
+\end{lstlisting}
+
+In the method getPost() in our PostService the comments on our post are lazy loaded, but no session (or transaction) is defined at that moment. 
+The correct solution is to define a transaction for the getPost() method in de PostService. However, it is possible to define the relationship EAGER instead of LAZY, but this is seldom a good solution.
+
+
+
+\begin{lstlisting}
+package be.pxl.demo.service;
+
+import be.pxl.demo.api.dto.PostCommentDTO;
+import be.pxl.demo.api.dto.PostDTO;
+import be.pxl.demo.domain.Post;
+import be.pxl.demo.domain.PostComment;
+import be.pxl.demo.exception.ResourceNotFoundException;
+import be.pxl.demo.repository.PostCommentRepository;
+import be.pxl.demo.repository.PostRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class PostService {
+
+    private final PostCommentRepository postCommentRepository;
+    private final PostRepository postRepository;
+
+    public PostService(PostCommentRepository postCommentRepository,
+                       PostRepository postRepository) {
+        this.postCommentRepository = postCommentRepository;
+        this.postRepository = postRepository;
+    }
+
+   
+	@Transactional(readOnly = true)
+    public PostDTO getPost(long postId) {
+        Post post = postRepository.findById(postId)
+               .orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
+        return new PostDTO(post.getTitle(), 
+                 post.getCommentList().stream().map(PostComment::getReview).toList());
+    }
+}
+\end{lstlisting}
+
+
+More information on this topic can be found in the following articles:
+\begin{itemize} 
+\item \url{
+https://www.baeldung.com/spring-open-session-in-view}
+\item \url{https://techiemanas.wordpress.com/2020/12/01/spring-open-session-in-view-osiv/}
+
+\end{itemize}
 

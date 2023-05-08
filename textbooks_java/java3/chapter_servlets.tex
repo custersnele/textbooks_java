@@ -62,7 +62,7 @@ public class ServletDemoApplication {
 
 The Servlet interface is the root interface of the servlet class hierarchy. All Servlets need to either directly or indirectly implement the Servlet interface. 
 
-The Servlet interface of the javax.servlet package defines the methods that the Servlet container calls to manage the servlet life cycle. 
+The Servlet interface of the jakarta.servlet package defines the methods that the Servlet container calls to manage the servlet life cycle. 
 
 The GenericServlet class of the Servlet API implements the Servlet interface.
 
@@ -78,7 +78,7 @@ To develop a servlet that communicates using HTTP, we need to extend the HttpSer
 The Servlet life cycle mainly goes through three stages:\cite{servlet_lifecycle}
 
 \begin{itemize}
-\item \textbf{Loading and initializing a Servlet.} After the Servlet is instantiated successfully, the Servlet container initializes the instantiated Servlet object. The container initializes the Servlet object by invoking the \textbf{init()} method. The javax.servlet.ServletConfig interface is implemented by a Servlet container to pass configuration information to a servlet, during initialization of a servlet.
+\item \textbf{Loading and initializing a Servlet.} After the Servlet is instantiated successfully, the Servlet container initializes the instantiated Servlet object. The container initializes the Servlet object by invoking the \textbf{init()} method. The jakarta.servlet.ServletConfig interface is implemented by a Servlet container to pass configuration information to a servlet, during initialization of a servlet.
 \item \textbf{Request handling.} After initialization, the Servlet instance is ready to serve the client requests.  The Servlet's \textbf{service()} method is invoked to handle a client request. When multiple client requests come, the server will create multiple threads. Each client request corresponds to a thread that calls the Servlet's service() method.  That's the nice thing about Java, it's multithreaded and different threads (HTTP requests) can make use of the same instance. It would otherwise be too expensive to recreate, init() and destroy() them for every single request. If you encounter threadsafety issues when using servlets, then it is your fault, not Java's nor Servlet's fault.
 \item \textbf{Destroying the Servlet.} When a Servlet container decides to destroy the Servlet,  all currently running threads can complete their jobs and next, the Servlet container calls the destroy() method on the Servlet instance.
 \end{itemize}
@@ -88,10 +88,10 @@ The Servlet life cycle mainly goes through three stages:\cite{servlet_lifecycle}
 \begin{lstlisting}[language=java, frame=single]
 package be.pxl.paj.servlets;
 
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
@@ -155,11 +155,11 @@ package be.pxl.paj.servlets;
 import be.pxl.paj.servlets.service.BeerExpert;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -241,11 +241,11 @@ The method getCookies() in HttpServletRequest returns an array containing all of
 \begin{lstlisting}[language=java, frame=single]
 package be.pxl.paj.servlets;
 
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -325,12 +325,12 @@ package be.pxl.paj.servlets;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet(name = "/ButtonClicked", value="/ButtonClicked")
 public class ButtonClickedServlet extends HttpServlet {
@@ -518,14 +518,14 @@ package be.pxl.paj.servlets;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
 
@@ -562,21 +562,21 @@ public class HeaderLogFilter implements Filter {
 Many listeners are defined for events involving life cycles of ServletContext, HttpSession and ServletRequest.  Following listeners are supported for @WebListener:
 
 \begin{itemize}
-\item javax.servlet.ServletContextListener
-\item javax.servlet.ServletContextAttributeListener
-\item javax.servlet.ServletRequestListener
-\item javax.servlet.ServletRequestAttributeListener
-\item javax.servlet.http.HttpSessionListener
-\item javax.servlet.http.HttpSessionAttributeListener
+\item jakarta.servlet.ServletContextListener
+\item jakarta.servlet.ServletContextAttributeListener
+\item jakarta.servlet.ServletRequestListener
+\item jakarta.servlet.ServletRequestAttributeListener
+\item jakarta.servlet.http.HttpSessionListener
+\item jakarta.servlet.http.HttpSessionAttributeListener
 \end{itemize}
 
 
 \begin{lstlisting}[language=java, frame=single]
 package be.pxl.paj.servlets;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
+import jakarta.servlet.annotation.WebListener;
 
 @WebListener
 public class ExampleContextListener implements ServletContextListener {
