@@ -5,7 +5,12 @@
 The junior-colleague
 \begin{enumerate}[nolistsep]
 \item can explain the ACID-properties of a transaction.
+\item can implement transactions in spring boot applications.
+\item can explain what a connection pool is.
+\item can explain what transaction propagation is.
+\item can explain the different possible transaction propagation methods.
 \item can explain different isolation levels and the problems that can possibly occur.
+\item can use flyway to implement database migrations.
 \end{enumerate}}}
 
 \section{Introduction}
@@ -67,13 +72,13 @@ The possible transaction propagation methods are:
 \begin{itemize}
 \item \textbf{REQUIRED} This is the default propagation option. If a transaction already exists when a method annotated with REQUIRED is called, the method will execute within that transaction. If no transaction exists, a new transaction will be started.
 
-\item \textbf{REQUIRES_NEW} This option always starts a new transaction, even if a transaction already exists.
+\item \textbf{REQUIRES\_NEW} This option always starts a new transaction, even if a transaction already exists.
 
 \item \textbf{SUPPORTS} This option allows a method to participate in a transaction if one already exists, but doesn’t start a new transaction if one doesn’t exist.
 
 \item \textbf{MANDATORY} This option requires that a transaction already exists. If a transaction doesn’t exist, an exception is thrown.
 
-\item \textbf{NOT_SUPPORTED} This option specifies that a method should not participate in a transaction at all.
+\item \textbf{NOT\_SUPPORTED} This option specifies that a method should not participate in a transaction at all.
 
 \item \textbf{NEVER} This option specifies that a method should never be called within a transaction.
 \end{itemize}
@@ -141,7 +146,6 @@ Flyway is an open-source library used for Database Migration / Version Control f
 Spring Boot provides easy integration with Flyway.
 
 
-
 \begin{verbatim}
 <dependency>
     <groupId>org.flywaydb</groupId>
@@ -153,7 +157,11 @@ Spring Boot provides easy integration with Flyway.
 </dependency>
 \end{verbatim}
 
+The database migration are written in sql scripts. Make sure you follow the naming convention, otherwise the script will not be executed.
+
 \includegraphics{./images/chapter-tx/flyway2.png}
+
+Flyway creates a table flyway\_schema\_history where the current status of the database can be found.
 
 \includegraphics[width=\textwidth]{./images/chapter-tx/flyway1.png}
 
