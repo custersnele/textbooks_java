@@ -1,0 +1,187 @@
+\documentclass[a4paper, 12pt]{report}
+
+%%%%%%%%%%%%
+% Packages %
+%%%%%%%%%%%%
+\usepackage{rest-api}
+\usepackage[english]{babel}
+\usepackage[noheader]{packages/sleek}
+\usepackage{packages/sleek-title}
+\usepackage{packages/sleek-theorems}
+\usepackage{packages/sleek-listings}
+\usepackage[most]{tcolorbox}
+
+
+\usepackage{color}
+\usepackage{tabularx}
+
+\usepackage{pdfpages}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+\definecolor{tsyellow}{RGB}{255,185,88}
+
+\usepackage{listings}
+\lstset{language=Java,
+ columns=fullflexible,
+  showspaces=false,
+  showtabs=false,
+  frame=single,
+  breaklines=true,
+  postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{pgreen},
+  keywordstyle=\color{pblue},
+  stringstyle=\color{pred},
+  basicstyle=\ttfamily
+}
+
+\usepackage{enumitem,amssymb}
+
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+
+\newenvironment{boxexercise}
+{\begin{tcolorbox}
+[enhanced jigsaw,breakable,pad at break*=1mm,
+ colback=tsyellow!20,boxrule=0pt,frame hidden]}
+{\end{tcolorbox}}
+
+\newenvironment{summary}
+{\hspace{10pt}\par\small\it
+ \begin{list}{}{\leftmargin=35pt\rightmargin=25pt}
+ \item\ignorespaces\advance\baselineskip -1pt}
+{\end{list}\vspace{-0.5cm}}
+
+\newenvironment{remark}
+{\vspace{0.5cm}\noindent\small\it
+ \marginpar{\vspace{-3mm}\includegraphics[width=1.0cm]{idea}}}
+{\vspace{0.5cm}}
+
+\newtheorem{envoefening}{\textbf{Exercise}}[chapter]
+\newenvironment{oefening}
+               {\begin{boxexercise}\begin{envoefening}}
+               {\end{envoefening}\end{boxexercise}}
+               
+\newcommand*{\xml}[1]{\texttt{<#1>}}
+
+%%%%%%%%%%%%%%
+% Title-page %
+%%%%%%%%%%%%%%
+
+\logo{./resources/pdf/logo.png}
+\institute{Hogeschool PXL}
+\faculty{PXL-Digital}
+%\department{Department of Anything but Psychology}
+\title{Java Advanced\\An Introduction to Spring Boot}
+\author{\textit{Author}\\Nele \textsc{Custers}}
+%\supervisor{Linus \textsc{Torvalds}}
+%\context{Well, I was bored...}
+\date{\today}
+
+%%%%%%%%%%%%%%%%
+% Bibliography %
+%%%%%%%%%%%%%%%%
+
+\usepackage{biblatex}
+\addbibresource{./resources/bib/references.bib}
+
+%%%%%%%%%%
+% Others %
+%%%%%%%%%%
+
+\lstdefinestyle{latex}{
+    language=TeX,
+    style=default,
+    %%%%%
+    commentstyle=\ForestGreen,
+    keywordstyle=\TrueBlue,
+    stringstyle=\VeronicaPurple,
+    emphstyle=\TrueBlue,
+    %%%%%
+    emph={LaTeX, usepackage, textit, textbf, textsc}
+}
+
+\FrameTBStyle{latex}
+
+\def\tbs{\textbackslash}
+
+%%%%%%%%%%%%
+% Document %
+%%%%%%%%%%%%
+
+\begin{document}
+    \maketitle
+    \romantableofcontents
+    
+ 
+  
+\include{chapter_intro}
+
+\include{chapter_rest}
+
+\include{chapter_junit}
+
+\include{chapter_streams}
+
+
+
+
+IMPORTANT THOUGHTS:
+- bean scopes
+- code quality
+source
+
+
+
+\section{Components and dependency injection}
+
+All our REST backend applications will consist of 3 layers:
+ router-layer (or API-layer), service- or business-layer and persistence-layer.
+
+\includegraphics[scale=0.6]{./images/chapter1/spring-architecture.jpeg} 
+
+\begin{itemize}
+\item \textbf{Router- or presentation layer:}  Handling and processing HTTP requests,  translating JSON parameters to objects,  authentication of users and protecting data from maleficent users,  ... .
+\item \textbf{Service- or business logic layer:} This layer contains the business logic, the core functionality of your application. All calculations, decisions, evaluations, data processing,... are handled by this layer. 
+\item \textbf{Data- or persistence layer:} This layer is responsible for interacting with the database.  This layer stores and retrieves the application data in the database.
+\end{itemize}
+
+The typical components for each layer are annotated.  These annotated components are managed by Spring. Developers are not responsible for creating the objects of these component classes. The actual objects are created and injected by Spring wherever we need them. In later chapters we will discuss the concept of dependency injection in detail.
+
+The annotations for the Spring components we will use are:
+\begin{itemize}
+\item @Component: generic annotation for all components managed by Spring
+\item @RestController: indicate the components in the API layer
+\item @Service: indicate the components in the service layer
+\item @Repository: indicate the components in the persistence layer
+\end{itemize}
+
+All of these application components (@Component, @Service, @Repository, @Controller, and others) are automatically registered as Spring Beans.
+
+Here is the definition of beans from the Spring framework documentation:
+
+\fcolorbox{black}[HTML]{E9F0E9}{\parbox{\textwidth}{%
+\noindent In Spring, the objects that form the backbone of your application and that are managed by the Spring IoC container are called beans. A bean is an object that is instantiated, assembled, and otherwise managed by a Spring IoC container.}}
+
+IoC or Inversion of Control is the process in which an object defines its dependencies without creating them. The IoC container is responsible for constructing the dependencies.
+
+\includegraphics[width=\textwidth]{./images/Spring-REST-Web-Services.png} 
+
+The image shows all the layers that we develop in our REST backend applications. The RestController in the API layer provides REST endpoints. The API layer communicates via DTOs or Data Transfer Objects with the service layer. The service layer implements all business logic. DTOs are mapped to entity-objects and passed along the persistence layer. The persistence layer is responsible for storing the entity-objects in the database.
+
+The Spring container is at the core of the Spring Framework. The container is responsible for creating and managing the objects for classes annotated with @Service, @Repository,... The container will provide these objects (beans) when they are needed by other beans.
+
+
+\section{DevOps Tools for Java Developers}
+
+\includegraphics[width=\textwidth]{./images/chapter1/devops.png} 
+
+\printbibliography
+
+
+
+\end{document}
