@@ -472,3 +472,29 @@ Implementeer deze regels en schrijf de nodige unit testen.
 \end{oefening}
 
 TODO klassendiagram
+
+
+
+@Service
+public class MusicPlaylistService {
+
+    public String calculatePlaylistDuration(List<String> songDurations) {
+        int totalSeconds = 0;
+
+        for (String duration : songDurations) {
+            String[] parts = duration.split(":");
+            if (parts.length == 2) {
+                int minutes = Integer.parseInt(parts[0]);
+                int seconds = Integer.parseInt(parts[1]);
+                totalSeconds += (minutes * 60) + seconds;
+            }
+        }
+
+        int hours = totalSeconds / 3600;
+        int remainingSeconds = totalSeconds % 3600;
+        int minutes = remainingSeconds / 60;
+        int seconds = remainingSeconds % 60;
+
+        return String.format("%d:%02d:%02d", hours, minutes, seconds);
+    }
+}

@@ -139,32 +139,6 @@ public class DemoApplication {
 }
 \end{lstlisting}
 
-By running the main-class you start your Spring Boot application. 
-
-\includegraphics[width=\textwidth]{./images/chapter2/first-run.png}
-
-Currently our Spring Boot application only shows a whitelabel error page. This error page is available when you perform a GET for URL \url{http://localhost:8080}.
-
-\frame{\includegraphics[width=\textwidth]{./images/chapter2/whitelabel_error_page.png}} 
-
-Port 8080 is the default port. If this port is not available you will see an error message in Spring Boot's logging.
-
-\begin{lstlisting}[frame=single]
-***************************
-APPLICATION FAILED TO START
-***************************
-
-Description:
-
-Web server failed to start. Port 8080 was already in use.
-\end{lstlisting}
-
-The port number can be changed in the file application.properties. You have to add the property server.port here with the desired port number.
-
-\begin{lstlisting}[frame=single]
-server.port=8081
-\end{lstlisting}
-
 \subsection{Component}
 
 
@@ -269,10 +243,6 @@ POM stands for \'Project Object Model\'. It is an XML representation of a Maven 
         <java.version>17</java.version>
     </properties>
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

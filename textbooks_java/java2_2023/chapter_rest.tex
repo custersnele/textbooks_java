@@ -33,6 +33,44 @@ Voorbeeld URI: DELETE /api/products/123
 Dit verzoek verwijdert het product met ID 123 uit de lijst van producten.
 \end{itemize}
 
+\section{Spring Boot Starter Web}
+
+Spring Boot Starter Web is de verzameling van alle bibliotheken (third party libraries) die we nodig hebben om RESTful web applicaties te bouwen.  De verzameling bestaat ondermeer uit Spring MVC,  REST en Tomcat. 
+Apache Tomcat is een populaire open source web server voor Java toepassingen.  Als je de dependency spring-boot-start-web toevoegt, start de Tomcat web server op zodra je de Spring boot applicatie opstart.  We spreken van de "embedded web server" in Spring boot.  Je kan er ook voor kiezen om  \'e\'en van de alternatieve web servers te gebruiken zoals jetty of undertow.
+
+\begin{lstlisting}
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		\end{lstlisting}
+		
+		
+By running the main-class you start your Spring Boot application. 
+
+\includegraphics[width=\textwidth]{./images/chapter2/first-run.png}
+
+Currently our Spring Boot application only shows a whitelabel error page. This error page is available when you perform a GET for URL \url{http://localhost:8080}.
+
+\frame{\includegraphics[width=\textwidth]{./images/chapter2/whitelabel_error_page.png}} 
+
+Port 8080 is the default port. If this port is not available you will see an error message in Spring Boot's logging.
+
+\begin{lstlisting}[frame=single]
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+\end{lstlisting}
+
+The port number can be changed in the file application.properties. You have to add the property server.port here with the desired port number.
+
+\begin{lstlisting}[frame=single]
+server.port=8081
+\end{lstlisting}
 
 \section{De RestController}
 
@@ -99,146 +137,746 @@ Create the package \textit{be.pxl.demo.api}. Add the class \textbf{GreetingContr
 We gaan een nieuwe Spring Boot toepassing starten waarmee we een muziek playlist beheren. 
 
 \begin{oefening}
-Maak een nieuwe Spring boot toepassing MusicPlaylist. We gebruiken Spring MVC om een RESTful webtoepassing te maken.  
+Maak een nieuwe Spring boot toepassing MusicPlaylist. We gebruiken Spring MVC om een RESTful web applicatie te maken.  
 \end{oefening}
 
 \subsection{Een liedje toevoegen aan een playlist}
 
-\begin{apiRoute}{post}{/playlist/songs}{add a new song to the playlist}
+\begin{apiRoute}{post}{/playlist/songs}{Add a new song to the playlist.}
 \begin{routeParameter}
 	\noRouteParameter {no parameter }
 \end{routeParameter}
 \begin{routeRequest}{application/json}
 \begin{routeRequestBody}
 {
-"name" : " Apfelmus " ,
-" count " : 25
+  "title": "Hello",
+  "artist": "Adele",
+  "duration_seconds": 293,
+  "genre": "POP"
 }
 \end{routeRequestBody}
 \end{routeRequest}
 \begin{routeResponse}{application/json}
-\begin{routeResponseItem}{200}{ ok}
-\begin{ routeResponseItemBody }
-{
-" i d " : 8 6 7 6 5 4 6 7 8 ,
-"name" : " Apfelmus " ,
-" count " : 25
-}
-\end{routeResponseItemBody}
+\begin{routeResponseItem}{200}{ok}
 \end{routeResponseItem}
 \end{routeResponse}
 \end{apiRoute}
 
 
-@Service
-public class MusicPlaylistService {
+Om te beginnen hebben we de klasse Song nodig. 
 
-    public String calculatePlaylistDuration(List<String> songDurations) {
-        int totalSeconds = 0;
-
-        for (String duration : songDurations) {
-            String[] parts = duration.split(":");
-            if (parts.length == 2) {
-                int minutes = Integer.parseInt(parts[0]);
-                int seconds = Integer.parseInt(parts[1]);
-                totalSeconds += (minutes * 60) + seconds;
-            }
-        }
-
-        int hours = totalSeconds / 3600;
-        int remainingSeconds = totalSeconds % 3600;
-        int minutes = remainingSeconds / 60;
-        int seconds = remainingSeconds % 60;
-
-        return String.format("%d:%02d:%02d", hours, minutes, seconds);
-    }
-}
-
-
-Certainly, here's an example of a Song class in Java with attributes for the artist, duration (in seconds), title, and an optional album attribute:
-
-java
-Copy code
+\begin{lstlisting}[language=java,  frame=single]
 public class Song {
-    private String artist;
-    private int durationInSeconds;
     private String title;
-    private String album;
+    private String artist;
+    @JsonProperty("duration_seconds")
+    private int durationSeconds;
+    private Genre genre;
 
-    public Song(String artist, int durationInSeconds, String title) {
-        this.artist = artist;
-        this.durationInSeconds = durationInSeconds;
-        this.title = title;
+    // Default constructor
+    public Song() {
     }
 
-    public Song(String artist, int durationInSeconds, String title, String album) {
-        this(artist, durationInSeconds, title);
-        this.album = album;
+    // Parameterized constructor
+    public Song(String title, String artist, int durationSeconds, Genre genre) {
+        this.title = title;
+        this.artist = artist;
+        this.durationSeconds = durationSeconds;
+        this.genre = genre;
+    }
+
+    // Getter and setter methods
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getArtist() {
         return artist;
     }
 
-    public int getDurationInSeconds() {
-        return durationInSeconds;
+    public void setArtist(String artist) {
+        this.artist = artist;
     }
 
-    public String getTitle() {
-        return title;
+    public int getDurationSeconds() {
+        return durationSeconds;
     }
 
-    public String getAlbum() {
-        return album;
+    public void setDurationSeconds(int durationSeconds) {
+        this.durationSeconds = durationSeconds;
     }
 
-    public void setAlbum(String album) {
-        this.album = album;
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
     }
 
     @Override
     public String toString() {
         return "Song{" +
-                "artist='" + artist + '\'' +
-                ", durationInSeconds=" + durationInSeconds +
-                ", title='" + title + '\'' +
-                ", album='" + album + '\'' +
+                "title='" + title + '\'' +
+                ", artist='" + artist + '\'' +
+                ", durationSeconds=" + durationSeconds +
+                ", genre='" + genre + '\'' +
                 '}';
     }
 }
-In this Song class:
-
-The artist, durationInSeconds, and title are required attributes and are set via the constructor.
-The album attribute is optional and can be set separately using a setter method.
-Getter methods are provided to retrieve the values of the attributes.
-A toString method is overridden to provide a human-readable representation of the Song object.
-You can customize this class further or add more attributes and methods based on your specific requirements. This basic structure allows you to create and work with Song objects, storing information about artists, song titles, durations, and albums.
+\end{lstlisting}
 
 
+Nu gaan we de REST-controller implementeren.  We gaan hierin een methode voorzien die een POST op de URI /playlist/songs kan afhandelen.  Initieel gaan we enkel de titel in de loggegevens tonen. 
 
+\begin{lstlisting}[language=java,  frame=single]
+@RestController
+@RequestMapping("/playlist/songs")
+public class MusicPlaylistController {
 
-User
-Can a spring boot class MusicPlaylistService with annotation @Service maintain a List<Song> myPlaylist. I want to add a method to add, remove a song and calculate the duration of the playlist. What is the scope of the list.
-ChatGPT
-Yes, you can certainly have a Spring Boot service class, like MusicPlaylistService, maintain a List<Song> (e.g., myPlaylist) to add, remove songs, and calculate the duration of the playlist. The scope of the list can be configured as either a singleton or a prototype, depending on your requirements.
+	private static final Logger LOGGER = LoggerFactory.getLogger(MusicPlaylistController.class);
 
-Singleton Scope (Default): If you annotate the MusicPlaylistService with @Service without specifying a scope, the service will be a singleton by default. This means that there will be only one instance of MusicPlaylistService throughout the lifetime of your Spring Boot application, and the myPlaylist list will be shared among all users or requests accessing this service. This can be a good choice if you want to maintain a single, shared playlist for all users or sessions.
-Example:
+	@PostMapping
+	public void addSong(@RequestBody Song song) {
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info("Adding song [" + song.getTitle() + "]");
+		}
+	}
+}
+\end{lstlisting}
 
-java
-Copy code
+De liedjes die aan de playlist worden toegevoegd willen we bijhouden. Later zullen we ze wegschrijven in een databank, maar voorlopig gaan we ze bijhouden in een lijst.
+Om dit mogelijk te maken gaan we een nieuwe Spring Bean toevoegen: de MusicPlaylistService.  
+
+\begin{lstlisting}[language=java,  frame=single]
+package be.pxl.demo;
+
+import be.pxl.demo.domain.Song;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class MusicPlaylistService {
-    private List<Song> myPlaylist = new ArrayList<>();
+	private final List<Song> myPlaylist = new ArrayList<>();
 
-    // Add, remove, and calculate duration methods
+	public void addSong(Song song) {
+		myPlaylist.add(song);
+	}
 }
-Prototype Scope: If you want each request or user to have its own instance of MusicPlaylistService with a separate playlist, you can configure the service with a prototype scope. To do this, you can use the @Scope annotation with the ConfigurableBeanFactory.SCOPE\_PROTOTYPE value.
-Example:
+\end{lstlisting}
 
-With this configuration, Spring will create a new instance of MusicPlaylistService for each request or usage, and each instance will have its own isolated myPlaylist. This is useful if you want to maintain separate playlists for different users or sessions.
+De MusicPlaylistService wordt geannoteerd met @Service .
+In onze Spring Boot applicaties gaan we steeds de business-logica implementeren in de service-laag.  De @Service annotatie wordt gebruikt voor de componenten (Spring Beans) in de service-laag.  Wanneer onze Spring Boot applicatie opstart wordt er exact \'e\'en instantie van de MusicPlaylistService aangemaakt in de ApplicationContext en deze instantie wordt tijdens de volledige levensduur van de toepassing gebruikt.  Dit noemen we de scope van de service en de default scope noemen we \textbf{singleton}. 
+Dit betekent dat we \'e\'en enkele, gedeelde playlist hebben voor alle gebruikers.
 
-Choose the scope that best fits your application's requirements. If you want a single shared playlist for all users, the default singleton scope is suitable. If you need separate playlists for different users, consider using the prototype scope as shown in the second example.
+Nu gaan we de MusicPlaylistService beschikbaar maken in de MusicPlaylistController.
+We maken gebruik van \textbf{constructor injection}.  Zodra de instantie van de MusicPlaylistController door Spring Boot wordt aangemaakt, zal er eerst gezorgd worden dat de instantie MusicPlaylistService aangemaakt wordt. Deze instantie wordt dan achter de schermen meegegeven aan de constructor van de MusicPlaylistController. Zo kan ons MusicPlaylistController-object het MusicPlaylistService-object gebruiken.
+Omdat er maar \'e\'en constructor is, is de annotatie @Autowired eigenlijk overbodig.
+
+\begin{lstlisting}[language=java,  frame=single]
+@RestController
+@RequestMapping("/playlist/songs")
+public class MusicPlaylistController {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(MusicPlaylistController.class);
+	private final MusicPlaylistService musicPlaylistService;
+
+	@Autowired
+	public MusicPlaylistController(MusicPlaylistService musicPlaylistService) {
+		this.musicPlaylistService = musicPlaylistService;
+	}
+
+	@PostMapping
+	public void addSong(@RequestBody Song song) {
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info("Adding song [" + song.getTitle() + "]");
+		}
+		musicPlaylistService.addSong(song);
+	}
+}
+\end{lstlisting}
+
+Test nu het POST-verzoek.  Je kan Postman,  Insomnia of een andere tool gebruiken om een POST-verzoek naar de toepassing te sturen.  De toegevoegde liedjes gaan uiteraard verloren wanneer je de toepassing herstart. 
+
+\begin{figure}[H]
+  \includegraphics[width=\linewidth]{images/chapter-rest/applicationcontext_musicplaylist.png}
+  \caption{Spring Beans in de Application Context}
+  \label{fig:spring_beans_musicplaylist}
+\end{figure}
+
+
+\begin{figure}[H]
+  \includegraphics[width=\linewidth]{images/chapter-rest/insomnia_post.png}
+  \caption{POST-verzoek met Insomnia}
+  \label{fig:post_request}
+\end{figure}
+
+\subsection{De playlist opvragen}
+
+
+\begin{apiRoute}{get}{/playlist/songs}{Retrieve all songs from the playlist}
+\begin{routeParameter}
+	\noRouteParameter {no parameter }
+\end{routeParameter}
+\begin{routeRequest}{application/json}
+\end{routeRequest}
+\begin{routeResponse}{application/json}
+\begin{routeResponseItem}{200}{ok}
+\begin{routeResponseItemBody}
+[
+	{
+		"title": "Hello",
+		"artist": "Adele",
+		"genre": "POP",
+		"duration_seconds": 293
+	},
+	{
+		"title": "Shape of You",
+		"artist": "Ed Sheeran",
+		"genre": "POP",
+		"duration_seconds": 233
+	},
+	{
+		"title": "Umbrella",
+		"artist": "Rihanna",
+		"genre": "RNB",
+		"duration_seconds": 264
+	}
+]
+\end{routeResponseItemBody}
+\end{routeResponseItem}
+\end{routeResponse}
+\end{apiRoute}
+
+
+\begin{lstlisting}[language=java,  frame=single]
+package be.pxl.demo;
+
+import be.pxl.demo.domain.Song;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class MusicPlaylistService {
+	private final List<Song> myPlaylist = new ArrayList<>();
+
+	public void addSong(Song song) {
+		myPlaylist.add(song);
+	}
+
+	public List<Song> getSongs() {
+		return myPlaylist;
+	}
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=java,  frame=single]
+package be.pxl.demo.controller;
+
+import be.pxl.demo.MusicPlaylistService;
+import be.pxl.demo.domain.Song;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/playlist/songs")
+public class MusicPlaylistController {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(MusicPlaylistController.class);
+	private final MusicPlaylistService musicPlaylistService;
+
+	@Autowired
+	public MusicPlaylistController(MusicPlaylistService musicPlaylistService) {
+		this.musicPlaylistService = musicPlaylistService;
+	}
+
+	@PostMapping
+	public void addSong(@RequestBody Song song) {
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info("Adding song [" + song.getTitle() + "]");
+		}
+		musicPlaylistService.addSong(song);
+	}
+
+	@GetMapping
+	public List<Song> getSongs() {
+		return musicPlaylistService.getSongs();
+	}
+}
+\end{lstlisting}
+
+\subsection{Liedjes van \'e\'en genre}
 
 
  
+ \begin{apiRoute}{get}{/playlist/songs/\{genre\}}{Retrieve all songs from the playlist with the given genre}
+\begin{routeParameter}
+	\routeParamItem{genre}{the requested genre}
+\end{routeParameter}
+\begin{routeRequest}{application/json}
+\end{routeRequest}
+\begin{routeResponse}{application/json}
+\begin{routeResponseItem}{200}{ok}
+\begin{routeResponseItemBody}
+[
+	{
+		"title": "Hello",
+		"artist": "Adele",
+		"genre": "POP",
+		"duration_seconds": 293
+	},
+	{
+		"title": "Shape of You",
+		"artist": "Ed Sheeran",
+		"genre": "POP",
+		"duration_seconds": 233
+	}
+]
+\end{routeResponseItemBody}
+\end{routeResponseItem}
+\end{routeResponse}
+\end{apiRoute}
+
+
+\begin{lstlisting}[language=java,  frame=single]
+package be.pxl.demo.controller;
+
+import be.pxl.demo.MusicPlaylistService;
+import be.pxl.demo.domain.Genre;
+import be.pxl.demo.domain.Song;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/playlist/songs")
+public class MusicPlaylistController {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(MusicPlaylistController.class);
+	private final MusicPlaylistService musicPlaylistService;
+
+	@Autowired
+	public MusicPlaylistController(MusicPlaylistService musicPlaylistService) {
+		this.musicPlaylistService = musicPlaylistService;
+	}
+
+	@PostMapping
+	public void addSong(@RequestBody Song song) {
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info("Adding song [" + song.getTitle() + "]");
+		}
+		musicPlaylistService.addSong(song);
+	}
+
+	@GetMapping
+	public List<Song> getSongs() {
+		return musicPlaylistService.getSongs();
+	}
+
+	@GetMapping("{genre}")
+	public List<Song> getSongs(@PathVariable Genre genre) {
+		return musicPlaylistService.getSongsByGenre(genre);
+	}
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=java,  frame=single]
+package be.pxl.demo;
+
+import be.pxl.demo.domain.Genre;
+import be.pxl.demo.domain.Song;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class MusicPlaylistService {
+	private final List<Song> myPlaylist = new ArrayList<>();
+
+	public void addSong(Song song) {
+		myPlaylist.add(song);
+	}
+
+	public List<Song> getSongs() {
+		return myPlaylist;
+	}
+
+	public List<Song> getSongsByGenre(Genre genre) {
+		List<Song> response = new ArrayList<>();
+		for (Song song : myPlaylist) {
+			if (song.getGenre() == genre) {
+				response.add(song);
+			}
+		}
+		return response;
+	}
+}
+\end{lstlisting}
+
+
+\subsection{Gegevens van een liedje aanpassen}
+
+Als je een nieuwe song in de playlist toevoegt, dan word deze steeds achteraan in de lijst toegevoegd. We kunnen nu de gegevens van een liedje op een bepaalde positie in de lijst gaan overschrijven of aanpassen.
+
+We gaan hiervoor een PUT-verzoek gebruiken.
+
+\begin{lstlisting}
+package be.pxl.demo.controller;
+
+import be.pxl.demo.MusicPlaylistService;
+import be.pxl.demo.domain.Genre;
+import be.pxl.demo.domain.Song;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/playlist/songs")
+public class MusicPlaylistController {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(MusicPlaylistController.class);
+	private final MusicPlaylistService musicPlaylistService;
+
+	@Autowired
+	public MusicPlaylistController(MusicPlaylistService musicPlaylistService) {
+		this.musicPlaylistService = musicPlaylistService;
+	}
+
+	@PostMapping
+	public void addSong(@RequestBody Song song) {
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info("Adding song [" + song.getTitle() + "]");
+		}
+		musicPlaylistService.addSong(song);
+	}
+
+	@GetMapping
+	public List<Song> getSongs() {
+		return musicPlaylistService.getSongs();
+	}
+
+	@GetMapping("/{genre}")
+	public List<Song> getSongs(@PathVariable Genre genre) {
+		return musicPlaylistService.getSongsByGenre(genre);
+	}
+
+	@PutMapping("/{index}")
+	public void updateSong(@PathVariable int index, @RequestBody Song song) {
+		musicPlaylistService.updateSong(index, song);
+	}
+
+	@DeleteMapping("/{index}")
+	public void updateSong(@PathVariable int index) {
+		musicPlaylistService.deleteSong(index);
+	}
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+package be.pxl.demo;
+
+import be.pxl.demo.domain.Genre;
+import be.pxl.demo.domain.Song;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class MusicPlaylistService {
+	private final List<Song> myPlaylist = new ArrayList<>();
+
+	public void addSong(Song song) {
+		myPlaylist.add(song);
+	}
+
+	public List<Song> getSongs() {
+		return myPlaylist;
+	}
+
+	public List<Song> getSongsByGenre(Genre genre) {
+		List<Song> response = new ArrayList<>();
+		for (Song song : myPlaylist) {
+			if (song.getGenre() == genre) {
+				response.add(song);
+			}
+		}
+		return response;
+	}
+
+	public void updateSong(int index, Song song) {
+		myPlaylist.set(index, song);
+	}
+
+	public void deleteSong(int index) {
+		myPlaylist.remove(index);
+	}
+}
+\end{lstlisting}
+
+\subsection{Een liedje verwijderen}
+
+Om een liedje op een opgegeven positie uit de playlist te verwijderen gaan we een DELETE-verzoek implementeren.
+
+
+\begin{lstlisting}
+package be.pxl.demo.controller;
+
+import be.pxl.demo.MusicPlaylistService;
+import be.pxl.demo.domain.Genre;
+import be.pxl.demo.domain.Song;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/playlist/songs")
+public class MusicPlaylistController {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(MusicPlaylistController.class);
+	private final MusicPlaylistService musicPlaylistService;
+
+	@Autowired
+	public MusicPlaylistController(MusicPlaylistService musicPlaylistService) {
+		this.musicPlaylistService = musicPlaylistService;
+	}
+
+	@PostMapping
+	public void addSong(@RequestBody Song song) {
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info("Adding song [" + song.getTitle() + "]");
+		}
+		musicPlaylistService.addSong(song);
+	}
+
+	@GetMapping
+	public List<Song> getSongs() {
+		return musicPlaylistService.getSongs();
+	}
+
+	@GetMapping("/{genre}")
+	public List<Song> getSongs(@PathVariable Genre genre) {
+		return musicPlaylistService.getSongsByGenre(genre);
+	}
+
+	@PutMapping("/{index}")
+	public void updateSong(@PathVariable int index, @RequestBody Song song) {
+		musicPlaylistService.updateSong(index, song);
+	}
+
+	@DeleteMapping("/{index}")
+	public void updateSong(@PathVariable int index) {
+		musicPlaylistService.deleteSong(index);
+	}
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}
+package be.pxl.demo;
+
+import be.pxl.demo.domain.Genre;
+import be.pxl.demo.domain.Song;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class MusicPlaylistService {
+	private final List<Song> myPlaylist = new ArrayList<>();
+
+	public void addSong(Song song) {
+		myPlaylist.add(song);
+	}
+
+	public List<Song> getSongs() {
+		return myPlaylist;
+	}
+
+	public List<Song> getSongsByGenre(Genre genre) {
+		List<Song> response = new ArrayList<>();
+		for (Song song : myPlaylist) {
+			if (song.getGenre() == genre) {
+				response.add(song);
+			}
+		}
+		return response;
+	}
+
+	public void updateSong(int index, Song song) {
+		myPlaylist.set(index, song);
+	}
+
+	public void deleteSong(int index) {
+		myPlaylist.remove(index);
+	}
+}
+\end{lstlisting}
+
+
+\section{Gegevens valideren}
+
+
+
+\begin{oefening}\textbf{Huizenjacht}
+We maken een Spring Boot toepassing om het aanbod op de huizenmarkt te tonen.
+Ontwikkel een RESTful web toepassing met de volgende endpoints.
+
+Een huis wordt voorgesteld als een resource met volgende eigenschappen:
+
+\begin{itemize}
+  \item \texttt{code} (string): Unieke identificatie van het huis.
+  \item \texttt{name} (string): De naam of beschrijving van het huis.
+  \item \texttt{status} (enum): FOR\_SALE en SOLD.
+  \item \texttt{city} (string): Stad van het huis.
+  \item \texttt{price} (double): De vraagprijs van het huis.
+\end{itemize}
+
+\section{REST Endpoints}
+
+\begin{apiRoute}{post}{/houses}{Create a new house.}
+\begin{routeParameter}
+	\noRouteParameter {no parameter }
+\end{routeParameter}
+\begin{routeRequest}{application/json}
+\begin{routeRequestBody}
+{
+  "code": "HAS_001",
+  "name": "Beautiful house in the city",
+  "city": "Hasselt",
+  "price": 250000
+}
+\end{routeRequestBody}
+\end{routeRequest}
+\begin{routeResponse}{application/json}
+\begin{routeResponseItem}{200}{ok}
+\end{routeResponseItem}
+\end{routeResponse}
+\end{apiRoute}
+
+
+\begin{apiRoute}{post}{/houses/\{code\}}{Update the status of the house with the given code.}
+\begin{routeParameter}
+	\noRouteParameter {no parameter }
+\end{routeParameter}
+\begin{routeRequest}{application/json}
+\begin{routeRequestBody}
+{
+  "code": "HAS_001",
+  "name": "Beautiful house in the city",
+  "city": "Hasselt",
+  "price": 250000
+}
+\end{routeRequestBody}
+\end{routeRequest}
+\begin{routeResponse}{application/json}
+\begin{routeResponseItem}{200}{ok}
+\end{routeResponseItem}
+\end{routeResponse}
+\end{apiRoute}
+
+\begin{api}
+  \method{PUT}{/houses/\{id\}}{Update House}
+  \request{JSON}{A JSON object with the \texttt{status} attribute to update the house's status.}
+  \response{JSON}{The updated house object.}
+\end{api}
+
+\begin{api}
+  \method{GET}{/houses}{Get All Houses}
+  \response{JSON}{A list of all available houses with attributes \texttt{id}, \texttt{name}, \texttt{status}, and \texttt{price}.}
+\end{api}
+
+\begin{api}
+  \method{DELETE}{/houses/\{id\}}{Delete House}
+  \response{JSON}{A confirmation that the house has been deleted.}
+\end{api}
+
+\section{Examples of JSON Data}
+
+Here are some examples of JSON data that can be used for the API operations:
+
+\subsection{Create New House (POST)}
+
+\begin{verbatim}
+{
+  "name": "Beautiful house in the city",
+  "status": "for sale",
+  "price": 250000
+}
+\end{verbatim}
+
+\subsection{Update House (PUT)}
+
+\begin{verbatim}
+{
+  "status": "sold"
+}
+\end{verbatim}
+
+\subsection{Response after GET Request (GET)}
+
+\begin{verbatim}
+[
+  {
+    "id": 1,
+    "name": "Beautiful house in the city",
+    "status": "sold",
+    "price": 250000
+  },
+  {
+    "id": 2,
+    "name": "Cozy bungalow",
+    "status": "for sale",
+    "price": 180000
+  }
+]
+\end{verbatim}
+
+\end{oefening}
