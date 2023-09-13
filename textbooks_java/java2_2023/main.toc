@@ -1,52 +1,47 @@
 \babel@toc {english}{}\relax 
 \contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
-\contentsline {section}{\numberline {1.1}Enterprise Applications with Java}{1}{section.1.1}%
-\contentsline {section}{\numberline {1.2}What is Spring Boot?}{5}{section.1.2}%
-\contentsline {section}{\numberline {1.3}Bootstrapping a simple application}{5}{section.1.3}%
-\contentsline {subsection}{\numberline {1.3.1}Using Spring Initializr}{5}{subsection.1.3.1}%
-\contentsline {section}{\numberline {1.4}Running the demo project}{7}{section.1.4}%
-\contentsline {subsection}{\numberline {1.4.1}Component}{7}{subsection.1.4.1}%
+\contentsline {section}{\numberline {1.1}Enterprise toepassingen met Java}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Bootstrapping van een eenvoudige Spring Boot applicatie}{4}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Gebruik van Spring Initializr}{4}{subsection.1.2.1}%
+\contentsline {section}{\numberline {1.3}Het demo-project uitvoeren}{6}{section.1.3}%
+\contentsline {subsection}{\numberline {1.3.1}Component}{7}{subsection.1.3.1}%
 \contentsline {subsubsection}{Spring beans}{8}{section*.2}%
 \contentsline {subsubsection}{Application context}{8}{section*.3}%
-\contentsline {subsection}{\numberline {1.4.2}The Maven pom file}{9}{subsection.1.4.2}%
-\contentsline {subsection}{\numberline {1.4.3}@SpringBootApplication}{11}{subsection.1.4.3}%
-\contentsline {subsection}{\numberline {1.4.4}Auto-configuration}{11}{subsection.1.4.4}%
+\contentsline {subsection}{\numberline {1.3.2}The Maven pom file}{9}{subsection.1.3.2}%
+\contentsline {subsection}{\numberline {1.3.3}@SpringBootApplication}{11}{subsection.1.3.3}%
+\contentsline {subsection}{\numberline {1.3.4}Auto-configuration}{11}{subsection.1.3.4}%
 \contentsline {chapter}{\numberline {2}REST}{12}{chapter.2}%
 \contentsline {section}{\numberline {2.1}HTTP-verzoekmethoden}{12}{section.2.1}%
 \contentsline {section}{\numberline {2.2}Spring Boot Starter Web}{13}{section.2.2}%
-\contentsline {section}{\numberline {2.3}De RestController}{14}{section.2.3}%
-\contentsline {section}{\numberline {2.4}MusicPlaylist}{16}{section.2.4}%
-\contentsline {subsection}{\numberline {2.4.1}Een liedje toevoegen aan een playlist}{16}{subsection.2.4.1}%
+\contentsline {section}{\numberline {2.3}De RestController}{15}{section.2.3}%
+\contentsline {section}{\numberline {2.4}MusicPlaylist}{17}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Een liedje toevoegen aan een playlist}{17}{subsection.2.4.1}%
 \contentsline {subsection}{\numberline {2.4.2}De playlist opvragen}{22}{subsection.2.4.2}%
 \contentsline {subsection}{\numberline {2.4.3}Liedjes van \'e\'en genre}{25}{subsection.2.4.3}%
 \contentsline {subsection}{\numberline {2.4.4}Gegevens van een liedje aanpassen}{27}{subsection.2.4.4}%
 \contentsline {subsection}{\numberline {2.4.5}Een liedje verwijderen}{29}{subsection.2.4.5}%
 \contentsline {section}{\numberline {2.5}Gegevens valideren}{32}{section.2.5}%
 \contentsline {section}{\numberline {2.6}REST Endpoints}{32}{section.2.6}%
-\contentsline {section}{\numberline {2.7}Examples of JSON Data}{32}{section.2.7}%
-\contentsline {subsection}{\numberline {2.7.1}Create New House (POST)}{32}{subsection.2.7.1}%
-\contentsline {subsection}{\numberline {2.7.2}Update House (PUT)}{32}{subsection.2.7.2}%
-\contentsline {subsection}{\numberline {2.7.3}Response after GET Request (GET)}{32}{subsection.2.7.3}%
-\contentsline {chapter}{\numberline {3}Unit testing}{35}{chapter.3}%
-\contentsline {section}{\numberline {3.1}JUnit}{35}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Unit test voor een constructor}{35}{section.3.2}%
-\contentsline {section}{\numberline {3.3}Unit test voor een setter}{37}{section.3.3}%
-\contentsline {section}{\numberline {3.4}Unit test voor een getter}{41}{section.3.4}%
-\contentsline {chapter}{\numberline {4}Streams}{47}{chapter.4}%
-\contentsline {section}{\numberline {4.1}External en internal iterators}{47}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Intermediate en terminal operations}{49}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}Terminal operation .collect()}{49}{subsection.4.2.1}%
-\contentsline {subsection}{\numberline {4.2.2}Intermediate operation .filter()}{50}{subsection.4.2.2}%
-\contentsline {subsection}{\numberline {4.2.3}Terminal operation .forEach()}{52}{subsection.4.2.3}%
-\contentsline {subsection}{\numberline {4.2.4}Intermediate operation .map()}{53}{subsection.4.2.4}%
-\contentsline {subsection}{\numberline {4.2.5}Intermediate operation .sorted()}{54}{subsection.4.2.5}%
-\contentsline {subsection}{\numberline {4.2.6}Intermediate operation .distinct()}{54}{subsection.4.2.6}%
-\contentsline {subsection}{\numberline {4.2.7}Intermediate operation .limit()}{54}{subsection.4.2.7}%
-\contentsline {subsection}{\numberline {4.2.8}Intermediate operation peek()}{55}{subsection.4.2.8}%
-\contentsline {subsection}{\numberline {4.2.9}Terminal operation .count()}{55}{subsection.4.2.9}%
-\contentsline {section}{\numberline {4.3}Intstream, LongStream en DoubleStream}{56}{section.4.3}%
-\contentsline {subsection}{\numberline {4.3.1}sum()}{56}{subsection.4.3.1}%
-\contentsline {subsection}{\numberline {4.3.2}range() en rangeClosed()}{56}{subsection.4.3.2}%
-\contentsline {subsection}{\numberline {4.3.3}min(), max() en average()}{56}{subsection.4.3.3}%
-\contentsline {section}{\numberline {4.4}Components and dependency injection}{58}{section.4.4}%
+\contentsline {chapter}{\numberline {3}Unit testing}{36}{chapter.3}%
+\contentsline {section}{\numberline {3.1}JUnit}{36}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Unit test voor een constructor}{36}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Unit test voor een setter}{38}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Unit test voor een getter}{42}{section.3.4}%
+\contentsline {chapter}{\numberline {4}Streams}{48}{chapter.4}%
+\contentsline {section}{\numberline {4.1}External en internal iterators}{48}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Intermediate en terminal operations}{50}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Terminal operation .collect()}{50}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Intermediate operation .filter()}{51}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}Terminal operation .forEach()}{53}{subsection.4.2.3}%
+\contentsline {subsection}{\numberline {4.2.4}Intermediate operation .map()}{54}{subsection.4.2.4}%
+\contentsline {subsection}{\numberline {4.2.5}Intermediate operation .sorted()}{55}{subsection.4.2.5}%
+\contentsline {subsection}{\numberline {4.2.6}Intermediate operation .distinct()}{55}{subsection.4.2.6}%
+\contentsline {subsection}{\numberline {4.2.7}Intermediate operation .limit()}{55}{subsection.4.2.7}%
+\contentsline {subsection}{\numberline {4.2.8}Intermediate operation peek()}{56}{subsection.4.2.8}%
+\contentsline {subsection}{\numberline {4.2.9}Terminal operation .count()}{56}{subsection.4.2.9}%
+\contentsline {section}{\numberline {4.3}Intstream, LongStream en DoubleStream}{57}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}sum()}{57}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}range() en rangeClosed()}{57}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}min(), max() en average()}{57}{subsection.4.3.3}%
+\contentsline {section}{\numberline {4.4}Components and dependency injection}{59}{section.4.4}%
 \contentsline {section}{\numberline {4.5}DevOps Tools for Java Developers}{60}{section.4.5}%

@@ -1,5 +1,23 @@
 \chapter{REST}
 
+\fcolorbox{black}[HTML]{E9F0E9}{\parbox{\textwidth}{%
+\noindent \textbf{Learning goals}\\
+The junior-colleague
+\begin{enumerate}[nolistsep]
+\item can describe what Spring is
+\item can describe what Spring Boot is
+\item can explain what a three-tier application is
+\item can identify the three layers in a Spring Boot application
+\item can explain the responsibilities of the layers in a Spring Boot application
+\item can explain the architecture of a Spring RESTful web application
+\item can explain what a DTO is
+\item can explain what an entity-object is
+\item can explain what dependency injection is
+\item can explain what a Spring bean is
+\item can explain what a Spring container is
+\item can explain what a Spring Boot starter is
+\end{enumerate}}}
+
 \section{HTTP-verzoekmethoden}
 
 Spring Boot is een goede keuze als je een REST API (of voluit een RESTful web API) wilt ontwikkelen in Java.
@@ -37,6 +55,10 @@ Dit verzoek verwijdert het product met ID 123 uit de lijst van producten.
 
 Spring Boot Starter Web is de verzameling van alle bibliotheken (third party libraries) die we nodig hebben om RESTful web applicaties te bouwen.  De verzameling bestaat ondermeer uit Spring MVC,  REST en Tomcat. 
 Apache Tomcat is een populaire open source web server voor Java toepassingen.  Als je de dependency spring-boot-start-web toevoegt, start de Tomcat web server op zodra je de Spring boot applicatie opstart.  We spreken van de "embedded web server" in Spring boot.  Je kan er ook voor kiezen om  \'e\'en van de alternatieve web servers te gebruiken zoals jetty of undertow.
+
+TODO We select Spring Web dependency. Spring Web uses Spring MVC. It is used for building RESTful Web Services. Spring MVC provides the annotation @RestController for classes that implement the REST endpoints.
+To run a RESTful Web Service you need a web container. Spring Boot will automatically add an embedded Tomcat web container to your project. If you prefer another web container, you can update Spring Boot's configuration.
+Finally Jackson is a popular third-party library for converting Java-objects to JSON and vice versa.
 
 \begin{lstlisting}
 		<dependency>
@@ -766,17 +788,18 @@ public class MusicPlaylistService {
 
 
 \begin{oefening}\textbf{Huizenjacht}
-We maken een Spring Boot toepassing om het aanbod op de huizenmarkt te tonen.
-Ontwikkel een RESTful web toepassing met de volgende endpoints.
+We maken een Spring Boot toepassing om het aanbod op de huizenmarkt te beheren.
+Ontwikkel een RESTful web toepassing met onderstaande endpoints.
+Je voorziet een component HouseService met \'e\'en enkele, gedeelde lijst van woningen  voor alle gebruikers.
 
 Een huis wordt voorgesteld als een resource met volgende eigenschappen:
 
 \begin{itemize}
   \item \texttt{code} (string): Unieke identificatie van het huis.
-  \item \texttt{name} (string): De naam of beschrijving van het huis.
-  \item \texttt{status} (enum): FOR\_SALE en SOLD.
-  \item \texttt{city} (string): Stad van het huis.
-  \item \texttt{price} (double): De vraagprijs van het huis.
+  \item \texttt{name} (string): Naam of beschrijving van het huis.
+  \item \texttt{status} (enum): Status FOR\_SALE of SOLD.
+  \item \texttt{city} (string): Locatie van het huis.
+  \item \texttt{price} (double): Prijs van het huis.
 \end{itemize}
 
 \section{REST Endpoints}
@@ -802,17 +825,16 @@ Een huis wordt voorgesteld als een resource met volgende eigenschappen:
 \end{apiRoute}
 
 
-\begin{apiRoute}{post}{/houses/\{code\}}{Update the status of the house with the given code.}
+\begin{apiRoute}{post}{/houses/\{code\}}{Update the data (status, price,...) of the house with the given code.}
 \begin{routeParameter}
-	\noRouteParameter {no parameter }
+\routeParamItem{code}{unique identification of a house}
 \end{routeParameter}
 \begin{routeRequest}{application/json}
 \begin{routeRequestBody}
 {
-  "code": "HAS_001",
+  "status": "SOLD"
   "name": "Beautiful house in the city",
-  "city": "Hasselt",
-  "price": 250000
+  "price": 320000
 }
 \end{routeRequestBody}
 \end{routeRequest}
@@ -822,61 +844,42 @@ Een huis wordt voorgesteld als een resource met volgende eigenschappen:
 \end{routeResponse}
 \end{apiRoute}
 
-\begin{api}
-  \method{PUT}{/houses/\{id\}}{Update House}
-  \request{JSON}{A JSON object with the \texttt{status} attribute to update the house's status.}
-  \response{JSON}{The updated house object.}
-\end{api}
-
-\begin{api}
-  \method{GET}{/houses}{Get All Houses}
-  \response{JSON}{A list of all available houses with attributes \texttt{id}, \texttt{name}, \texttt{status}, and \texttt{price}.}
-\end{api}
-
-\begin{api}
-  \method{DELETE}{/houses/\{id\}}{Delete House}
-  \response{JSON}{A confirmation that the house has been deleted.}
-\end{api}
-
-\section{Examples of JSON Data}
-
-Here are some examples of JSON data that can be used for the API operations:
-
-\subsection{Create New House (POST)}
-
-\begin{verbatim}
-{
-  "name": "Beautiful house in the city",
-  "status": "for sale",
-  "price": 250000
-}
-\end{verbatim}
-
-\subsection{Update House (PUT)}
-
-\begin{verbatim}
-{
-  "status": "sold"
-}
-\end{verbatim}
-
-\subsection{Response after GET Request (GET)}
-
-\begin{verbatim}
+\begin{apiRoute}{get}{/houses}{Retrieve all houses.}
+\begin{routeParameter}
+	\noRouteParameter {no parameter }
+\end{routeParameter}
+\begin{routeResponse}{application/json}
+\begin{routeResponseItem}{200}{ok}
+\begin{routeResponseItemBody}
 [
   {
-    "id": 1,
+    "code": "GNK_001",
     "name": "Beautiful house in the city",
-    "status": "sold",
+    "status": "SOLD",
+     "city": "Genk",
     "price": 250000
   },
   {
-    "id": 2,
+    "code": "HAS_003",
     "name": "Cozy bungalow",
-    "status": "for sale",
+    "status": "FOR_SALE",
+     "city": "Hasselt",
     "price": 180000
   }
 ]
-\end{verbatim}
+\end{routeResponseItemBody}
+\end{routeResponseItem}
+\end{routeResponse}
+\end{apiRoute}
+
+\begin{apiRoute}{delete}{/houses/\{code\}}{Delete the house with the given code.}
+\begin{routeParameter}
+\routeParamItem{code}{unique identification of a house}
+\end{routeParameter}
+\begin{routeResponse}{application/json}
+\begin{routeResponseItem}{200}{ok}
+\end{routeResponseItem}
+\end{routeResponse}
+\end{apiRoute}
 
 \end{oefening}
