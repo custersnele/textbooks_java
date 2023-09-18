@@ -2,20 +2,12 @@
 
 \fcolorbox{black}[HTML]{E9F0E9}{\parbox{\textwidth}{%
 \noindent \textbf{Learning goals}\\
-The junior-colleague
+De junior-collega
 \begin{enumerate}[nolistsep]
-\item can describe what Spring is
-\item can describe what Spring Boot is
-\item can explain what a three-tier application is
-\item can identify the three layers in a Spring Boot application
-\item can explain the responsibilities of the layers in a Spring Boot application
-\item can explain the architecture of a Spring RESTful web application
-\item can explain what a DTO is
-\item can explain what an entity-object is
-\item can explain what dependency injection is
-\item can explain what a Spring bean is
-\item can explain what a Spring container is
-\item can explain what a Spring Boot starter is
+\item kan beschrijven wat een RESTful web applicatie is
+\item kan een POST, GET, PUT en DELETE-verzoek afhandelen in Spring Boot
+\item kan beschrijven wat spring-boot-starter-web is
+\item 
 \end{enumerate}}}
 
 \section{HTTP-verzoekmethoden}
@@ -53,30 +45,28 @@ Dit verzoek verwijdert het product met ID 123 uit de lijst van producten.
 
 \section{Spring Boot Starter Web}
 
-Spring Boot Starter Web is de verzameling van alle bibliotheken (third party libraries) die we nodig hebben om RESTful web applicaties te bouwen.  De verzameling bestaat ondermeer uit Spring MVC,  REST en Tomcat. 
-Apache Tomcat is een populaire open source web server voor Java toepassingen.  Als je de dependency spring-boot-start-web toevoegt, start de Tomcat web server op zodra je de Spring boot applicatie opstart.  We spreken van de "embedded web server" in Spring boot.  Je kan er ook voor kiezen om  \'e\'en van de alternatieve web servers te gebruiken zoals jetty of undertow.
-
-TODO We select Spring Web dependency. Spring Web uses Spring MVC. It is used for building RESTful Web Services. Spring MVC provides the annotation @RestController for classes that implement the REST endpoints.
-To run a RESTful Web Service you need a web container. Spring Boot will automatically add an embedded Tomcat web container to your project. If you prefer another web container, you can update Spring Boot's configuration.
-Finally Jackson is a popular third-party library for converting Java-objects to JSON and vice versa.
+Spring Boot Starter Web is de verzameling van alle bibliotheken (third party libraries) die we nodig hebben om RESTful web applicaties te bouwen.  De verzameling bestaat ondermeer uit Spring MVC,  REST,  jackson en Tomcat. 
+Apache Tomcat is een populaire open source web server voor Java toepassingen.  Als je de dependency spring-boot-start-web toevoegt, start de Tomcat web server op zodra je de Spring boot applicatie opstart.  We spreken van de "embedded web server" in Spring boot.  Je kan er ook voor kiezen om  \'e\'en van de alternatieve web servers te gebruiken zoals jetty of undertow. 
+Jackson is een populaire library om Java-objecten naar JSON te converteren en vice versa.
 
 \begin{lstlisting}
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		\end{lstlisting}
+<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+\end{lstlisting}
 		
+Je voegt de dependency toe in het bestand pom.xml.
 		
-By running the main-class you start your Spring Boot application. 
+Start nu de Spring Boot applicatie opnieuw op.
 
 \includegraphics[width=\textwidth]{./images/chapter2/first-run.png}
 
-Currently our Spring Boot application only shows a whitelabel error page. This error page is available when you perform a GET for URL \url{http://localhost:8080}.
+Momenteel kan de Spring Boot applicatie enkel een whitelabel error pagina tonen.  De error pagina krijg je te zien als je een GET-request uitvoert voor URL \url{http://localhost:8080}.
 
 \frame{\includegraphics[width=\textwidth]{./images/chapter2/whitelabel_error_page.png}} 
 
-Port 8080 is the default port. If this port is not available you will see an error message in Spring Boot's logging.
+Poort 8080 is de default poort van de Tomcat webserver.  Als deze poort al gebruikt wordt door een ander programma, krijg je de volgende foutmelding te zien.
 
 \begin{lstlisting}[frame=single]
 ***************************
@@ -88,7 +78,7 @@ Description:
 Web server failed to start. Port 8080 was already in use.
 \end{lstlisting}
 
-The port number can be changed in the file application.properties. You have to add the property server.port here with the desired port number.
+De poortnummer kan aangepast worden in het bestand application.properties.  Je gebruikt de eigenschap \textbf{server.port} om de gewenste poortnummer te kiezen.
 
 \begin{lstlisting}[frame=single]
 server.port=8081
@@ -96,7 +86,7 @@ server.port=8081
 
 \section{De RestController}
 
-Spring boot heeft een annotatie voorzien voor de Java Bean die verantwoordelijk is voor het afhandelen van HTTP requests nl @RestController. Spring boot heeft ook een annotatie @Controller, maar de @RestController zorgt ervoor dat het respons op het HTTP-request automatisch wordt omgezet (geserialiseerd) naar JSON of XML en wordt teruggestuurd naar de client.
+Spring boot heeft een annotatie voorzien voor de Spring bean die verantwoordelijk is voor het afhandelen van HTTP requests nl. @RestController. Spring boot heeft ook een annotatie @Controller, maar de @RestController zorgt ervoor dat het respons op het HTTP-request automatisch wordt omgezet (geserialiseerd) naar JSON of XML en wordt teruggestuurd naar de client.
 
 
 \begin{lstlisting}[frame=single]
@@ -151,12 +141,12 @@ Op basis van de URL in het binnenkomende request bepaalt de DispatcherServlet we
 
 
 \begin{oefening}
-Create the package \textit{be.pxl.demo.api}. Add the class \textbf{GreetingController} in this package. Restart the Spring Boot application and open the URL \url{http://localhost:8080/greetings/hello} in a browser. Voeg in de REST-controller een methode toe met de URI GET /greetings/daytime die de huidige dag en het tijdstip teruggeeft in het formaat 'Maandag 18 september 2023'.
+Maak het package \textit{be.pxl.demo.api}.  Voeg de klasse \textbf{GreetingController} toe het package.  Start de Spring Boot applicatie en open de URL \url{http://localhost:8080/greetings/hello} in een browser. Voeg in de REST-controller een methode toe met de URI GET /greetings/daytime die de huidige dag en het tijdstip teruggeeft in het formaat 'Maandag 18 september 2023'.
 \end{oefening}
 
 \section{MusicPlaylist}
 
-We gaan een nieuwe Spring Boot toepassing starten waarmee we een muziek playlist beheren. 
+We gaan een nieuwe Spring Boot toepassing aanmaken waarmee we een muziek playlist beheren. 
 
 \begin{oefening}
 Maak een nieuwe Spring boot toepassing MusicPlaylist. We gebruiken Spring MVC om een RESTful web applicatie te maken.  
@@ -165,9 +155,6 @@ Maak een nieuwe Spring boot toepassing MusicPlaylist. We gebruiken Spring MVC om
 \subsection{Een liedje toevoegen aan een playlist}
 
 \begin{apiRoute}{post}{/playlist/songs}{Add a new song to the playlist.}
-\begin{routeParameter}
-	\noRouteParameter {no parameter }
-\end{routeParameter}
 \begin{routeRequest}{application/json}
 \begin{routeRequestBody}
 {
@@ -564,9 +551,31 @@ public class MusicPlaylistService {
 
 \subsection{Gegevens van een liedje aanpassen}
 
-Als je een nieuwe song in de playlist toevoegt, dan word deze steeds achteraan in de lijst toegevoegd. We kunnen nu de gegevens van een liedje op een bepaalde positie in de lijst gaan overschrijven of aanpassen.
+Als je een nieuwe song in de playlist toevoegt, dan wordt deze steeds achteraan in de lijst toegevoegd. We kunnen nu de gegevens van het liedje op een gegeven positie in de lijst gaan overschrijven of aanpassen.  De index die we meegeven is een waarde van 0 tot 1 minder dan de lengte van de lijst.  Later zullen we zien hoe we een duidelijke foutboodschap kunnen geven aan de client als een foutieve index-waarde wordt gegeven.
 
-We gaan hiervoor een PUT-verzoek gebruiken.
+Om de gegevens van een liedje aan te passen gebruiken we een PUT-verzoek. 
+Je moet steeds alle gegevens van het liedje meegeven in de requestbody. 
+
+\begin{apiRoute}{put}{/musicplaylist/songs\{index\}}{Update the song at the given index.}
+\begin{routeParameter}
+\routeParamItem{code}{unique identification of a house}
+\end{routeParameter}
+\begin{routeRequest}{application/json}
+\begin{routeRequestBody}
+{
+		"title": "Hello",
+		"artist": "Adele",
+		"genre": "POP",
+		"duration_seconds": 293
+}
+\end{routeRequestBody}
+\end{routeRequest}
+\begin{routeResponse}{application/json}
+\begin{routeResponseItem}{200}{ok}
+\end{routeResponseItem}
+\end{routeResponse}
+\end{apiRoute}
+
 
 \begin{lstlisting}
 package be.pxl.demo.controller;
@@ -622,11 +631,6 @@ public class MusicPlaylistController {
 	public void updateSong(@PathVariable int index, @RequestBody Song song) {
 		musicPlaylistService.updateSong(index, song);
 	}
-
-	@DeleteMapping("/{index}")
-	public void updateSong(@PathVariable int index) {
-		musicPlaylistService.deleteSong(index);
-	}
 }
 \end{lstlisting}
 
@@ -671,11 +675,23 @@ public class MusicPlaylistService {
 	}
 }
 \end{lstlisting}
+
+We vervangen het liedje op de opgegeven index door een nieuw Song-object met de aangepaste gegevens.
 
 \subsection{Een liedje verwijderen}
 
-Om een liedje op een opgegeven positie uit de playlist te verwijderen gaan we een DELETE-verzoek implementeren.
+Om een liedje op een opgegeven index uit de playlist te verwijderen gaan we een DELETE-verzoek implementeren.
 
+
+\begin{apiRoute}{delete}{/musicplaylist/songs/\{index\}}{Delete the song at the given index.}
+\begin{routeParameter}
+\routeParamItem{index}{position of the song to be deleted}
+\end{routeParameter}
+\begin{routeResponse}{application/json}
+\begin{routeResponseItem}{200}{ok}
+\end{routeResponseItem}
+\end{routeResponse}
+\end{apiRoute}
 
 \begin{lstlisting}
 package be.pxl.demo.controller;
@@ -781,10 +797,6 @@ public class MusicPlaylistService {
 	}
 }
 \end{lstlisting}
-
-
-\section{Gegevens valideren}
-
 
 
 \begin{oefening}\textbf{Huizenjacht}
@@ -825,7 +837,7 @@ Een huis wordt voorgesteld als een resource met volgende eigenschappen:
 \end{apiRoute}
 
 
-\begin{apiRoute}{post}{/houses/\{code\}}{Update the data (status, price,...) of the house with the given code.}
+\begin{apiRoute}{put}{/houses/\{code\}}{Update the data (status, price,...) of the house with the given code.}
 \begin{routeParameter}
 \routeParamItem{code}{unique identification of a house}
 \end{routeParameter}

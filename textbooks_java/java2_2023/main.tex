@@ -123,75 +123,8 @@
 
 \include{chapter_rest}
 
-TODO include exercise woning die te koop worden aangeboden
-
-TODO include chapter on REST validation
-
-\include{chapter_junit}
-
-\include{chapter_streams}
-
-
-
-
-IMPORTANT THOUGHTS:
-- bean scopes
-- code quality
-source
-
-
-
-\section{Components and dependency injection}
-
-All our REST backend applications will consist of 3 layers:
- router-layer (or API-layer), service- or business-layer and persistence-layer.
-
-\includegraphics[scale=0.6]{./images/chapter1/spring-architecture.jpeg} 
-
-\begin{itemize}
-\item \textbf{Router- or presentation layer:}  Handling and processing HTTP requests,  translating JSON parameters to objects,  authentication of users and protecting data from maleficent users,  ... .
-\item \textbf{Service- or business logic layer:} This layer contains the business logic, the core functionality of your application. All calculations, decisions, evaluations, data processing,... are handled by this layer. 
-\item \textbf{Data- or persistence layer:} This layer is responsible for interacting with the database.  This layer stores and retrieves the application data in the database.
-\end{itemize}
-
-The typical components for each layer are annotated.  These annotated components are managed by Spring. Developers are not responsible for creating the objects of these component classes. The actual objects are created and injected by Spring wherever we need them. In later chapters we will discuss the concept of dependency injection in detail.
-
-The annotations for the Spring components we will use are:
-\begin{itemize}
-\item @Component: generic annotation for all components managed by Spring
-\item @RestController: indicate the components in the API layer
-\item @Service: indicate the components in the service layer
-\item @Repository: indicate the components in the persistence layer
-\end{itemize}
-
-All of these application components (@Component, @Service, @Repository, @Controller, and others) are automatically registered as Spring Beans.
-
-Here is the definition of beans from the Spring framework documentation:
-
-\fcolorbox{black}[HTML]{E9F0E9}{\parbox{\textwidth}{%
-\noindent In Spring, the objects that form the backbone of your application and that are managed by the Spring IoC container are called beans. A bean is an object that is instantiated, assembled, and otherwise managed by a Spring IoC container.}}
-
-IoC or Inversion of Control is the process in which an object defines its dependencies without creating them. The IoC container is responsible for constructing the dependencies.
-
-\includegraphics[width=\textwidth]{./images/Spring-REST-Web-Services.png} 
-
-The image shows all the layers that we develop in our REST backend applications. The RestController in the API layer provides REST endpoints. The API layer communicates via DTOs or Data Transfer Objects with the service layer. The service layer implements all business logic. DTOs are mapped to entity-objects and passed along the persistence layer. The persistence layer is responsible for storing the entity-objects in the database.
-
-The Spring container is at the core of the Spring Framework. The container is responsible for creating and managing the objects for classes annotated with @Service, @Repository,... The container will provide these objects (beans) when they are needed by other beans.
-
-
-\section{DevOps Tools for Java Developers}
-
-\begin{itemize}
-\item can explain what a three-tier application is
-\item can identify the three layers in a Spring Boot application
-\item can explain the responsibilities of the layers in a Spring Boot application
-\item can explain the architecture of a Spring RESTful web application
-\item can explain what a DTO is
-\item can explain what an entity-object is
-\end{itemize}
-
-\includegraphics[width=\textwidth]{./images/chapter1/devops.png} 
+\include{chapter_validation}
+ 
 
 \printbibliography
 

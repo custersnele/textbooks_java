@@ -1,0 +1,65 @@
+\chapter{Spring Validation}
+    
+\fcolorbox{black}[HTML]{E9F0E9}{\parbox{\textwidth}{%
+\noindent \textbf{Learning goals}\\
+De junior-collega
+\begin{enumerate}[nolistsep]
+\item kan gebruikmaken van Spring Validation in een project
+\end{enumerate}}}
+
+
+When Spring receives an HTTP request, the data must be validated. 
+Spring validation offers  standard predefined validators.  
+
+\begin{lstlisting}
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-validation</artifactId>
+</dependency>
+\end{lstlisting}
+
+When Spring finds an argument of an HTTP method annotated with @Valid, it automatically validates the argument.  In this example, the SuperheroRequest is validated. 
+The @NotBlank annotation checks that a String's trimmed length is not empty.
+The @Size annotation validates that the length of the string is between min and max.
+
+Spring also offers the annotation @Validated. This is used for group validation which is not in the scope of this course. \url{https://blog.codeleak.pl/2014/08/validation-groups-in-spring-mvc.html}
+
+Here is a list of the most common validation annotations.
+
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+@NotNull & to say that a field must not be null. \\
+@NotEmpty & to say that a list field must not empty. \\
+@NotBlank & to say that a string field must not be the empty string. \\
+@Min and @Max & to say that a numerical field is only valid when it’s value is above or below a certain value.\\
+@Size & to validate the length of a string field. \\
+@Email & to say that a string field must be a valid email address.\\
+\hline
+\end{tabularx}
+
+\begin{lstlisting}[language=java, frame=single]
+package be.pxl.demo.domain;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+public class Song {
+	@NotBlank
+	private String title;
+	@NotBlank
+	private String artist;
+	@JsonProperty("duration_seconds")
+	@Min(value = 1, message = "To must be greater than zero")
+	private int durationSeconds;
+	@NotNull
+	private Genre genre;
+	
+	...
+}
+\end{lstlisting}
+
+It is also possible to use the validation constraints with the fields of java classes.
+
+When the target argument fails the validation, Spring Boot throws a MethodArgumentNotValidException exception.
