@@ -4,12 +4,14 @@
 \noindent \textbf{Learning goals}\\
 De junior-collega
 \begin{enumerate}[nolistsep]
-\item kan gebruikmaken van Spring Validation in een project
+\item kan gebruikmaken van Spring Validation
+\item kan de correcte validatieregels gebruiken
 \end{enumerate}}}
 
+Wanneer Spring Boot een HTTP-verzoek ontvangt, is het belangrijk om de gegevens die met dat verzoek zijn meegezonden te valideren.  Spring Boot heeft voorgedefinieerde validatoren waardoor het controleren van veelvoorkomende regels eenvoudig kan gebeuren.  Zo kan Spring Boot bijvoorbeeld heel eenvoudig controleren of een e-mailadres het juiste formaat heeft of een getal binnen een bepaald bereik valt,.
+In Spring Boot is het uiteraard ook mogelijk om aangepaste of eigen validatieregels te programmeren.
 
-When Spring receives an HTTP request, the data must be validated. 
-Spring validation offers  standard predefined validators.  
+Om Spring Validation te gebruiken voeg je een dependency toe aan het project.
 
 \begin{lstlisting}
 <dependency>
@@ -18,22 +20,16 @@ Spring validation offers  standard predefined validators.
 </dependency>
 \end{lstlisting}
 
-When Spring finds an argument of an HTTP method annotated with @Valid, it automatically validates the argument.  In this example, the SuperheroRequest is validated. 
-The @NotBlank annotation checks that a String's trimmed length is not empty.
-The @Size annotation validates that the length of the string is between min and max.
-
-Spring also offers the annotation @Validated. This is used for group validation which is not in the scope of this course. \url{https://blog.codeleak.pl/2014/08/validation-groups-in-spring-mvc.html}
-
 Here is a list of the most common validation annotations.
 
 \begin{tabularx}{\textwidth}{|l|X|}
 \hline
-@NotNull & to say that a field must not be null. \\
-@NotEmpty & to say that a list field must not empty. \\
-@NotBlank & to say that a string field must not be the empty string. \\
-@Min and @Max & to say that a numerical field is only valid when it’s value is above or below a certain value.\\
-@Size & to validate the length of a string field. \\
-@Email & to say that a string field must be a valid email address.\\
+@NotNull & om aan te duiden dat een referentie niet null mag zijn. \\
+@NotEmpty & om aan te duiden dat een list elementen moet bevatten. \\
+@NotBlank & om aan te duiden dat een string niet leeg mag zijn. \\
+@Min and @Max & om aan te duiden dat een numerieke waarde enkel geldig is als de waarde groter of kleiner is dan een gegeven waarde.\\
+@Size &  om de lengte van een string te valideren. \\
+@Email & om te controleren of een string een geldig e-mailadres bevat.\\
 \hline
 \end{tabularx}
 
@@ -51,7 +47,7 @@ public class Song {
 	@NotBlank
 	private String artist;
 	@JsonProperty("duration_seconds")
-	@Min(value = 1, message = "To must be greater than zero")
+	@Min(value = 1, message = "Must be greater than zero")
 	private int durationSeconds;
 	@NotNull
 	private Genre genre;
@@ -60,6 +56,180 @@ public class Song {
 }
 \end{lstlisting}
 
-It is also possible to use the validation constraints with the fields of java classes.
+Wanneer Spring Boot een argument vindt dat is geannoteerd met @Valid,  wordt het automatisch gevalideerd.
 
-When the target argument fails the validation, Spring Boot throws a MethodArgumentNotValidException exception.
+\begin{lstlisting}
+@RestController
+@RequestMapping("/playlist/songs")
+public class MusicPlaylistController {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(MusicPlaylistController.class);
+	private final MusicPlaylistService musicPlaylistService;
+
+	@Autowired
+	public MusicPlaylistController(MusicPlaylistService musicPlaylistService) {
+		this.musicPlaylistService = musicPlaylistService;
+	}
+
+	@PostMapping
+	public void addSong(@RequestBody @Valid Song song) {
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info("Adding song [" + song.getTitle() + "]");
+		}
+		musicPlaylistService.addSong(song);
+	}
+   ...
+}
+\end{lstlisting}
+
+Wanneer het argument niet voldoet aan de regels dan gooit Spring Boot een exception van de klasse MethodArgumentNotValidException.
+
+Sinds versie 2.3 moet je de eigenschap server.error.include-message de waarde always geven om de foutboodschappen te kunnen zien in het response. Spring Boot verbergt namelijk het foutmelding in de respons om het lekken van gevoelige informatie te voorkomen. 
+
+De foutmelding blijft ondanks in de instelling eerder cryptisch.  Stel dat ik de REST API gebruik om een lied toe te voegen met de volgende gegevens:
+
+\begin{verbatim}
+{
+  "title": "",
+  "artist": "Bruno Mars",
+  "duration_seconds": -2,
+  "genre": "OTHER"
+}
+\end{verbatim}
+
+De krijg ik het volgende antwoord terug:
+
+\begin{verbatim}
+{
+	"timestamp": "2023-09-23T13:48:50.490+00:00",
+	"status": 400,
+	"error": "Bad Request",
+	"message": "Validation failed for object='song'. Error count: 2",
+	"path": "/playlist/songs"
+}
+\end{verbatim}
+
+Meer gegevens krijg ik te zien als ik de eigenschap server.error.include-binding-errors=always toevoeg in application.properties. Voor bovenstaande RequestBody krijg ik dan de volgende respons. Er wordt op dat ogenblik al veel interne informatie gelekt.
+
+\begin{verbatim}
+{
+	"timestamp": "2023-09-23T13:52:38.028+00:00",
+	"status": 400,
+	"error": "Bad Request",
+	"message": "Validation failed for object='song'. Error count: 2",
+	"errors": [
+		{
+			"codes": [
+				"Min.song.durationSeconds",
+				"Min.durationSeconds",
+				"Min.int",
+				"Min"
+			],
+			"arguments": [
+				{
+					"codes": [
+						"song.durationSeconds",
+						"durationSeconds"
+					],
+					"arguments": null,
+					"defaultMessage": "durationSeconds",
+					"code": "durationSeconds"
+				},
+				10
+			],
+			"defaultMessage": "Invalid duration_seconds: must equal or exceed 10.",
+			"objectName": "song",
+			"field": "durationSeconds",
+			"rejectedValue": -2,
+			"bindingFailure": false,
+			"code": "Min"
+		},
+		{
+			"codes": [
+				"NotBlank.song.title",
+				"NotBlank.title",
+				"NotBlank.java.lang.String",
+				"NotBlank"
+			],
+			"arguments": [
+				{
+					"codes": [
+						"song.title",
+						"title"
+					],
+					"arguments": null,
+					"defaultMessage": "title",
+					"code": "title"
+				}
+			],
+			"defaultMessage": "must not be blank",
+			"objectName": "song",
+			"field": "title",
+			"rejectedValue": "",
+			"bindingFailure": false,
+			"code": "NotBlank"
+		}
+	],
+	"path": "/playlist/songs"
+}
+\end{verbatim}
+
+De best practice om de MethodArgumentNotValidException af te handelen is door gebruik te maken van een exception handler.  Hierbij gebruiken we de annotaties @RestControllerAdvice en @ExceptionHandler. 
+
+\begin{lstlisting}
+package be.pxl.demo.config;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<Map<String, List<String>>> handleValidationErrors(MethodArgumentNotValidException ex) {
+		List<String> errors = ex.getBindingResult().getFieldErrors()
+				.stream().map(FieldError::getDefaultMessage).collect(Collectors.toList());
+		return new ResponseEntity<>(getErrorsMap(errors), HttpStatus.BAD_REQUEST);
+	}
+
+	private Map<String, List<String>> getErrorsMap(List<String> errors) {
+		Map<String, List<String>> errorResponse = new HashMap<>();
+		errorResponse.put("errors", errors);
+		return errorResponse;
+	}
+
+}
+
+\end{lstlisting}
+
+We passen de boodschap bij onze validaties ook best aan.  Gebruik een duidelijke foutboodschap om de gebruiker duidelijk te maken welke gegevens hij moet doorgeven.
+Als je een meertalige applicatie hebt, kan je best een key (zoals title.not.blank) doorgeven aan de frontend zodat de eigenlijk foutboodschap in de juiste taal getoond kan worden.
+
+
+\begin{lstlisting}
+	@NotBlank(message = "title.not.blank")
+	private String title;
+	@Min(value = 10, message = "Invalid duration_seconds: must be equal to or exceed 10.")
+	private int durationSeconds;
+\end{lstlisting}
+
+Er wordt in het geval van een MethodArgumentNotValidException een HTTP status 400 met de volgende response body gegeven:
+\begin{verbatim}
+{
+	"errors": [
+		"Invalid duration_seconds: must be equal to or exceed 10.",
+		"title.not.blank"
+	]
+}
+\end{verbatim}
+
+
