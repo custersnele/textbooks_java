@@ -140,6 +140,8 @@ De call stack is de manier waarop tijdens de uitvoer van een programma o.a. word
 \subsubsection{OutOfMemoryError}
 
 \begin{lstlisting}
+package be.pxl.ja;
+
 public class DemoOutOfMemory {
 
 	private void generateOutOfMemory() {
@@ -190,6 +192,8 @@ Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
 Runtime exceptions zijn exceptions die vaak veroorzaakt worden door logische fouten in het programma.Typische voorbeelden van runtime exceptions zijn ArrayIndexOutOfBoundsException, NullPointerException en IllegalArgumentException. Vaak moet je ze niet afhandelen, maar moet je ervoor zorgen dat je de bug in je code oplost. Ook hier zijn onze unit testen heel belangrijk. Door goede unit testen te schrijven ga je runtime exceptions in je code opmerken en kunnen oplossen.
 
 \begin{lstlisting}
+package be.pxl.ja;
+
 public class Demo {
 
 	public static void main(String[] args) {
@@ -202,29 +206,32 @@ public class Demo {
 \begin{verbatim}
 Exception in thread "main" java.lang.IllegalArgumentException: count is negative: -5
 	at java.base/java.lang.String.repeat(String.java:3586)
-	at be.pxl.ja.streamingservice.Demo.main(Demo.java:5)
+	at be.pxl.ja.Demo.main(Demo.java:5)
 \end{verbatim}
 
 \begin{oefening}
 
 \begin{lstlisting}
-public class StreamingService {
+@Service
+public class MusicPlaylistService {
 
-	private List<Account> accounts;
+	private List<Song> playlist;
 
-	public void addAccount(Account account) {
-		accounts.add(account);
+	public void addSong(Song song) {
+		playlist.add(song);
 	}
 }
 \end{lstlisting}
 
-Welke exception doet zich voor zodra je voor een object van de klasse StreamingService de methode addAccount() aanroept? Waarom treedt die exception op?
+Welke exception doet zich voor zodra je de methode addSong() aanroept? Waarom treedt die exception op?
 \end{oefening}
 
 Wanneer je programma gebruikmaakt van gegevens die door de gebruiker worden ingevoerd, moet je er altijd rekening mee houden dat de gebruiker foutieve gegevens kan ingeven. Deze foutieve gegevens kunnen aanleiding geven tot runtime exceptions. Ook hier moet je steeds anticiperen op de mogelijke input die de gebruiker kan invoeren. 
 
 
 \begin{lstlisting}
+package be.pxl.ja;
+
 public class ElementInArray {
 
 	public static void main(String[] args) {
@@ -255,10 +262,6 @@ public class ElementInArray {
 
 In bovenstaand codevoorbeeld gaat onze voorkeur uit naar oplossing 1 waarbij de ingevoerde waarde wordt gecontroleerd vooraleer het element uit de array wordt benaderd. Deze code is makkelijker leesbaar en onderhoudbaar.
 
-\begin{oefening}
-Maak een programma dat de geboortedatum vraagt als input. Vervolgens berekent het programma hoeveel dagen het nog duurt vooraleer je jarig bent. Gebruik de methode parse() uit de klasse LocalDateTime om van de input van de gebruiker een LocalDateTime-object te maken. Welke exception kan optreden? Blijf input vragen totdat de gebruiker een correcte datum heeft ingegeven.
-\end{oefening}
-
 
 \subsection{Checked exceptions}
 
@@ -280,78 +283,123 @@ Open de documentatie van de klasse MessageDigest en bekijk de uitleg voor de sta
 \end{figure}
 
 Deze compileerfout wordt veroorzaakt omdat de exception-klasse NoSuchAlgorithmException een checked exception is. Dit betekent dat het aanroepen van de methode die de exception gooit een compileerfout zal geven, omdat er geen code is toegevoegd om correct met de  exception om te gaan.
-Er zijn 2 mogelijke oplossingen om deze compileerfout aan te pakken. Ofwel vang de exception op en handel je ze af in de methode encodePassword(), ofwel voeg je in de signatuur van de methode encodePassword() toe dat je de methode toelaat om een NoSuchAlgorithmException op te werpen. We geven nu eerst een voorbeeld van hoe je de exception kan opvangen en afhandelen. 
+Er zijn 2 mogelijke oplossingen om deze compileerfout aan te pakken. Ofwel vang de exception op en handel je ze af in de methode calculateHash(), ofwel voeg je in de signatuur van de methode toe dat je de methode toelaat om een NoSuchAlgorithmException op te werpen. 
 
 \begin{lstlisting}
-import be.pxl.ja.streamingservice.util.PasswordUtil;
+package be.pxl.demo;
 
-public class Account {
-	private String email;
-	private String password;
+import be.pxl.demo3.exception.InvalidMd5Exception;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
-	public Account(String email, String password) {
-		this.email = email;
-		setPassword(password);
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public boolean verifyPassword(String password) {
-		return PasswordUtil.isValid(password, this.password);
-	}
-
-	public void setPassword(String password) {
-		this.password = PasswordUtil.encodePassword(password);
-	}
-}
-\end{lstlisting}
-
-\begin{lstlisting}
-import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class PasswordUtil {
+@Service
+public class HashGeneratorService {
 
-	private static final String ALGORITHM = "MD5";
+	private static final Logger LOGGER = LoggerFactory.getLogger(HashGeneratorService.class);
 
-	public static String encodePassword(String password) {
-		MessageDigest messageDigest = null;
-		try {
-			messageDigest = MessageDigest.getInstance(ALGORITHM);
-		} catch (NoSuchAlgorithmException e) {
-			return null;
+	public String calculateHash(String algorithm, String original) throws NoSuchAlgorithmException {
+		MessageDigest md;
+		md = MessageDigest.getInstance(algorithm);
+		md.update(original.getBytes());
+		byte[] digest = md.digest();
+		StringBuilder result = new StringBuilder();
+		for (byte b : digest) {
+			result.append(String.format("%02x", b));
 		}
-		messageDigest.update(password.getBytes(), 0, password.length());
-		return new BigInteger(1, messageDigest.digest()).toString(16);
+		return result.toString();
 	}
 
-	public static boolean isValid(String providedPassword, String securedPassword) {
-		return encodePassword(providedPassword).equals(securedPassword);
+	public void verifyMd5(String original, String hash) {
+		try {
+			if (!calculateHash("MD5", original).equals(hash)) {
+				throw new InvalidMd5Exception();
+			}
+		} catch (NoSuchAlgorithmException e) {
+			LOGGER.error("Unexcepted exception", e);
+		}
 	}
 }
 \end{lstlisting}
-
 
 \begin{lstlisting}
-import be.pxl.ja.streamingservice.model.Account;
+package be.pxl.demo3.api;
 
-public class CheckedExceptionDemo {
+import be.pxl.demo3.HashGeneratorService;
+import be.pxl.demo3.exception.InvalidMd5Exception;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-	public static void main(String[] args) {
-		Account newAccount = new Account("daffy@duckstad.be", "daffy123!");
-		System.out.println(newAccount.verifyPassword("daffy123"));
-		System.out.println(newAccount.verifyPassword("daffy123!"));
+import java.security.NoSuchAlgorithmException;
+
+@RestController
+public class MessageController {
+
+	private final HashGeneratorService hashGeneratorService;
+
+	public MessageController(HashGeneratorService hashGeneratorService) {
+		this.hashGeneratorService = hashGeneratorService;
+	}
+
+	@GetMapping(value = "/hash/{algorithm}")
+	public ResponseEntity<String> hash(@PathVariable String algorithm, @RequestParam String text) {
+
+		try {
+			return ResponseEntity.ok(hashGeneratorService.calculateHash(algorithm, text));
+		} catch (NoSuchAlgorithmException e) {
+			return ResponseEntity.internalServerError().build();
+		}
+	}
+
+	@PostMapping(value = "/verify-md5")
+	public ResponseEntity<Void> getMD5(@RequestBody RequestData data) {
+		try {
+			hashGeneratorService.verifyMd5(data.original(), data.md5());
+			return ResponseEntity.ok().build();
+		} catch (NoSuchAlgorithmException e) {
+			return ResponseEntity.internalServerError().build();
+		} catch (InvalidMd5Exception e) {
+			return ResponseEntity.status(418).build();
+		}
 	}
 }
+
 \end{lstlisting}
 
+ResponseEntity is de representatie van het HTTP response: de statuscode, headers en body.  Je kan deze klasse gebruiken als je een andere statuscode wilt gegeven dan 200 (ok).
+
+Hier is een overzicht van enkele van de meest voorkomende HTTP-statuscodes die vaak worden gebruikt in een REST API.
+
+\begin{itemize}
+
+\item \textbf{200 OK}: Dit is de standaard statuscode voor een succesvolle HTTP-aanvraag. Gebruik deze code om aan te geven dat de aanvraag met succes is verwerkt en dat de responsebody een antwoord bevat.  Deze statuscode wordt vaak gebruikt bij een succesvolle GET-request.
+
+\item \textbf{201 Created}: Deze code geeft aan dat de aanvraag met succes is verwerkt en dat er een nieuwe resource is aangemaakt. Het wordt vaak gebruikt bij POST-requests.
+
+\item \textbf{204 No Content: Deze statuscode geeft aan dat de aanvraag met succes is verwerkt, maar er is geen inhoud om terug te geven als reactie. Dit wordt vaak gebruikt voor succesvolle DELETE-aanvragen.
+
+400 Bad Request: Gebruik deze code wanneer de client een ongeldige aanvraag heeft gedaan, bijvoorbeeld ontbrekende verplichte parameters of onjuiste gegevensindeling.
+
+401 Unauthorized: Dit geeft aan dat de client niet is geautoriseerd om toegang te krijgen tot de bron. Meestal wordt dit gebruikt wanneer de client geen geldige authenticatiegegevens heeft verstrekt.
+
+403 Forbidden: Hiermee geef je aan dat de client weliswaar is geauthenticeerd, maar geen toegang heeft tot de gevraagde bron vanwege beperkingen in de rechten of toegangsregels.
+
+404 Not Found: Deze statuscode wordt gebruikt wanneer de gevraagde bron niet kan worden gevonden op de server.
+
+405 Method Not Allowed: Geeft aan dat de HTTP-methode die wordt gebruikt in de aanvraag niet is toegestaan voor de opgegeven bron. Bijvoorbeeld, een GET-aanvraag op een bron die alleen POST ondersteunt.
+
+500 Internal Server Error: Dit geeft aan dat er een onverwachte fout is opgetreden aan de kant van de server. Het wordt vaak gebruikt voor fouten die niet direct kunnen worden toegeschreven aan de client.
+
+503 Service Unavailable: Gebruik deze statuscode wanneer de server tijdelijk niet beschikbaar is, bijvoorbeeld vanwege onderhoud of overbelasting. De client kan later opnieuw proberen.
+ the whole HTTP response: status code, headers, and body. As a result, we can use it to fully configure the HTTP response.
 Het algoritme ``MD5'' is een geldige waarde voor de parameter algorithm en je krijgt een probleemloos verloop van je programma. Maar een programmeur die zich vergist en de constante ALGORITHM in de klasse PasswordUtil de waarde ``MD4'' geeft zal een probleem veroorzaken.
 
 \begin{verbatim}

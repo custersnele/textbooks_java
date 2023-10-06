@@ -1,0 +1,128 @@
+\chapter{Collections: Map}
+
+In Java is de \textit{Map} interface een onderdeel van het Java Collections Framework. 
+Je gebruikt deze gegevensstructuur als je key-value paren (sleutel-waarde paren) wilt opslaan en beheren.  De unieke sleutel wordt opgeslaan en gekoppeld aan een specifieke waarde.  De belangrijkste implementaties van de Map interface in Java zijn HashMap, LinkedHashMap, TreeMap en Hashtable.
+
+\section{Generieke klasse HashMap}
+
+De interface Map en de klasse HashMap zijn generiek.  Dit betekent dat ze zijn ontworpen om met verschillende datatypes te werken, zonder het datatype op voorhand vast te leggen. In het geval van HashMap, maakt het gebruik van generieke datatypes het mogelijk om de key- en value-datatypen flexibel te kiezen op het moment dat je een instantie van de HashMap maakt. Hierdoor kun je de HashMap gebruiken met verschillende soorten gegevens zonder dat je aparte klassen hoeft te schrijven voor elke combinatie van datatypes.
+
+HashMap<K, V>
+
+K staat voor het datatype van de sleutels die je in de HashMap wilt opslaan.
+V staat voor het datatype van de waarden die je in de HashMap wilt opslaan.
+
+\section{De interface Map}
+
+Hier is een overzicht van enkele veelgebruikte methoden in de Map interface:
+
+\begin{itemize}
+\item \textbf{put(K key, V value)} Voegt een sleutel-waarde paar toe aan de map.
+\item \textbf{get(K key)} Geeft de waarde terug die is gekoppeld aan de opgegeven sleutel, of null als de sleutel niet in de map voorkomt.
+\item \textbf{containsKey(K key)} Controleert of de map een specifieke sleutel bevat.
+\item \textbf{containsValue(V value)} Controleert of de map een specifieke waarde bevat.
+\item \textbf{remove(K key)} Verwijdert de opgegeven sleutel met zijn gekoppelde waarde.
+\item \textbf{keySet()} Geeft een lijst (List) van alle sleutels in de map terug.
+\item \textbf{values()} Geeft een lijst (List) van alle waarden in de map terug.
+\end{itemize}
+
+
+
+\section{Gebruik van HashMap}
+
+\subsection{Voorbeeld 1}
+
+\begin{lstlisting}
+import java.util.HashMap;
+import java.util.Map;
+
+public class HashMapVoorbeeld {
+    public static void main(String[] args) {
+        // Een HashMap maken met String sleutels en Integer waarden
+        Map<String, Integer> scores = new HashMap<>();
+
+        // Sleutel-waarde paren toevoegen
+        leeftijden.put("Alice", 25);
+        leeftijden.put("Bob", 30);
+        leeftijden.put("Charlie", 28);
+        leeftijden.put("David", 35);
+
+        // Waarde ophalen op basis van een sleutel
+        int scoreVanAlice = scores.get("Alice");
+        System.out.println("Score van Alice: " + scoreVanAlice); // Geeft 25 weer
+
+        // Controleren of een sleutel aanwezig is
+        boolean bevatSleutel = scores.containsKey("Eve");
+        System.out.println("Bevat sleutel 'Eve': " + bevatSleutel); // Geeft false weer
+
+        // Sleutel-waarde paar verwijderen
+        scores.remove("Bob");
+
+        // Alle sleutels afdrukken
+        System.out.println("Sleutels in de map: " + scores.keySet()); 
+        // geeft [Alice, Charlie, David]
+
+        // Alle waarden afdrukken
+        System.out.println("Waarden in de map: " + scores.values()); 
+        // geeft [25, 28, 35]
+    }
+}
+\end{lstlisting}
+
+\subsection{Voorbeeld 2}
+
+In dit voorbeeld maken we voor de sleutel-waarden gebruik van Strings. Voor de waarden gebruiken we een zelfgedefinieerde klasse, in dit geval de klasse Player. 
+Op deze manier kunnen we dus heel gemakkelijk het juiste Player-object opzoeken en eventueel de score aanpassen als we de naam van de speler kennen.
+
+\begin{lstlisting}
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Player {
+    private String naam;
+    private int score;
+
+    public Player(String naam, int score) {
+        this.naam = naam;
+        this.score = score;
+    }
+
+    public String getNaam() {
+        return naam;
+    }
+
+    public int getScore() {
+        return score;
+    }
+    
+    public void setScore(int score) {
+    		this.score = score;
+    }
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}
+public class SpelerHashMap {
+    public static void main(String[] args) {
+        // Een HashMap maken met String-sleutels en Player-waarden
+        Map<String, Player> spelerMap = new HashMap<>();
+
+        // Spelers toevoegen
+        spelerMap.put("Alice", new Player("Alice", 100));
+        spelerMap.put("Bob", new Player("Bob", 85));
+        spelerMap.put("Charlie", new Player("Charlie", 92));
+
+        // Spelersinformatie ophalen op basis van naam
+        String spelerNaam = "Bob";
+        Player speler = spelerMap.get(spelerNaam);
+        System.out.println("Speler " + spelerNaam + " heeft een score van " + speler.getScore());
+    }
+}
+\end{lstlisting}
+
+
+\begin{oefening}\textbf{Huizenjacht v2}
+Pas de oefening Huizenjacht uit het vorige hoofdstuk aan. In de service-laag gebruik je een HashMap zodat je een huis heel eenvoudig kunt opzoeken als je de code kent.
+\end{oefening}
