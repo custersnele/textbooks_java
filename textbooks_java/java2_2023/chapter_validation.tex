@@ -8,7 +8,7 @@ De junior-collega
 \item kan de correcte validatieregels gebruiken
 \end{enumerate}}}
 
-Wanneer Spring Boot een HTTP-verzoek ontvangt, is het belangrijk om de gegevens die met dat verzoek zijn meegezonden te valideren.  Spring Boot heeft voorgedefinieerde validatoren waardoor het controleren van veelvoorkomende regels eenvoudig kan gebeuren.  Zo kan Spring Boot bijvoorbeeld heel eenvoudig controleren of een e-mailadres het juiste formaat heeft of een getal binnen een bepaald bereik valt,.
+Wanneer Spring Boot een HTTP-verzoek ontvangt, is het belangrijk om de gegevens die met dat verzoek zijn meegestuurd te valideren.  Spring Boot heeft voorgedefinieerde validatoren waardoor het controleren van veelvoorkomende regels eenvoudig kan gebeuren.  Zo kan Spring Boot bijvoorbeeld heel eenvoudig controleren of een e-mailadres het juiste formaat heeft of een getal binnen een bepaald bereik valt,.
 In Spring Boot is het uiteraard ook mogelijk om aangepaste of eigen validatieregels te programmeren.
 
 Om Spring Validation te gebruiken voeg je een dependency toe aan het project.
@@ -20,7 +20,7 @@ Om Spring Validation te gebruiken voeg je een dependency toe aan het project.
 </dependency>
 \end{lstlisting}
 
-Here is a list of the most common validation annotations.
+Hier is een lijst van de meest gebruikte annotaties.
 
 \begin{tabularx}{\textwidth}{|l|X|}
 \hline
@@ -84,7 +84,7 @@ public class MusicPlaylistController {
 
 Wanneer het argument niet voldoet aan de regels dan gooit Spring Boot een exception van de klasse MethodArgumentNotValidException.
 
-Sinds versie 2.3 moet je de eigenschap server.error.include-message de waarde always geven om de foutboodschappen te kunnen zien in het response. Spring Boot verbergt namelijk het foutmelding in de respons om het lekken van gevoelige informatie te voorkomen. 
+Sinds Spring Boot versie 2.3 moet je de eigenschap server.error.include-message de waarde always geven om de foutboodschappen te kunnen zien in het response. Spring Boot verbergt namelijk het foutmelding in de respons om het lekken van gevoelige informatie te voorkomen. 
 
 De foutmelding blijft ondanks in de instelling eerder cryptisch.  Stel dat ik de REST API gebruik om een lied toe te voegen met de volgende gegevens:
 
@@ -97,7 +97,7 @@ De foutmelding blijft ondanks in de instelling eerder cryptisch.  Stel dat ik de
 }
 \end{verbatim}
 
-De krijg ik het volgende antwoord terug:
+Dan krijg je het volgende respons.
 
 \begin{verbatim}
 {
@@ -109,7 +109,7 @@ De krijg ik het volgende antwoord terug:
 }
 \end{verbatim}
 
-Meer gegevens krijg ik te zien als ik de eigenschap server.error.include-binding-errors=always toevoeg in application.properties. Voor bovenstaande RequestBody krijg ik dan de volgende respons. Er wordt op dat ogenblik al veel interne informatie gelekt.
+Meer gegevens krijg ik te zien als ik de eigenschap server.error.include-binding-errors=always toevoeg in application.properties. Voor bovenstaande RequestBody krijg je dan de volgende respons. Er wordt op dat ogenblik al veel interne informatie gelekt.
 
 \begin{verbatim}
 {
@@ -232,4 +232,8 @@ Er wordt in het geval van een MethodArgumentNotValidException een HTTP status 40
 }
 \end{verbatim}
 
+
+\begin{oefening}
+
+\end{oefening}
 
