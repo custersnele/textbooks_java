@@ -18,12 +18,12 @@ Hier is een overzicht van enkele veelgebruikte methoden in de Map interface:
 
 \begin{itemize}
 \item \textbf{put(K key, V value)} Voegt een sleutel-waarde paar toe aan de map.
-\item \textbf{get(K key)} Geeft de waarde terug die is gekoppeld aan de opgegeven sleutel, of null als de sleutel niet in de map voorkomt.
-\item \textbf{containsKey(K key)} Controleert of de map een specifieke sleutel bevat.
-\item \textbf{containsValue(V value)} Controleert of de map een specifieke waarde bevat.
-\item \textbf{remove(K key)} Verwijdert de opgegeven sleutel met zijn gekoppelde waarde.
-\item \textbf{keySet()} Geeft een lijst (List) van alle sleutels in de map terug.
-\item \textbf{values()} Geeft een lijst (List) van alle waarden in de map terug.
+\item \textbf{get(Object key)} Geeft de waarde terug die is gekoppeld aan de opgegeven sleutel, of null als de sleutel niet in de map voorkomt.
+\item \textbf{containsKey(Object key)} Controleert of de map een specifieke sleutel bevat.
+\item \textbf{containsValue(Object value)} Controleert of de map een specifieke waarde bevat.
+\item \textbf{remove(Object key)} Verwijdert de opgegeven sleutel met zijn gekoppelde waarde.
+\item \textbf{keySet()} Geeft een set (Set) van alle sleutels in de map terug.
+\item \textbf{values()} Geeft een verzameling (Collection) van alle waarden in de map terug.
 \end{itemize}
 
 
@@ -42,10 +42,10 @@ public class HashMapVoorbeeld {
         Map<String, Integer> scores = new HashMap<>();
 
         // Sleutel-waarde paren toevoegen
-        leeftijden.put("Alice", 25);
-        leeftijden.put("Bob", 30);
-        leeftijden.put("Charlie", 28);
-        leeftijden.put("David", 35);
+        scores.put("Alice", 25);
+        scores.put("Bob", 30);
+        scores.put("Charlie", 28);
+        scores.put("David", 35);
 
         // Waarde ophalen op basis van een sleutel
         int scoreVanAlice = scores.get("Alice");

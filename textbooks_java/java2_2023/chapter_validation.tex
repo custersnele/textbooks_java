@@ -111,7 +111,7 @@ Dan krijg je het volgende respons.
 
 Meer gegevens krijg ik te zien als ik de eigenschap server.error.include-binding-errors=always toevoeg in application.properties. Voor bovenstaande RequestBody krijg je dan de volgende respons. Er wordt op dat ogenblik al veel interne informatie gelekt.
 
-\begin{verbatim}
+\begin{lstlisting}[language=json]
 {
 	"timestamp": "2023-09-23T13:52:38.028+00:00",
 	"status": 400,
@@ -172,7 +172,7 @@ Meer gegevens krijg ik te zien als ik de eigenschap server.error.include-binding
 	],
 	"path": "/playlist/songs"
 }
-\end{verbatim}
+\end{lstlisting}
 
 De best practice om de MethodArgumentNotValidException af te handelen is door gebruik te maken van een exception handler.  Hierbij gebruiken we de annotaties @RestControllerAdvice en @ExceptionHandler. 
 
@@ -181,37 +181,34 @@ package be.pxl.demo.config;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<Map<String, List<String>>> handleValidationErrors(MethodArgumentNotValidException ex) {
-		List<String> errors = ex.getBindingResult().getFieldErrors()
-				.stream().map(FieldError::getDefaultMessage).collect(Collectors.toList());
-		return new ResponseEntity<>(getErrorsMap(errors), HttpStatus.BAD_REQUEST);
+	public ResponseEntity<List<String>> handleValidationErrors(MethodArgumentNotValidException ex) {
+		List<String> errors = new ArrayList<>();
+		for (ObjectError error: ex.getBindingResult().getAllErrors()) {
+			errors.add(error.getDefaultMessage());
+		}
+		return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
 	}
-
-	private Map<String, List<String>> getErrorsMap(List<String> errors) {
-		Map<String, List<String>> errorResponse = new HashMap<>();
-		errorResponse.put("errors", errors);
-		return errorResponse;
-	}
-
 }
-
 \end{lstlisting}
 
-We passen de boodschap bij onze validaties ook best aan.  Gebruik een duidelijke foutboodschap om de gebruiker duidelijk te maken welke gegevens hij moet doorgeven.
+
+De annotatie @RestControllerAdvice geeft aan dat deze klasse verantwoordelijk is voor het afhandelen van exceptions. Alle exception worden onderschept en indien er voor het type exception een handler is gedefinieerd, zal de bijhorende code worden uitgevoerd. 
+
+In deze klasse is er enkel een methode voorzien voor het afhandelen van MethodArgumentNotValidExceptions. De methode herkennen we aan de annotatie @ExceptionHandler. Binnen de methode wordt een lijst met de foutmeldingen (errors) gegenereerd.
+
+We passen de foutboodschap bij iedere validatie ook best aan.  Gebruik een duidelijke foutboodschap om de gebruiker duidelijk te maken welke gegevens hij moet doorgeven.
 Als je een meertalige applicatie hebt, kan je best een key (zoals title.not.blank) doorgeven aan de frontend zodat de eigenlijk foutboodschap in de juiste taal getoond kan worden.
 
 
@@ -224,16 +221,55 @@ Als je een meertalige applicatie hebt, kan je best een key (zoals title.not.blan
 
 Er wordt in het geval van een MethodArgumentNotValidException een HTTP status 400 met de volgende response body gegeven:
 \begin{verbatim}
-{
-	"errors": [
-		"Invalid duration_seconds: must be equal to or exceed 10.",
-		"title.not.blank"
-	]
-}
+[
+	"Invalid duration_seconds: must be equal to or exceed 10.",
+	"title.not.blank",
+	"Please provide artist name."
+]
 \end{verbatim}
 
 
 \begin{oefening}
+\textbf{Huizenjacht}
+
+We voeren een aantal aanpassingen uit aan de klasse House.
+\begin{itemize}
+\item Voeg de volgende eigenschappen toe:
+\begin{itemize}
+\item area: oppervlakte van de woning in m\textsuperscript{2}
+\item epcScore: waarde uit de opsomming EPCScore.
+\end{itemize}
+\item Verwijder de eigenschap price. De prijs is nu een berekende waarde. Vermenigvuldig de oppervlakte met de basisprijs per m\textsuperscript{2} en het percentage behorende bij de epc score.
+De huidige basisprijs per m\textsuperscript{2} is 2356.75.  Voor huizen in Hasselt en Genk is er een meerprijs van 25\%. 
+\item Voeg de methode markAsSold() toe.  Deze methode verandert de status van het huis van FOR\_SALE naar SOLD. Wanneer het huis al verkocht is gooi je een IllegalStateException op.
+\item Pas vervolgens de POST en PUT requests aan. Bij het toevoegen van een huis zijn de volgende velden verplicht: code, name, area (minstens 50m\textsuperscript{2}), epc-score en city. 
+Bij het updaten kan je enkel volgende velden aanpassen: name, area (minstens 50m\textsuperscript{2}), city en epc-score.
+\item Voorzie een aangepast endpoint /houses/\{code\}/sold om een huis als verkocht te registreren.
+\end{itemize}
+
+Test alle endpoints grondig uit.
+
+\begin{lstlisting}[language=java]
+public enum EPCScore {
+	A_PLUS(1.5),
+	A(1.2),
+	B(1),
+	C(0.98),
+	D(0.90),
+	E(0.80),
+	F(0.75);
+
+	private double percentage;
+
+	EPCScore(double percentage) {
+		this.percentage = percentage;
+	}
+
+	public double getPercentage() {
+		return percentage;
+	}
+}
+\end{lstlisting}
 
 \end{oefening}
 

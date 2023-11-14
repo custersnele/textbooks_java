@@ -556,9 +556,9 @@ Als je een nieuwe song in de playlist toevoegt, dan wordt deze steeds achteraan 
 Om de gegevens van een liedje aan te passen gebruiken we een PUT-verzoek. 
 Je moet steeds alle gegevens van het liedje meegeven in de requestbody. 
 
-\begin{apiRoute}{put}{/musicplaylist/songs\{index\}}{Update the song at the given index.}
+\begin{apiRoute}{put}{/musicplaylist/songs/\{index\}}{Update the song at the given index.}
 \begin{routeParameter}
-\routeParamItem{code}{unique identification of a house}
+\routeParamItem{index}{Index of the song to be updated.}
 \end{routeParameter}
 \begin{routeRequest}{application/json}
 \begin{routeRequestBody}

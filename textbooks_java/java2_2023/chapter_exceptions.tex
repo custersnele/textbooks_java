@@ -288,7 +288,6 @@ Er zijn 2 mogelijke oplossingen om deze compileerfout aan te pakken. Ofwel vang 
 \begin{lstlisting}
 package be.pxl.demo;
 
-import be.pxl.demo3.exception.InvalidMd5Exception;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -312,24 +311,14 @@ public class HashGeneratorService {
 		}
 		return result.toString();
 	}
-
-	public void verifyMd5(String original, String hash) {
-		try {
-			if (!calculateHash("MD5", original).equals(hash)) {
-				throw new InvalidMd5Exception();
-			}
-		} catch (NoSuchAlgorithmException e) {
-			LOGGER.error("Unexcepted exception", e);
-		}
-	}
 }
 \end{lstlisting}
 
 \begin{lstlisting}
-package be.pxl.demo3.api;
+package be.pxl.demo.api;
 
-import be.pxl.demo3.HashGeneratorService;
-import be.pxl.demo3.exception.InvalidMd5Exception;
+import be.pxl.demo.HashGeneratorService;
+import be.pxl.demo.exception.InvalidMd5Exception;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -355,17 +344,7 @@ public class MessageController {
 		try {
 			return ResponseEntity.ok(hashGeneratorService.calculateHash(algorithm, text));
 		} catch (NoSuchAlgorithmException e) {
-			return ResponseEntity.internalServerError().build();
-		}
-	}
-
-	@PostMapping(value = "/verify-md5")
-	public ResponseEntity<Void> verifyMd5(@RequestBody RequestData data) {
-		try {
-			hashGeneratorService.verifyMd5(data.original(), data.md5());
-			return ResponseEntity.ok().build();
-		} catch (InvalidMd5Exception e) {
-			return ResponseEntity.status(418).build();
+			return ResponseEntity.badRequest().build();
 		}
 	}
 }
@@ -374,7 +353,7 @@ public class MessageController {
 
 ResponseEntity is de representatie van het HTTP response: de statuscode, headers en body.  Je kan deze klasse gebruiken als je een andere statuscode wilt gegeven dan 200 (ok).
 
-Hier is een overzicht van enkele van de meest voorkomende HTTP-statuscodes die vaak worden gebruikt in een REST API.
+Hier is een overzicht van de meest voorkomende HTTP-statuscodes.
 
 \begin{itemize}
 
@@ -469,6 +448,16 @@ Wanneer de berekende hashcode end de opgegeven hashcode niet overeenkomen gooien
 package be.pxl.demo.exception;
 
 public class InvalidMd5Exception extends RuntimeException {
+	public InvalidMd5Exception() {
+	}
+
+	public InvalidMd5Exception(String message) {
+		super(message);
+	}
+
+	public InvalidMd5Exception(String message, Throwable cause) {
+		super(message, cause);
+	}
 }
 \end{lstlisting}
 
@@ -476,7 +465,7 @@ public class InvalidMd5Exception extends RuntimeException {
 \begin{lstlisting}
 package be.pxl.demo;
 
-import be.pxl.demo3.exception.InvalidMd5Exception;
+import be.pxl.demo.exception.InvalidMd5Exception;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -508,16 +497,17 @@ public class HashGeneratorService {
 			}
 		} catch (NoSuchAlgorithmException e) {
 			LOGGER.error("Unexcepted exception", e);
+			throw new InvalidMd5Exception("Invalid algorithm MD5",  e);
 		}
 	}
 }
 \end{lstlisting}
 
 \begin{lstlisting}
-package be.pxl.demo3.api;
+package be.pxl.demo.api;
 
-import be.pxl.demo3.HashGeneratorService;
-import be.pxl.demo3.exception.InvalidMd5Exception;
+import be.pxl.demo.HashGeneratorService;
+import be.pxl.demo.exception.InvalidMd5Exception;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
