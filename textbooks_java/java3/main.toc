@@ -1,97 +1,141 @@
 \babel@toc {english}{}\relax 
-\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
-\contentsline {section}{\numberline {1.1}Enterprise Applications with Java}{1}{section.1.1}%
-\contentsline {section}{\numberline {1.2}What is Spring Boot?}{3}{section.1.2}%
-\contentsline {section}{\numberline {1.3}Bootstrapping a simple application}{3}{section.1.3}%
-\contentsline {subsection}{\numberline {1.3.1}Using Spring Initializr}{3}{subsection.1.3.1}%
-\contentsline {section}{\numberline {1.4}Running the demo project}{5}{section.1.4}%
-\contentsline {subsection}{\numberline {1.4.1}The Maven pom file}{7}{subsection.1.4.1}%
-\contentsline {subsection}{\numberline {1.4.2}A Rest Controller}{8}{subsection.1.4.2}%
-\contentsline {subsection}{\numberline {1.4.3}Auto-configuration}{9}{subsection.1.4.3}%
-\contentsline {subsection}{\numberline {1.4.4}@SpringBootApplication}{10}{subsection.1.4.4}%
-\contentsline {section}{\numberline {1.5}Components and dependency injection}{10}{section.1.5}%
-\contentsline {section}{\numberline {1.6}DevOps Tools for Java Developers}{12}{section.1.6}%
-\contentsline {chapter}{\numberline {2}Creating a Spring Boot application}{13}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Creating a Spring Boot project}{13}{section.2.1}%
-\contentsline {section}{\numberline {2.2}Storing and retrieving data}{15}{section.2.2}%
-\contentsline {subsection}{\numberline {2.2.1}Entity-class Superhero}{15}{subsection.2.2.1}%
-\contentsline {subsection}{\numberline {2.2.2}Repository}{17}{subsection.2.2.2}%
-\contentsline {subsection}{\numberline {2.2.3}Service-layer}{18}{subsection.2.2.3}%
-\contentsline {subsection}{\numberline {2.2.4}REST controller}{22}{subsection.2.2.4}%
-\contentsline {section}{\numberline {2.3}URL context path}{25}{section.2.3}%
-\contentsline {section}{\numberline {2.4}Resource not found}{26}{section.2.4}%
-\contentsline {section}{\numberline {2.5}API documentation}{27}{section.2.5}%
-\contentsline {section}{\numberline {2.6}Frontend}{28}{section.2.6}%
-\contentsline {section}{\numberline {2.7}Records}{29}{section.2.7}%
-\contentsline {chapter}{\numberline {3}Maven}{32}{chapter.3}%
-\contentsline {section}{\numberline {3.1}What is Maven?}{32}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Installation and Configuration}{33}{section.3.2}%
-\contentsline {section}{\numberline {3.3}Maven Standard Directory Layout}{33}{section.3.3}%
-\contentsline {section}{\numberline {3.4}Maven architecture}{34}{section.3.4}%
-\contentsline {section}{\numberline {3.5}Maven built-in life cycles}{34}{section.3.5}%
-\contentsline {section}{\numberline {3.6}A Build Lifecycle is Made Up Of Phases}{35}{section.3.6}%
-\contentsline {section}{\numberline {3.7}Plugins and Goals}{36}{section.3.7}%
-\contentsline {section}{\numberline {3.8}Dependencies and scopes}{39}{section.3.8}%
-\contentsline {section}{\numberline {3.9}Exercise}{40}{section.3.9}%
-\contentsline {section}{\numberline {3.10}Code quality with SonarQube}{43}{section.3.10}%
-\contentsline {section}{\numberline {3.11}Maven commands}{47}{section.3.11}%
-\contentsline {chapter}{\numberline {4}Logging}{48}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Logging Framework}{48}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Log levels}{49}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Logging in Spring Boot}{49}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Log4j2 Configuration Logging}{50}{section.4.4}%
-\contentsline {chapter}{\numberline {5}Spring Data JPA}{54}{chapter.5}%
-\contentsline {section}{\numberline {5.1}What is ORM?}{54}{section.5.1}%
-\contentsline {section}{\numberline {5.2}What is JPA?}{55}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Datasource}{56}{section.5.3}%
-\contentsline {section}{\numberline {5.4}The Entity class}{58}{section.5.4}%
-\contentsline {section}{\numberline {5.5}Entity lifecycle}{62}{section.5.5}%
-\contentsline {section}{\numberline {5.6}Queries}{63}{section.5.6}%
-\contentsline {section}{\numberline {5.7}Unit testing a repository}{63}{section.5.7}%
-\contentsline {section}{\numberline {5.8}Relationships}{65}{section.5.8}%
-\contentsline {subsection}{\numberline {5.8.1}Many-to-many bidirectional relationship}{65}{subsection.5.8.1}%
-\contentsline {section}{\numberline {5.9}Transactions}{69}{section.5.9}%
-\contentsline {chapter}{\numberline {6}Mockito}{71}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Mocking with Mockito}{71}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Unit testing the service-layer methods}{72}{section.6.2}%
-\contentsline {chapter}{\numberline {7}Advanced Spring Data JPA}{77}{chapter.7}%
-\contentsline {section}{\numberline {7.1}Relationships}{77}{section.7.1}%
-\contentsline {subsection}{\numberline {7.1.1}One-to-One relationship}{77}{subsection.7.1.1}%
-\contentsline {subsection}{\numberline {7.1.2}Many-to-one relationship}{79}{subsection.7.1.2}%
-\contentsline {subsection}{\numberline {7.1.3}Many-to-many relationship}{84}{subsection.7.1.3}%
-\contentsline {section}{\numberline {7.2}N + 1 query problem}{88}{section.7.2}%
-\contentsline {section}{\numberline {7.3}Exercises}{91}{section.7.3}%
-\contentsline {chapter}{\numberline {8}JDBC}{93}{chapter.8}%
-\contentsline {section}{\numberline {8.1}Why not JDBC?}{93}{section.8.1}%
-\contentsline {section}{\numberline {8.2}What is JDBC?}{94}{section.8.2}%
-\contentsline {section}{\numberline {8.3}The database}{94}{section.8.3}%
-\contentsline {section}{\numberline {8.4}JDBC Interfaces}{94}{section.8.4}%
-\contentsline {section}{\numberline {8.5}Slides}{94}{section.8.5}%
-\contentsline {chapter}{\numberline {9}REST}{96}{chapter.9}%
-\contentsline {section}{\numberline {9.1}CRUD REST API in Spring Boot}{96}{section.9.1}%
-\contentsline {section}{\numberline {9.2}Exception handling}{100}{section.9.2}%
-\contentsline {section}{\numberline {9.3}Unit testing}{102}{section.9.3}%
-\contentsline {section}{\numberline {9.4}Exercise: Superheroes}{106}{section.9.4}%
-\contentsline {subsection}{\numberline {9.4.1}CRUD operations for missions}{106}{subsection.9.4.1}%
-\contentsline {subsection}{\numberline {9.4.2}Add superhero to mission}{111}{subsection.9.4.2}%
-\contentsline {chapter}{\numberline {10}Servlets}{113}{chapter.10}%
-\contentsline {section}{\numberline {10.1}What is a Servlet}{113}{section.10.1}%
-\contentsline {section}{\numberline {10.2}Servlet class hierarchy}{114}{section.10.2}%
-\contentsline {section}{\numberline {10.3}Lifecycle of a servlet}{116}{section.10.3}%
-\contentsline {subsection}{\numberline {10.3.1}Example 1}{117}{subsection.10.3.1}%
-\contentsline {subsection}{\numberline {10.3.2}Example 2}{117}{subsection.10.3.2}%
-\contentsline {section}{\numberline {10.4}Session tracking}{119}{section.10.4}%
-\contentsline {subsection}{\numberline {10.4.1}Cookies}{120}{subsection.10.4.1}%
-\contentsline {subsection}{\numberline {10.4.2}HttpSession}{121}{subsection.10.4.2}%
-\contentsline {section}{\numberline {10.5}Spring DispatcherServlet}{123}{section.10.5}%
-\contentsline {subsection}{\numberline {10.5.1}Views}{124}{subsection.10.5.1}%
-\contentsline {section}{\numberline {10.6}@WebFilter}{126}{section.10.6}%
-\contentsline {section}{\numberline {10.7}@WebListener}{128}{section.10.7}%
-\contentsline {section}{\numberline {10.8}Exercises}{128}{section.10.8}%
-\contentsline {chapter}{\numberline {11}Transactions and dependency injection in Spring Boot}{131}{chapter.11}%
-\contentsline {section}{\numberline {11.1}Transactions}{131}{section.11.1}%
-\contentsline {subsection}{\numberline {11.1.1}Create worklog revisited}{132}{subsection.11.1.1}%
-\contentsline {section}{\numberline {11.2}Dependeny injection in Spring}{133}{section.11.2}%
-\contentsline {subsection}{\numberline {11.2.1}IoC and DI}{133}{subsection.11.2.1}%
-\contentsline {subsection}{\numberline {11.2.2}Spring beans vs Java Beans \blx@tocontentsinit {0}\cite {naming_bean}}{133}{subsection.11.2.2}%
-\contentsline {chapter}{\numberline {12}TODO}{135}{chapter.12}%
+\contentsline {chapter}{\numberline {1}Maven}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}What is Maven?}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Installation and Configuration}{2}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Maven Standard Directory Layout}{2}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Maven architecture}{3}{section.1.4}%
+\contentsline {section}{\numberline {1.5}Maven built-in life cycles}{3}{section.1.5}%
+\contentsline {section}{\numberline {1.6}A Build Lifecycle is Made Up Of Phases}{4}{section.1.6}%
+\contentsline {section}{\numberline {1.7}Plugins and Goals}{5}{section.1.7}%
+\contentsline {section}{\numberline {1.8}Dependencies and scopes}{8}{section.1.8}%
+\contentsline {section}{\numberline {1.9}Maven commands}{9}{section.1.9}%
+\contentsline {chapter}{\numberline {2}Generics}{11}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Before generics}{11}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Writing generic classes}{14}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Naming conventions}{14}{subsection.2.2.1}%
+\contentsline {section}{\numberline {2.3}Generic interfaces}{15}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Interface $Comparable<T>$}{15}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Eigen generieke interface}{18}{subsection.2.3.2}%
+\contentsline {section}{\numberline {2.4}Generieke functies}{19}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Wildcards en bounds}{21}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Bounded wildcards}{21}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}Bounds}{23}{subsection.2.5.2}%
+\contentsline {subsection}{\numberline {2.5.3}Upper bound, lower bound en unbounded wildcard}{23}{subsection.2.5.3}%
+\contentsline {section}{\numberline {2.6}Erasure en problemen}{26}{section.2.6}%
+\contentsline {section}{\numberline {2.7}Oefening}{27}{section.2.7}%
+\contentsline {chapter}{\numberline {3}Java I/O}{30}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Basics of File Handling}{30}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Toegang tot bestanden en directories}{32}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}De klasse FileSystem en de interface Path}{34}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}De utility klasse Files}{35}{subsection.3.2.2}%
+\contentsline {subsubsection}{Directories en bestanden aanmaken}{36}{section*.7}%
+\contentsline {subsubsection}{Bestanden lezen (kleine bestanden)}{36}{section*.8}%
+\contentsline {subsubsection}{Bestanden kopi\"eren}{37}{section*.9}%
+\contentsline {section}{\numberline {3.3}Tekstbestanden}{38}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}I/O Streams}{39}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}BufferedReader}{39}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}BufferedWriter}{41}{subsection.3.3.3}%
+\contentsline {subsection}{\numberline {3.3.4}Character sets}{41}{subsection.3.3.4}%
+\contentsline {subsection}{\numberline {3.3.5}Het decorator patroon}{41}{subsection.3.3.5}%
+\contentsline {section}{\numberline {3.4}Programma attributen}{42}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Byte stream}{43}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}Object serialization}{44}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}Object deserialization}{44}{subsection.3.5.2}%
+\contentsline {section}{\numberline {3.6}Oefeningen}{45}{section.3.6}%
+\contentsline {section}{\numberline {3.7}Spring Boot File Handling}{46}{section.3.7}%
+\contentsline {section}{\numberline {3.8}outline}{46}{section.3.8}%
+\contentsline {chapter}{\numberline {4}To define}{48}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Exercise}{48}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Code quality with SonarQube}{51}{section.4.2}%
+\contentsline {chapter}{\numberline {5}Code quality}{56}{chapter.5}%
+\contentsline {chapter}{\numberline {6}Introduction}{57}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Enterprise Applications with Java}{57}{section.6.1}%
+\contentsline {section}{\numberline {6.2}What is Spring Boot?}{59}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Bootstrapping a simple application}{59}{section.6.3}%
+\contentsline {subsection}{\numberline {6.3.1}Using Spring Initializr}{59}{subsection.6.3.1}%
+\contentsline {section}{\numberline {6.4}Running the demo project}{61}{section.6.4}%
+\contentsline {subsection}{\numberline {6.4.1}The Maven pom file}{63}{subsection.6.4.1}%
+\contentsline {subsection}{\numberline {6.4.2}A Rest Controller}{64}{subsection.6.4.2}%
+\contentsline {subsection}{\numberline {6.4.3}Auto-configuration}{65}{subsection.6.4.3}%
+\contentsline {subsection}{\numberline {6.4.4}@SpringBootApplication}{66}{subsection.6.4.4}%
+\contentsline {section}{\numberline {6.5}Components and dependency injection}{66}{section.6.5}%
+\contentsline {section}{\numberline {6.6}DevOps Tools for Java Developers}{68}{section.6.6}%
+\contentsline {chapter}{\numberline {7}Creating a Spring Boot application}{69}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Creating a Spring Boot project}{69}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Storing and retrieving data}{71}{section.7.2}%
+\contentsline {subsection}{\numberline {7.2.1}Entity-class Superhero}{71}{subsection.7.2.1}%
+\contentsline {subsection}{\numberline {7.2.2}Repository}{73}{subsection.7.2.2}%
+\contentsline {subsection}{\numberline {7.2.3}Service-layer}{74}{subsection.7.2.3}%
+\contentsline {subsection}{\numberline {7.2.4}REST controller}{78}{subsection.7.2.4}%
+\contentsline {section}{\numberline {7.3}URL context path}{81}{section.7.3}%
+\contentsline {section}{\numberline {7.4}Resource not found}{82}{section.7.4}%
+\contentsline {section}{\numberline {7.5}API documentation}{83}{section.7.5}%
+\contentsline {section}{\numberline {7.6}Frontend}{84}{section.7.6}%
+\contentsline {section}{\numberline {7.7}Records}{85}{section.7.7}%
+\contentsline {chapter}{\numberline {8}Logging}{88}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Logging Framework}{88}{section.8.1}%
+\contentsline {section}{\numberline {8.2}Log levels}{89}{section.8.2}%
+\contentsline {section}{\numberline {8.3}Logging in Spring Boot}{89}{section.8.3}%
+\contentsline {section}{\numberline {8.4}Log4j2 Configuration Logging}{90}{section.8.4}%
+\contentsline {chapter}{\numberline {9}Spring Data JPA}{94}{chapter.9}%
+\contentsline {section}{\numberline {9.1}What is ORM?}{94}{section.9.1}%
+\contentsline {section}{\numberline {9.2}What is JPA?}{95}{section.9.2}%
+\contentsline {section}{\numberline {9.3}Datasource}{96}{section.9.3}%
+\contentsline {section}{\numberline {9.4}The Entity class}{98}{section.9.4}%
+\contentsline {section}{\numberline {9.5}Entity lifecycle}{102}{section.9.5}%
+\contentsline {section}{\numberline {9.6}Queries}{103}{section.9.6}%
+\contentsline {section}{\numberline {9.7}Unit testing a repository}{103}{section.9.7}%
+\contentsline {section}{\numberline {9.8}Relationships}{105}{section.9.8}%
+\contentsline {subsection}{\numberline {9.8.1}Many-to-many bidirectional relationship}{105}{subsection.9.8.1}%
+\contentsline {section}{\numberline {9.9}Transactions}{109}{section.9.9}%
+\contentsline {chapter}{\numberline {10}Mockito}{111}{chapter.10}%
+\contentsline {section}{\numberline {10.1}Mocking with Mockito}{111}{section.10.1}%
+\contentsline {section}{\numberline {10.2}Unit testing the service-layer methods}{112}{section.10.2}%
+\contentsline {chapter}{\numberline {11}Relationships with JPA}{117}{chapter.11}%
+\contentsline {section}{\numberline {11.1}Relationships}{117}{section.11.1}%
+\contentsline {subsection}{\numberline {11.1.1}One-to-One relationship}{117}{subsection.11.1.1}%
+\contentsline {subsection}{\numberline {11.1.2}Many-to-one relationship}{120}{subsection.11.1.2}%
+\contentsline {subsection}{\numberline {11.1.3}Many-to-many relationship}{126}{subsection.11.1.3}%
+\contentsline {section}{\numberline {11.2}N + 1 query problem}{128}{section.11.2}%
+\contentsline {section}{\numberline {11.3}Lazy loading and OSIV}{132}{section.11.3}%
+\contentsline {chapter}{\numberline {12}REST}{137}{chapter.12}%
+\contentsline {section}{\numberline {12.1}CRUD REST API in Spring Boot}{137}{section.12.1}%
+\contentsline {section}{\numberline {12.2}Exception handling}{141}{section.12.2}%
+\contentsline {section}{\numberline {12.3}Unit testing}{143}{section.12.3}%
+\contentsline {chapter}{\numberline {13}Servlets}{148}{chapter.13}%
+\contentsline {section}{\numberline {13.1}What is a Servlet}{148}{section.13.1}%
+\contentsline {section}{\numberline {13.2}Servlet class hierarchy}{149}{section.13.2}%
+\contentsline {section}{\numberline {13.3}Lifecycle of a servlet}{151}{section.13.3}%
+\contentsline {subsection}{\numberline {13.3.1}Example 1}{152}{subsection.13.3.1}%
+\contentsline {subsection}{\numberline {13.3.2}Example 2}{152}{subsection.13.3.2}%
+\contentsline {section}{\numberline {13.4}Session tracking}{154}{section.13.4}%
+\contentsline {subsection}{\numberline {13.4.1}Cookies}{155}{subsection.13.4.1}%
+\contentsline {subsection}{\numberline {13.4.2}HttpSession}{156}{subsection.13.4.2}%
+\contentsline {section}{\numberline {13.5}Spring DispatcherServlet}{158}{section.13.5}%
+\contentsline {subsection}{\numberline {13.5.1}Views}{159}{subsection.13.5.1}%
+\contentsline {section}{\numberline {13.6}@WebFilter}{161}{section.13.6}%
+\contentsline {section}{\numberline {13.7}@WebListener}{163}{section.13.7}%
+\contentsline {section}{\numberline {13.8}Exercises}{164}{section.13.8}%
+\contentsline {chapter}{\numberline {14}Spring Data JPA Transaction management}{166}{chapter.14}%
+\contentsline {section}{\numberline {14.1}Introduction}{166}{section.14.1}%
+\contentsline {section}{\numberline {14.2}Hikari connection pool}{167}{section.14.2}%
+\contentsline {section}{\numberline {14.3}Transactions}{167}{section.14.3}%
+\contentsline {section}{\numberline {14.4}Transaction propagation}{168}{section.14.4}%
+\contentsline {section}{\numberline {14.5}Transaction isolation level}{169}{section.14.5}%
+\contentsline {subsection}{\numberline {14.5.1}Concurrency Issues}{169}{subsection.14.5.1}%
+\contentsline {subsubsection}{Dirty Read}{169}{section*.11}%
+\contentsline {subsubsection}{Lost Updates}{169}{section*.12}%
+\contentsline {subsubsection}{Nonrepeatable Read}{170}{section*.13}%
+\contentsline {subsubsection}{Phantom Read}{170}{section*.14}%
+\contentsline {subsection}{\numberline {14.5.2}Setting Transaction Isolation Levels}{171}{subsection.14.5.2}%
+\contentsline {subsubsection}{Read Uncommitted}{171}{section*.15}%
+\contentsline {subsubsection}{Read Committed}{172}{section*.16}%
+\contentsline {subsubsection}{Repeatable Read}{172}{section*.17}%
+\contentsline {subsubsection}{Serializable}{172}{section*.18}%
+\contentsline {section}{\numberline {14.6}Flyway}{172}{section.14.6}%
+\contentsline {chapter}{\numberline {15}Spring security}{174}{chapter.15}%
+\contentsline {section}{\numberline {15.1}What is spring security}{174}{section.15.1}%
+\contentsline {section}{\numberline {15.2}JWT tokens}{175}{section.15.2}%
+\contentsline {section}{\numberline {15.3}Implementation}{175}{section.15.3}%
+\contentsline {section}{\numberline {15.4}Unit tests}{176}{section.15.4}%
+\contentsline {section}{\numberline {15.5}Enabling Actuators, Metrics, and Health Indicators}{177}{section.15.5}%

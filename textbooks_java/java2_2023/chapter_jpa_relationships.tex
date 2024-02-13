@@ -1,33 +1,32 @@
-\chapter{Relationships with JPA}
+\chapter{Database relaties met Spring Data JPA}
 
 
 \fcolorbox{black}[HTML]{E9F0E9}{\parbox{\textwidth}{%
-\noindent \textbf{Learning goals}\\
-The junior-colleague
+\noindent \textbf{Doelstellingen}\\
+De junior-collega
 \begin{enumerate}[nolistsep]
-\item can implement entity classes.
-\item can implement different types of relationships between entity classes: one-to-one, one-to-many and many-to-many in a unidirectional and bi-directional way.
-\item can implement queries.
-\item can explain, identify and solve the N + 1 query problem.
-\item can use lazy loading, even when OSIV is not enabled.
+\item Kan entiteitsklassen implementeren.
+\item Kan verschillende soorten relaties tussen entiteitsklassen implementeren: on-ton, many-to-one and many-to-many op een unidirectionele en bidirectionele manier.
+\item Kan eenvoudige queries implementeren.
+\item Kan het N + 1 queryprobleem uitleggen, identificeren en oplossen.
+\item Kan 'lazy loading' gebruiken, zelfs als OSIV niet is ingeschakeld.
 \end{enumerate}}}
 
 \section{Relationships}
 
-JPA supports the same associations as you know from relational databases.
+Spring Data JPA ondersteunt relationele database associaties:
 
- You can use:
 \begin{itemize}
-\item one-to-one associations,
-\item many-to-one associations and
-\item many-to-many associations.
+\item one-to-one associaties,
+\item many-to-one associaties en
+\item many-to-many associaties.
 \end{itemize}
-You can map each of them as a uni- or bidirectional association.
+Je kan de associaties zowel uni- als bidirectional maken.
 
 
-\subsection{One-to-One relationship}
+\subsection{One-to-One associatie}
 
-In a one-to-one relationship, one record in a table is associated with one and only one record in another table.
+In een één-op-één-relatie is één record in een tabel geassocieerd met slechts één record in een andere tabel.
 
 \begin{lstlisting}[frame=single, language=java]
 package be.pxl.demo.domain;
@@ -84,7 +83,8 @@ public class ContactInformation {
 }
 \end{lstlisting}
 
-The member variable with the type of the associated entity class is annotated with @OneToOne. You can customize the name of the foreign key column with the @JoinColumn annotation.
+Een one-to-one relatie resulteert in een foreign key in de tabel die eigenaar (owner) is van de associatie.
+De instantievariabelen met het datatype van de geassocieerde entiteitsklasse wordt geannoteerd met @OneToOne.  Je kunt de naam van de kolom met de foreign key aanpassen met de annotatie @JoinColumn.
 
 \begin{lstlisting}[frame=single, language=java]
 package be.pxl.demo.domain;
@@ -145,14 +145,13 @@ public class Researcher {
 
 \end{lstlisting}
 
-The meaning of CascadeType.ALL is that the persistence context will propagate (cascade) all EntityManager operations (PERSIST, REMOVE, REFRESH, MERGE, DETACH) to the relating entities.
+De betekenis van CascadeType.ALL is dat de persistentiecontext alle EntityManager-operaties (PERSIST, REMOVE, REFRESH, MERGE, DETACH) zal doorgeven (cascaderen) naar de gerelateerde entiteiten. Dit betekent dat wanneer een operatie wordt uitgevoerd op de hoofdentiteit, deze operatie automatisch ook wordt toegepast op alle gerelateerde entiteiten. Bijvoorbeeld, als een hoofdentiteit wordt opgeslagen, worden alle gerelateerde entiteiten ook opgeslagen. Hetzelfde geldt voor verwijderen, vernieuwen, samenvoegen en loskoppelen. Dit zorgt voor een consistent beheer van de relaties tussen entiteiten in de database en vereenvoudigt de transactiebeheer aanzienlijk.
 
-\subsection{Many-to-one relationship}
+\subsection{Many-to-one relatie}
 
-Next an example of a many-to-one relationship.  
-Suppose there are multiple researchers working on one project, but every researcher is assigned to one project. 
+Stel dat er meerdere onderzoekers werken aan één project, maar elke onderzoeker is toegewezen aan één project.
 
-Here is the entity class Project.
+Hier is de entiteitsklasse Project.
 
 \begin{lstlisting}[frame=single, language=java]
 package be.pxl.demo.domain;
@@ -249,9 +248,9 @@ public enum ProjectPhase {
 }
 \end{lstlisting}
 
-The most common option to map an enum value to and from its database representation in JPA is to use the @Enumerated annotation. This way, we can instruct a JPA provider to convert an enum to its ordinal or String value.  When using the String value,  we can safely add new enum values or change our enum's order.  However, renaming an enum value will still break the database data.
+De meest voorkomende optie om een enum-waarde in JPA te mappen naar en vanuit zijn database-representatie is het gebruik van de @Enumerated annotatie. Op deze manier zal de JPA-provider de enum-waarde  omzetten naar de ordinale waarde of String-waarde. Wanneer we de String-waarde gebruiken, kunnen we veilig nieuwe enum-waarden toevoegen of de volgorde van onze enum-waarden wijzigen. Het hernoemen van een enum-waarde zal echter nog steeds de databasedata breken.
 
-To create the relationship between a researcher and the project he's working on, we add a @ManyToOne relationship in the entity class Researcher.
+Om de relatie te creëren tussen een onderzoeker en het project waaraan hij werkt, voegen we een @ManyToOne relatie toe in de entiteitsklasse Researcher.
 
 \begin{lstlisting}[frame=single,language=java]
 package be.pxl.demo.domain;
@@ -322,7 +321,8 @@ public class Researcher {
 }
 \end{lstlisting}
 
-At the moment, it's not possible to see which researchers are working on a project. To make this possible we have to make the relationship between project and researcher bi-directional.  Researcher is defined the \textbf{owner} of the relationship. To make this association bi-directional, all we'll have to do is to define the referencing side. The inverse or the referencing side simply maps to the owning side.  The value of mappedBy is the name of the association-mapping attribute on the owning side.  The fetch type of this @OneToMany relationship is by default \textbf{lazy}. This means the researcher for a project are only retrieved from the database when the getResearchers() method is called.
+Op dit moment is het niet mogelijk om te zien welke onderzoekers aan een project werken. Om dit mogelijk te maken moeten we de relatie tussen project en onderzoeker bidirectioneel maken. Onderzoeker wordt gedefinieerd als de \textbf{eigenaar} of owner van de relatie. Om deze associatie bidirectioneel te maken, moeten we de entiteit waarnaar verwezen wordt definiëren.  Bij de inverse relatie mappen we naar de eigenaarskant van de relatie.  De waarde van mappedBy is de naam van het attribuut voor associatie-mapping aan de eigenaarskant.  De manier om deze gerelateerde data op te halen is standaard \textbf{lazy}.  Dit betekent dat de onderzoekers voor een project alleen uit de database worden opgehaald wanneer de methode getResearchers() wordt aangeroepen.
+
 
 \begin{lstlisting}[frame=single, language=java]
 package be.pxl.demo.domain;
@@ -420,8 +420,8 @@ public class Project {
 }
 \end{lstlisting}
 
-When using a bi-directional relationship, both ends of the relationship must be managed carefully.
-Therefore we need to rewrite the method \textit{setProject()} in the class Researcher.
+Bij het gebruik van een bidirectionele relatie moeten beide associaties binnen de relatie zorgvuldig worden beheerd.
+Daarom moeten we de methode \textit{setProject()} in de klasse Researcher herschrijven.
 
 \begin{lstlisting}
 public void setProject(Project project) {
@@ -437,14 +437,14 @@ public void setProject(Project project) {
 }
 \end{lstlisting}
  
-It's not a good idea to make Project owner of the relationship between Projects and Researchers.  You may end up with an inefficient database schema. More information can be found in this post: 
+Het is geen goed idee om de klasse Project eigenaar te maken van de relatie tussen projecten en onderzoekers.  Je zult dan een inefficiënt databaseschema krijgen.  Meer informatie is te vinden in deze post:
 
 \url{https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/}.
 
 
-\subsection{Many-to-many relationship}
+\subsection{Many-to-many relaties}
 
-Actually, we want our researchers to work on multiple projects. Therefore,  we have to introduce a @ManyToMany relationship in the class Researcher. 
+Eigenlijk willen we dat onze onderzoekers aan meerdere projecten werken. Daarom moeten we een @ManyToMany relatie introduceren tussen de klasse Researcher en Project."
 
 \begin{lstlisting}[frame=single,language=java]
 package be.pxl.demo.domain;
@@ -482,8 +482,7 @@ public class Researcher {
 }
 \end{lstlisting}
 
-
-If we want the relationship to be bi-directional, Researcher remains the owner of the relationship.  
+Er zal nu een koppeltabel ontstaant waar we wordt bijgehouden welke onderzoekers werken aan welke projecten.
 
 \begin{lstlisting}[frame=single,language=java]
 package be.pxl.demo.domain;
@@ -513,13 +512,9 @@ public class Project {
 \end{lstlisting}
 
 
-Keep in mind that a \textbf{link table} is created for storing the many-to-many relationship.
+\section{N + 1 query problem (optioneel)}
 
-
-
-\section{N + 1 query problem}
-
-Suppose we have the entity-class Post and the entity-class PostComment. There is a uni-directional many-to-one relationship between PostComment and Post.  A PostComment belongs to exactly one Post however for one Post there may exist multiple PostComments.
+Stel dat we de entiteitsklasse Post en de entiteitsklasse PostComment hebben. Er is een unidirectionele veel-op-één relatie tussen PostComment en Post. Een PostComment behoort tot precies één Post, maar voor één Post kunnen er meerdere PostComments bestaan.
 
 \begin{lstlisting}[frame=single,  language=java]
 package be.pxl.demo.domain;
@@ -593,8 +588,8 @@ public class PostComment {
 }
 \end{lstlisting}
 
-We have a JpaRepository for both entity-classes.
-The PostService implements a method to create a post, a method for creating comments, and a method for retrieving all comments from the database.
+We hebben een JpaRepository voor beide entiteitsklassen.
+De PostService implementeert een methode om een post te maken, een methode voor het maken van reacties en een methode om alle reacties uit de database op te halen.
 
 \begin{lstlisting}
 package be.pxl.demo.service;
@@ -639,7 +634,7 @@ public class PostService {
 }
 \end{lstlisting}
 
-Then we have the PostController where we implement two endpoints. One endpoint for generating testdata and another endpoint for retrieving all the post comments.
+Dan hebben we de PostController waar we twee endpoints implementeren. Eén endpoint voor het genereren van testdata en een ander endpoint voor het ophalen van alle reacties op de post.
 
 \begin{lstlisting}
 package be.pxl.demo.api;
@@ -684,7 +679,7 @@ public class PostController {
 }
 \end{lstlisting}
 
-In application.properties file make sure to enable show-sql.
+Om alle SQL instructies te kunnen analyseren enabelen we de property show-sql in het bestand application.properties.
 
 \begin{lstlisting}
 spring.jpa.show-sql=true
@@ -692,8 +687,8 @@ spring.jpa.show-sql=true
 # spring.jpa.properties.hibernate.format_sql=true 
 \end{lstlisting}
 
-After we call the endpoint to generate testdata, we retrieve all comments from the database.
-In the log-files you will find the following log messages.
+Nadat we het endpoint hebben aangeroepen om testgegevens te genereren,  halen we alle reacties op uit de database.
+In de logbestanden vind je de volgende sql instructies.
 
 \begin{lstlisting}
 Hibernate: select p1_0.id,p1_0.post_id,p1_0.review from post_comment p1_0
@@ -702,9 +697,9 @@ Hibernate: select p1_0.id,p1_0.title from post p1_0 where p1_0.id=?
 Hibernate: select p1_0.id,p1_0.title from post p1_0 where p1_0.id=?
 \end{lstlisting}
 
-After retrieven the comments from the database, every post that's involved in the comments is retrieved as well. So, if you have N posts involved, N+1-queries will be executed. That's not efficient!
+Nadat de reacties uit de database zijn opgehaald, wordt de originele post bij de reactie ook opgehaald. Dus, als je N originele posts hebt,  worden er N+1-query's uitgevoerd. Dat is niet efficiënt!
 
-You should tackle this problem by re-writing the query to retrieve all post comments.
+Je zou dit probleem moeten aanpakken door de query voor het ophalen van alle postreacties te herschrijven.
 
 \begin{lstlisting}
 package be.pxl.demo.repository;
@@ -728,34 +723,34 @@ public interface PostCommentRepository extends JpaRepository<PostComment, Long> 
 }
 \end{lstlisting}
 
-When retrieving comments using PostCommentRepository.findAll(), the @EntityGraph annotation causes Spring Data JPA and Hibernate to fetch the associated entities included in attributePaths.
+Bij het ophalen van reacties met de methode findAll(), zorgt de @EntityGraph annotatie ervoor dat Spring Data JPA en Hibernate de geassocieerde entiteiten ophalen die zijn opgenomen in attributePaths.
 
-Only one query is executed.
+Er wordt nu slechts één query uitgevoerd.
 
 \begin{lstlisting}
 Hibernate: select p1_0.id,p2_0.id,p2_0.title,p1_0.review from post_comment p1_0 left join post p2_0 on p2_0.id=p1_0.post_id
 \end{lstlisting}
 
-Being able to see what Hibernate is actually doing with the database is very important.
-It's good practice to enable SQL output when working on a Spring Boot project, just as a sanity check. 
-You will definitly find problems you were unaware of by examining the SQL output.
+Het is tijdens de development-fase steeds belangrijk om de gegenereerde query's te controleren.  Het is een goede gewoonte om SQL-output in te schakelen tijdens het werken aan een Spring Boot-project, gewoon als een sanity check.
+Je zult af en toe problemen vinden waarvan je je niet bewust was, door het controleren van de SQL-output.
 
-An extended example of the N+1 query problem and the solution can be found in this post: \url{https://tech.asimio.net/2020/11/06/Preventing-N-plus-1-select-problem-using-Spring-Data-JPA-EntityGraph.html}.
+Een uitgebreid voorbeeld van het N+1 query-probleem en de oplossing is te vinden in deze post: \url{https://tech.asimio.net/2020/11/06/Preventing-N-plus-1-select-problem-using-Spring-Data-JPA-EntityGraph.html}.
 
-\section{Lazy loading and OSIV}
+\section{Lazy loading en OSIV}
 
-The associated entities in a @OneToMany and @ManyToMany relationships are lazy loaded. Loading the data is only done when and if it is needed. Lazy loading improves the performance. You need a transaction (or session) to retrieve the associated data from the database.
-Spring boot however enables a mechanism called OSIV (Open Session in View) by default. In Spring Boot applications using JPA, transactions are created even before requests arrive at the handling restcontroller, even if the request is not doing any database operations at all. Spring OpenSessionInViewInterceptor class manages these sessions. OSIV is really a bad idea from a performance and scalability perspective.
+De entiteiten in een @OneToMany en @ManyToMany relatie worden op een 'lazy' manier geladen. Het laden van de data gebeurt enkel wanneer het nodig is.  \textbf{Lazy loading} verbetert de performantie van de applicatie.  Je hebt echter een transactie (of sessie) nodig om de geassocieerde data uit de database op te halen.
+Spring Boot schakelt echter standaard een mechanisme in dat OSIV (Open Session in View) wordt genoemd. In Spring Boot applicaties die JPA gebruiken, worden transacties gecreëerd zelfs voordat requests bij de restcontroller aankomen, zelfs als het verzoek helemaal geen databasebewerkingen uitvoert. De Spring OpenSessionInViewInterceptor klasse beheert deze sessies.  OSIV is een slecht idee vanuit een prestatie- en schaalbaarheidsperspectief.
 
-So, make sure that in the application.properties configuration file, you have the following entry:
+Zorg er dus voor dat je in het configuratiebestand application.properties de volgende eigenschap toevoegt:
+
 
 \begin{lstlisting}
 spring.jpa.open-in-view=false
 \end{lstlisting}
 
-What happens when you retrieve data from a lazy loaded association without this session.
+Wat gebeurt er als je gegevens ophaalt van een 'lazy loaded' associatie zonder een actieve transactie of sessie?
 
-Let's make the association between Post and PostComment bi-directional.
+Laten we starten met de associatie tussen Post en PostComment bidirectioneel te maken.
 
 \begin{lstlisting}
 package be.pxl.demo.domain;
@@ -875,8 +870,7 @@ public class PostController {
 }
 \end{lstlisting}
 
-
-When we call the endpoint to retrieve a post. The following exception will occur:
+Als we het endpoint aanroepen om een post op te halen krijgen we de volgende LazyIntializationException: 
 
 \begin{lstlisting}[basicstyle=\tiny]
 org.hibernate.LazyInitializationException: failed to lazily initialize a collection of role: be.pxl.demo.domain.Post.commentList: could not initialize proxy - no Session
@@ -897,9 +891,8 @@ org.hibernate.LazyInitializationException: failed to lazily initialize a collect
 	...
 \end{lstlisting}
 
-In the method getPost() in our PostService the comments on our post are lazy loaded, but no session (or transaction) is defined at that moment. 
-The correct solution is to define a transaction for the getPost() method in de PostService. However, it is possible to define the relationship EAGER instead of LAZY, but this is seldom a good solution.
-
+In de methode getPost() in onze PostService worden de reacties op onze post 'lazy loaded', maar op dat moment is er geen sessie (of transactie) actief.
+De juiste oplossing is om een transactie te definiëren voor de methode getPost() in de PostService. Het is ook mogelijk om de relatie als EAGER in plaats van LAZY te definiëren, maar dit is zelden een goede oplossing.
 
 
 \begin{lstlisting}
@@ -939,8 +932,7 @@ public class PostService {
 }
 \end{lstlisting}
 
-
-More information on this topic can be found in the following articles:
+Meer info over dit onderwerp vind je in de volgende artikels:
 \begin{itemize} 
 \item \url{
 https://www.baeldung.com/spring-open-session-in-view}
