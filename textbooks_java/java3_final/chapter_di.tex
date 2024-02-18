@@ -1,0 +1,123 @@
+\chapter{Transactions and dependency injection in Spring Boot}
+
+\fcolorbox{black}[HTML]{E9F0E9}{\parbox{\textwidth}{%
+\noindent \textbf{Learning goals}\\
+The junior-colleague
+\begin{enumerate}[nolistsep]
+\item can explain what a transaction is.
+\item can implement transactions in a Spring Boot application.
+\item can explain what the default isolation and propagation settings for transactions are.
+\item can explain what dependency injection is.
+\item can describe how dependency injection is implemented in Spring Boot.
+\item can explain what a spring bean is.
+\item can explain what a JavaBean is.
+\end{enumerate}}}
+
+\section{Transactions}
+
+The @Transactional annotation is used to mark the service layer methods that should be wrapped in a transactional context.
+
+The @Transactional annotation offers the readOnly attribute, which is false by default. The readOnly attribute can further be used by Spring to optimize the underlying data access layer operations.
+
+By default, CRUD methods on repository instances inherited from SimpleJpaRepository are transactional. For read operations, the transaction configuration readOnly flag is set to true. All others are configured with a plain @Transactional so that default transaction configuration applies.
+
+\begin{lstlisting}[frame=single, language=java]
+@Repository
+@Transactional(
+    readOnly = true
+)
+public class SimpleJpaRepository<T, ID> implements JpaRepositoryImplementation<T, ID> { 
+      ....
+      
+      @Transactional
+      public <S extends T> S save(S entity) {
+         ...
+      }
+}
+\end{lstlisting}
+
+@Transactional(readOnly=true) means `Because there is no data modification in read-only transactions, the database will provide some optimization methods for read-only transactions. For example, Oracle does not start rollback segments for read-only transactions, and does not record rollback logs.'
+
+Consider the following method updateMission from the MissionService in our Superhero application. If the annotation @Transactional is omitted. The updated mission will not be saved in the database.  With the @Transaction annotation,  Hibernate (or another JPA provider) will detect changes made to persistent entities and update the database accordingly when the transaction commits.
+
+\begin{lstlisting}[frame=single, language=java]
+@Transactional
+public MissionDetailDTO updateMission(Long missionId, UpdateMissionRequest missionRequest) {
+		Mission mission = missionRepository.findById(missionId).orElseThrow(() -> new ResourceNotFoundException("Mission", "ID", missionId));
+		mission.setCompleted(missionRequest.isCompleted());
+		return new MissionDetailDTO(mission);
+}
+\end{lstlisting}
+
+Another solution can be to call the repository to save the updated entity.
+
+\begin{lstlisting}[frame=single, language=java]
+public MissionDetailDTO updateMission(Long missionId, UpdateMissionRequest missionRequest) {
+		Mission mission = missionRepository.findById(missionId).orElseThrow(() -> new ResourceNotFoundException("Mission", "ID", missionId));
+		mission.setCompleted(missionRequest.isCompleted());
+		mission = missionRepository.save(mission);
+		return new MissionDetailDTO(mission);
+	}
+\end{lstlisting}
+
+\subsection{Create worklog revisited}
+
+The implementation of create worklog should also be marked @Transactional.
+
+\begin{lstlisting}[frame=single, language=java]
+@Override
+	@Transactional
+	public void createWorklog(CreateWorklogRequest createWorklogRequest) {
+		Mission mission = missionRepository.findById(createWorklogRequest.getMissionId()).orElseThrow(() -> new ResourceNotFoundException("Mission", "ID", createWorklogRequest.getMissionId()));
+		Superhero superhero = superheroRepository.findSuperheroBySuperheroName(createWorklogRequest.getSuperheroName()).orElseThrow(() -> new ResourceNotFoundException("Superhero", "SuperheroName", createWorklogRequest.getSuperheroName()));
+		if (!superhero.onMission(mission)) {
+			superhero.addMission(mission);
+		}
+		Worklog worklog = new Worklog(superhero, mission);
+		worklog.setDate(createWorklogRequest.getDate());
+		worklog.setTask(createWorklogRequest.getTask());
+		worklogRepository.save(worklog);
+		if (createWorklogRequest.isRollback()) {
+			throw new IllegalArgumentException("Something went wrong");
+		}
+	}
+\end{lstlisting}
+
+When the IllegalArgumentException is thrown, with the @Transactional annotation all data saved during the transaction is rolled back.  If the @Transactional annotation was omitted, all saved data was available in the database when the exception occurred.
+
+With transactions you can alter the \textbf{isolation level} and the \textbf{propagation settings} of the transactions.  REQUIRED is the default propagation. Spring checks if there is an active transaction, and if nothing exists, it creates a new one.  Other propagation settings like MANDATORY, NEVER,... are not used in this course. \cite{transactions}
+
+\section{Dependeny injection in Spring}
+
+\subsection{IoC and DI}
+
+\url{https://www.youtube.com/watch?v=EPv9-cHEmQw}
+
+Inversion of Control (IoC) is the software design pattern where objects don't create the other objects on which they rely to do their work.   Instead, they get a reference to these objects or dependencies  from an outside source.  
+
+Dependency injection is a pattern used by Spring to implement IoC. , where the control being inverted is setting an object's dependencies.
+
+Spring Connecting objects with other objects, or “injecting” objects into other objects, is done by an assembler rather than by the objects themselves.
+
+Spring IoC Container is the core of Spring Framework. It creates the objects, configures and assembles their dependencies, manages their entire life cycle. The Container uses Dependency Injection(DI) to manage the components that make up the application. 
+
+\subsection{Spring beans vs Java Beans \cite{naming_bean}}
+
+Spring implements the JSR-330 specification which offers dependency injection. 
+Dependency Injection is a fundamental aspect of the Spring framework. The Spring container manages the lifecycle of objects and `injects' them into other objects.  
+This allows for loose coupling of components and moves the responsibility of managing components onto the container.
+
+A \textbf{Spring bean} is an object that form the backbone of your application and that is managed by the Spring IoC container. A Spring bean is an object that is instantiated, assembled,  and managed by a Spring IoC container. 
+
+The interface org.springframework.context.ApplicationContext represents the Spring IoC container and is responsible for instantiating, configuring, and assembling these Spring beans. The container gets its instructions on what objects to instantiate, configure, and assemble by reading configuration metadata. The configuration metadata is represented in XML, Java annotations, or Java code. It allows you to express the objects that compose your application and the rich interdependencies between such objects.
+
+JavaBeans are Java classes which: 
+\begin{itemize}
+\item have public default (no argument) constructors
+\item allow access to their properties using accessor (getter and setter) methods
+\item implement java.io.Serializable
+\end{itemize}
+
+Note that Spring beans need not always be JavaBeans. Spring beans might not implement the java.io.Serializable interface, can have arguments in their constructors, \ldots
+
+More info: \url{http://www.shaunabram.com/beans-vs-pojos/}

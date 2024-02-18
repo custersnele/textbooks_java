@@ -1,0 +1,950 @@
+\chapter{Relationships with JPA}
+
+
+\fcolorbox{black}[HTML]{E9F0E9}{\parbox{\textwidth}{%
+\noindent \textbf{Learning goals}\\
+The junior-colleague
+\begin{enumerate}[nolistsep]
+\item can implement entity classes.
+\item can implement different types of relationships between entity classes: one-to-one, one-to-many and many-to-many in a unidirectional and bi-directional way.
+\item can implement queries.
+\item can explain, identify and solve the N + 1 query problem.
+\item can use lazy loading, even when OSIV is not enabled.
+\end{enumerate}}}
+
+\section{Relationships}
+
+JPA supports the same associations as you know from relational databases.
+
+ You can use:
+\begin{itemize}
+\item one-to-one associations,
+\item many-to-one associations and
+\item many-to-many associations.
+\end{itemize}
+You can map each of them as a uni- or bidirectional association.
+
+
+\subsection{One-to-One relationship}
+
+In a one-to-one relationship, one record in a table is associated with one and only one record in another table.
+
+\begin{lstlisting}[frame=single, language=java]
+package be.pxl.demo.domain;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "contact_info")
+public class ContactInformation {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String phone;
+    private String email;
+    private String linkedIn;
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getLinkedIn() {
+        return linkedIn;
+    }
+
+    public void setLinkedIn(String linkedIn) {
+        this.linkedIn = linkedIn;
+    }
+
+    @Override
+    public String toString() {
+        return "ContactInformation{" +
+                "id=" + id +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", linkedIn='" + linkedIn + '\'' +
+                '}';
+    }
+}
+\end{lstlisting}
+
+The member variable with the type of the associated entity class is annotated with @OneToOne. You can customize the name of the foreign key column with the @JoinColumn annotation.
+
+\begin{lstlisting}[frame=single, language=java]
+package be.pxl.demo.domain;
+
+import jakarta.persistence.*;
+
+@Entity
+public class Researcher {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@Column(length = 40, nullable = false)
+	private String firstname;
+	@Column(length = 40, nullable = false)
+	private String lastname;
+	@OneToOne(cascade = CascadeType.ALL)
+	private ContactInformation contactInformation;
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public ContactInformation getContactInformation() {
+		return contactInformation;
+	}
+
+	public void setContactInformation(ContactInformation contactInformation) {
+		this.contactInformation = contactInformation;
+	}
+
+	@Override
+	public String toString() {
+		return "Researcher{" +
+				"id=" + id +
+				", firstname='" + firstname + '\'' +
+				", lastname='" + lastname + '\'' +
+				", contactInformation=" + contactInformation +
+				'}';
+	}
+}
+
+\end{lstlisting}
+
+The meaning of CascadeType.ALL is that the persistence context will propagate (cascade) all EntityManager operations (PERSIST, REMOVE, REFRESH, MERGE, DETACH) to the relating entities.
+
+\subsection{Many-to-one relationship}
+
+Next an example of a many-to-one relationship.  
+Suppose there are multiple researchers working on one project, but every researcher is assigned to one project. 
+
+Here is the entity class Project.
+
+\begin{lstlisting}[frame=single, language=java]
+package be.pxl.demo.domain;
+
+import jakarta.persistence.*;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+public class Project {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String name;
+	private LocalDate start;
+	@Enumerated(value= EnumType.STRING)
+	private ProjectPhase projectPhase;
+
+	public Project() {
+	    // JPA only
+	}
+
+	public Project(String name) {
+		this.name = name;
+		this.start = LocalDate.now();
+		this.projectPhase = ProjectPhase.INITIATING;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public LocalDate getStart() {
+		return start;
+	}
+
+	public void setStart(LocalDate start) {
+		this.start = start;
+	}
+
+	public ProjectPhase getProjectPhase() {
+		return projectPhase;
+	}
+
+	public void setProjectPhase(ProjectPhase projectPhase) {
+		this.projectPhase = projectPhase;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+
+		Project project = (Project) o;
+
+		return id != null ? id.equals(project.id) : project.id == null;
+	}
+
+	@Override
+	public int hashCode() {
+		return id != null ? id.hashCode() : 0;
+	}
+
+	@Override
+	public String toString() {
+		return name;
+	}
+}
+
+\end{lstlisting}
+
+\begin{lstlisting}[frame=single, language=java]
+package be.pxl.paj.domain;
+
+public enum ProjectPhase {
+	INITIATING,
+	PLANNING,
+	EXECUTING,
+	CLOSING;
+}
+\end{lstlisting}
+
+The most common option to map an enum value to and from its database representation in JPA is to use the @Enumerated annotation. This way, we can instruct a JPA provider to convert an enum to its ordinal or String value.  When using the String value,  we can safely add new enum values or change our enum's order.  However, renaming an enum value will still break the database data.
+
+To create the relationship between a researcher and the project he's working on, we add a @ManyToOne relationship in the entity class Researcher.
+
+\begin{lstlisting}[frame=single,language=java]
+package be.pxl.demo.domain;
+
+import jakarta.persistence.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+@Entity
+public class Researcher {
+
+	private static final Logger LOGGER = LogManager.getLogger(Researcher.class);
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@Column(length = 40, nullable = false)
+	private String firstname;
+	@Column(length = 40, nullable = false)
+	private String lastname;
+	@OneToOne(cascade = CascadeType.ALL)
+	private ContactInformation contactInformation;
+	@ManyToOne
+	private Project project;
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public ContactInformation getContactInformation() {
+		return contactInformation;
+	}
+
+	public void setContactInformation(ContactInformation contactInformation) {
+		this.contactInformation = contactInformation;
+	}
+
+	public void setProject(Project project) {
+		if (this.project != null) {
+			if (this.project.equals(project)) {
+				LOGGER.info("Researcher [" + id + "] already assigned to [" + project.getName() + "]");
+				return;
+			}
+		}
+		this.project = project;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("%s %s (%d)", firstname, lastname, id);
+	}
+}
+\end{lstlisting}
+
+At the moment, it's not possible to see which researchers are working on a project. To make this possible we have to make the relationship between project and researcher bi-directional.  Researcher is defined the \textbf{owner} of the relationship. To make this association bi-directional, all we'll have to do is to define the referencing side. The inverse or the referencing side simply maps to the owning side.  The value of mappedBy is the name of the association-mapping attribute on the owning side.  The fetch type of this @OneToMany relationship is by default \textbf{lazy}. This means the researcher for a project are only retrieved from the database when the getResearchers() method is called.
+
+\begin{lstlisting}[frame=single, language=java]
+package be.pxl.demo.domain;
+
+import jakarta.persistence.*;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+public class Project {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String name;
+	private LocalDate start;
+	@OneToMany(mappedBy = "project")
+	private List<Researcher> researchers = new ArrayList<>();
+	@Enumerated(value= EnumType.STRING)
+	private ProjectPhase projectPhase;
+
+	public Project() {
+	}
+
+	public Project(String name) {
+		this.name = name;
+		this.start = LocalDate.now();
+		this.projectPhase = ProjectPhase.INITIATING;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public LocalDate getStart() {
+		return start;
+	}
+
+	public void setStart(LocalDate start) {
+		this.start = start;
+	}
+
+	public List<Researcher> getResearchers() {
+		return researchers;
+	}
+
+	public ProjectPhase getProjectPhase() {
+		return projectPhase;
+	}
+
+	public void setProjectPhase(ProjectPhase projectPhase) {
+		this.projectPhase = projectPhase;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+
+		Project project = (Project) o;
+
+		return id != null ? id.equals(project.id) : project.id == null;
+	}
+
+	@Override
+	public int hashCode() {
+		return id != null ? id.hashCode() : 0;
+	}
+
+	public void addResearcher(Researcher researcher) {
+		researchers.add(researcher);
+	}
+
+	public void removeResearcher(Researcher researcher) {
+		researchers.remove(researcher);
+	}
+
+	@Override
+	public String toString() {
+		return name;
+	}
+}
+\end{lstlisting}
+
+When using a bi-directional relationship, both ends of the relationship must be managed carefully.
+Therefore we need to rewrite the method \textit{setProject()} in the class Researcher.
+
+\begin{lstlisting}
+public void setProject(Project project) {
+	if (this.project != null) {
+		if (this.project.equals(project)) {
+			LOGGER.info("Researcher [" + id + "] already assigned to [" + project.getName() + "]");
+			return;
+		}
+		this.project.removeResearcher(this);
+	}
+	this.project = project;
+	project.addResearcher(this);
+}
+\end{lstlisting}
+ 
+It's not a good idea to make Project owner of the relationship between Projects and Researchers.  You may end up with an inefficient database schema. More information can be found in this post: 
+
+\url{https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/}.
+
+
+\subsection{Many-to-many relationship}
+
+Actually, we want our researchers to work on multiple projects. Therefore,  we have to introduce a @ManyToMany relationship in the class Researcher. 
+
+\begin{lstlisting}[frame=single,language=java]
+package be.pxl.demo.domain;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+public class Researcher {
+
+	// all other properties left out intentionally
+	
+	@ManyToMany
+	private List<Project> projects = new ArrayList<>();
+
+
+	public void addProject(Project project) {
+		if (this.projects.contains(project)) {
+				LOGGER.info("Researcher [" + id + "] already assigned to [" + project.getName() + "]");
+				return;
+		}
+		this.projects.add(project);
+		project.addResearcher(this);
+	}
+
+	public List<Project> getProjects() {
+		return projects;
+	}
+
+	// all other methods left out intentionally
+}
+\end{lstlisting}
+
+
+If we want the relationship to be bi-directional, Researcher remains the owner of the relationship.  
+
+\begin{lstlisting}[frame=single,language=java]
+package be.pxl.demo.domain;
+
+import jakarta.persistence.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+public class Project {
+	
+	// all other properties left out intentionally
+	
+	@ManyToMany(mappedBy = "projects")
+	private List<Researcher> researchers = new ArrayList<>();
+
+
+	public void addResearcher(Researcher researcher) {
+		researchers.add(researcher);
+	}
+
+
+	// all other methods left out intentionally
+
+}
+\end{lstlisting}
+
+
+Keep in mind that a \textbf{link table} is created for storing the many-to-many relationship.
+
+
+
+\section{N + 1 query problem}
+
+Suppose we have the entity-class Post and the entity-class PostComment. There is a uni-directional many-to-one relationship between PostComment and Post.  A PostComment belongs to exactly one Post however for one Post there may exist multiple PostComments.
+
+\begin{lstlisting}[frame=single,  language=java]
+package be.pxl.demo.domain;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+
+@Entity
+public class Post {
+	@Id
+	@GeneratedValue
+	private Long id;
+	private String title;
+
+	public Post() {
+		// JPA only
+	}
+
+	public Post(String title) {
+		this.title = title;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+}
+\end{lstlisting}
+
+\begin{lstlisting}[frame=single,  language=java]
+package be.pxl.demo.domain;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+
+@Entity
+public class PostComment {
+	@Id
+	@GeneratedValue
+	private Long id;
+	@ManyToOne
+	private Post post;
+	private String review;
+
+	public PostComment() {
+		// JPA only
+	}
+
+	public PostComment(Post post, String review) {
+		this.post = post;
+		this.review = review;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public Post getPost() {
+		return post;
+	}
+
+	public String getReview() {
+		return review;
+	}
+}
+\end{lstlisting}
+
+We have a JpaRepository for both entity-classes.
+The PostService implements a method to create a post, a method for creating comments, and a method for retrieving all comments from the database.
+
+\begin{lstlisting}
+package be.pxl.demo.service;
+
+import be.pxl.demo.api.dto.PostCommentDTO;
+import be.pxl.demo.domain.Post;
+import be.pxl.demo.domain.PostComment;
+import be.pxl.demo.exception.ResourceNotFoundException;
+import be.pxl.demo.repository.PostCommentRepository;
+import be.pxl.demo.repository.PostRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class PostService {
+
+    private final PostCommentRepository postCommentRepository;
+    private final PostRepository postRepository;
+
+    public PostService(PostCommentRepository postCommentRepository,
+                       PostRepository postRepository) {
+        this.postCommentRepository = postCommentRepository;
+        this.postRepository = postRepository;
+    }
+
+    public long createPost(String title) {
+        return postRepository.save(new Post(title)).getId();
+    }
+
+    public void createPostComment(long postId, String review) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
+        PostComment postComment = new PostComment(post, review);
+        postCommentRepository.save(postComment);
+
+    }
+
+    public List<PostCommentDTO> findAll() {
+        List<PostComment> allComments = postCommentRepository.findAll();
+        return allComments.stream().map(pc -> new PostCommentDTO(pc.getPost().getTitle(), pc.getReview())).toList();
+    }
+}
+\end{lstlisting}
+
+Then we have the PostController where we implement two endpoints. One endpoint for generating testdata and another endpoint for retrieving all the post comments.
+
+\begin{lstlisting}
+package be.pxl.demo.api;
+
+import be.pxl.demo.api.dto.PostCommentDTO;
+import be.pxl.demo.service.PostService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("posts")
+public class PostController {
+
+    private final PostService postService;
+
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
+
+    @GetMapping("init")
+    public void init() {
+        long post1Id = postService.createPost("PXL'er Ward Lemmelijn kroont zich tot wereldkampioen indoorroeien.");
+        long post2Id = postService.createPost("PXL naar finale in Cybersecurity challenge.");
+        long post3Id = postService.createPost("Luister naar PXLRadio!!");
+
+        postService.createPostComment(post1Id, "Schitterend ***");
+        postService.createPostComment(post1Id, "Proficiat!");
+        postService.createPostComment(post2Id, "Ik ben zeker van de partij!");
+        postService.createPostComment(post2Id, "Ik hou van uitdagingen!");
+        postService.createPostComment(post3Id, "Leuke muziek!");
+        postService.createPostComment(post3Id, "Toffe radiozender!");
+        postService.createPostComment(post3Id, "Zet die plaat af.");
+    }
+
+    @GetMapping
+    public List<PostCommentDTO> getAllComments() {
+        return postService.findAll();
+    }
+}
+\end{lstlisting}
+
+In application.properties file make sure to enable show-sql.
+
+\begin{lstlisting}
+spring.jpa.show-sql=true
+# Following property can be used to format the sql shown
+# spring.jpa.properties.hibernate.format_sql=true 
+\end{lstlisting}
+
+After we call the endpoint to generate testdata, we retrieve all comments from the database.
+In the log-files you will find the following log messages.
+
+\begin{lstlisting}
+Hibernate: select p1_0.id,p1_0.post_id,p1_0.review from post_comment p1_0
+Hibernate: select p1_0.id,p1_0.title from post p1_0 where p1_0.id=?
+Hibernate: select p1_0.id,p1_0.title from post p1_0 where p1_0.id=?
+Hibernate: select p1_0.id,p1_0.title from post p1_0 where p1_0.id=?
+\end{lstlisting}
+
+After retrieven the comments from the database, every post that's involved in the comments is retrieved as well. So, if you have N posts involved, N+1-queries will be executed. That's not efficient!
+
+You should tackle this problem by re-writing the query to retrieve all post comments.
+
+\begin{lstlisting}
+package be.pxl.demo.repository;
+
+import be.pxl.demo.domain.PostComment;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface PostCommentRepository extends JpaRepository<PostComment, Long> {
+
+    @Override
+    @EntityGraph(
+            type = EntityGraph.EntityGraphType.FETCH,
+            attributePaths = {
+                    "post"
+            }
+    )
+    List<PostComment> findAll();
+}
+\end{lstlisting}
+
+When retrieving comments using PostCommentRepository.findAll(), the @EntityGraph annotation causes Spring Data JPA and Hibernate to fetch the associated entities included in attributePaths.
+
+Only one query is executed.
+
+\begin{lstlisting}
+Hibernate: select p1_0.id,p2_0.id,p2_0.title,p1_0.review from post_comment p1_0 left join post p2_0 on p2_0.id=p1_0.post_id
+\end{lstlisting}
+
+Being able to see what Hibernate is actually doing with the database is very important.
+It's good practice to enable SQL output when working on a Spring Boot project, just as a sanity check. 
+You will definitly find problems you were unaware of by examining the SQL output.
+
+An extended example of the N+1 query problem and the solution can be found in this post: \url{https://tech.asimio.net/2020/11/06/Preventing-N-plus-1-select-problem-using-Spring-Data-JPA-EntityGraph.html}.
+
+\section{Lazy loading and OSIV}
+
+The associated entities in a @OneToMany and @ManyToMany relationships are lazy loaded. Loading the data is only done when and if it is needed. Lazy loading improves the performance. You need a transaction (or session) to retrieve the associated data from the database.
+Spring boot however enables a mechanism called OSIV (Open Session in View) by default. In Spring Boot applications using JPA, transactions are created even before requests arrive at the handling restcontroller, even if the request is not doing any database operations at all. Spring OpenSessionInViewInterceptor class manages these sessions. OSIV is really a bad idea from a performance and scalability perspective.
+
+So, make sure that in the application.properties configuration file, you have the following entry:
+
+\begin{lstlisting}
+spring.jpa.open-in-view=false
+\end{lstlisting}
+
+What happens when you retrieve data from a lazy loaded association without this session.
+
+Let's make the association between Post and PostComment bi-directional.
+
+\begin{lstlisting}
+package be.pxl.demo.domain;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
+import java.util.List;
+
+@Entity
+public class Post {
+	@Id
+	@GeneratedValue
+	private Long id;
+	private String title;
+	@OneToMany(mappedBy = "post")
+	private List<PostComment> commentList;
+
+	public Post() {
+		// JPA only
+	}
+
+	public Post(String title) {
+		this.title = title;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public List<PostComment> getCommentList() {
+		return commentList;
+	}
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+package be.pxl.demo.service;
+
+import be.pxl.demo.api.dto.PostCommentDTO;
+import be.pxl.demo.api.dto.PostDTO;
+import be.pxl.demo.domain.Post;
+import be.pxl.demo.domain.PostComment;
+import be.pxl.demo.exception.ResourceNotFoundException;
+import be.pxl.demo.repository.PostCommentRepository;
+import be.pxl.demo.repository.PostRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class PostService {
+
+    private final PostCommentRepository postCommentRepository;
+    private final PostRepository postRepository;
+
+    public PostService(PostCommentRepository postCommentRepository,
+                       PostRepository postRepository) {
+        this.postCommentRepository = postCommentRepository;
+        this.postRepository = postRepository;
+    }
+
+   
+
+    public PostDTO getPost(long postId) {
+        Post post = postRepository.findById(postId)
+               .orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
+        return new PostDTO(post.getTitle(), 
+                 post.getCommentList().stream().map(PostComment::getReview).toList());
+    }
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+package be.pxl.demo.api.dto;
+
+import java.util.List;
+
+public record PostDTO(String title, List<String> review) {
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}
+package be.pxl.demo.api;
+
+import be.pxl.demo.api.dto.PostCommentDTO;
+import be.pxl.demo.api.dto.PostDTO;
+import be.pxl.demo.service.PostService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("posts")
+public class PostController {
+
+    private final PostService postService;
+
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
+
+    @GetMapping(path = "{postId}")
+    public PostDTO getPost(@PathVariable long postId) {
+        return postService.getPost(postId);
+    }
+}
+\end{lstlisting}
+
+
+When we call the endpoint to retrieve a post. The following exception will occur:
+
+\begin{lstlisting}[basicstyle=\tiny]
+org.hibernate.LazyInitializationException: failed to lazily initialize a collection of role: be.pxl.demo.domain.Post.commentList: could not initialize proxy - no Session
+	at org.hibernate.collection.spi.AbstractPersistentCollection.throwLazyInitializationException(AbstractPersistentCollection.java:635) ~[hibernate-core-6.1.7.Final.jar:6.1.7.Final]
+	at org.hibernate.collection.spi.AbstractPersistentCollection.withTemporarySessionIfNeeded(AbstractPersistentCollection.java:218) ~[hibernate-core-6.1.7.Final.jar:6.1.7.Final]
+	at org.hibernate.collection.spi.AbstractPersistentCollection.initialize(AbstractPersistentCollection.java:615) ~[hibernate-core-6.1.7.Final.jar:6.1.7.Final]
+	at org.hibernate.collection.spi.AbstractPersistentCollection.read(AbstractPersistentCollection.java:136) ~[hibernate-core-6.1.7.Final.jar:6.1.7.Final]
+	at org.hibernate.collection.spi.PersistentBag.iterator(PersistentBag.java:366) ~[hibernate-core-6.1.7.Final.jar:6.1.7.Final]
+	at java.base/java.util.Spliterators$IteratorSpliterator.estimateSize(Spliterators.java:1865) ~[na:na]
+	at java.base/java.util.Spliterator.getExactSizeIfKnown(Spliterator.java:414) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.exactOutputSizeIfKnown(AbstractPipeline.java:470) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:574) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.evaluateToArrayNode(AbstractPipeline.java:260) ~[na:na]
+	at java.base/java.util.stream.ReferencePipeline.toArray(ReferencePipeline.java:616) ~[na:na]
+	at java.base/java.util.stream.ReferencePipeline.toArray(ReferencePipeline.java:622) ~[na:na]
+	at java.base/java.util.stream.ReferencePipeline.toList(ReferencePipeline.java:627) ~[na:na]
+	at be.pxl.demo.service.PostService.getPost(PostService.java:39) ~[classes/:na]
+	...
+\end{lstlisting}
+
+In the method getPost() in our PostService the comments on our post are lazy loaded, but no session (or transaction) is defined at that moment. 
+The correct solution is to define a transaction for the getPost() method in de PostService. However, it is possible to define the relationship EAGER instead of LAZY, but this is seldom a good solution.
+
+
+
+\begin{lstlisting}
+package be.pxl.demo.service;
+
+import be.pxl.demo.api.dto.PostCommentDTO;
+import be.pxl.demo.api.dto.PostDTO;
+import be.pxl.demo.domain.Post;
+import be.pxl.demo.domain.PostComment;
+import be.pxl.demo.exception.ResourceNotFoundException;
+import be.pxl.demo.repository.PostCommentRepository;
+import be.pxl.demo.repository.PostRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class PostService {
+
+    private final PostCommentRepository postCommentRepository;
+    private final PostRepository postRepository;
+
+    public PostService(PostCommentRepository postCommentRepository,
+                       PostRepository postRepository) {
+        this.postCommentRepository = postCommentRepository;
+        this.postRepository = postRepository;
+    }
+
+   
+	@Transactional(readOnly = true)
+    public PostDTO getPost(long postId) {
+        Post post = postRepository.findById(postId)
+               .orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
+        return new PostDTO(post.getTitle(), 
+                 post.getCommentList().stream().map(PostComment::getReview).toList());
+    }
+}
+\end{lstlisting}
+
+
+More information on this topic can be found in the following articles:
+\begin{itemize} 
+\item \url{
+https://www.baeldung.com/spring-open-session-in-view}
+\item \url{https://techiemanas.wordpress.com/2020/12/01/spring-open-session-in-view-osiv/}
+
+\end{itemize}
+
