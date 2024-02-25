@@ -260,5 +260,110 @@ Write unit tests for the method updateSuperhero in the class SuperheroServiceTes
  
  
  
+ \section{Example of TDD}
+ 
+ TODO::: https://learning.oreilly.com/course/master-java-unit/9781789346077/
+ 
+ TESTING DOUBLES
+ 
+ In general, it is a good thing to avoid tight coupling between components of the system. In line with
+this rule, we want to make sure that the subscribers know as little as possible about the service, and vice
+versa. To achieve this result, we can use a publish/subscribe design pattern7 which does exactly this: it
+decouples publisher(s) from subscribers.
+First, let us discuss some requirements for our class - RaceResultsService:
+• It should allow clients to subscribe (which means they start receiving messages),
+• It should allow subscribers to unsubscribe (which means they stop receiving messages),
+• Every time a new message comes, it should be sent to all subscribers.
+These simple requirements, along with some common sense, already furnish us with a lot of test cases.
+In the ensuing sections we will be implementing the following:
+• If the client is not subscribed, it should not receive any messages,
+• If client is subscribed, it should receive each incoming message once (and only once),
+• If multiple clients are subscribed, each of them should receive each incoming message,
+• Consecutive subscribe requests issued by the same client will be ignored (nothing happens),
+• If the client unsubscribes, then it should be the case that no more messages are sent to it.
+We shall test RaceResultsService (the SUT) and make sure it sends messages to the right subscribers
+(DOCs). At first glance, it seems like we must have at least three types to implement the discussed
+
+from the book  practical testing (pdf)
+
+Please enhance the Race Results example (see Section 5.4) with the following functionality:
+• RaceResultsService should send messages with the results of different categories of race - e.g. horse
+races, F1 races, boat-races, etc. Subscribers should be able to subscribe to selected categories. Make
+sure they receive only messages related to the ones they have signed up for.
+• Each message sent by RaceResultsService should be logged. Introduce a logging DOC, and make
+sure that the date and text of each message is logged. Do not implement the logging mechanism:
+concentrate on the interactions between the service and its collaborator.
+• In the tests implemented so far, RaceResultsService sends only one message. This is unrealistic!
+Enhance the tests to ensure that subscribers will receive any number of sent messages.
+• What should happen if a client that is not subscribed tries to unsubscribe? Make up your mind about
+it, write a test which verifies this behaviour, and make RaceResultsService behave accordingly.
+ 
+ 
+ Example: Testing a Service Layer Method
+Suppose you have a BookService that depends on a BookRepository. You want to test the findAllBooks() service method, which retrieves all books from the repository.
+
+Step 1: Set Up Your Service and Repository
+
+First, define your BookRepository and BookService interfaces:
+
+java
+Copy code
+public interface BookRepository {
+    List<Book> findAll();
+}
+
+@Service
+public class BookService {
+    private final BookRepository bookRepository;
+
+    @Autowired
+    public BookService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
+
+    public List<Book> findAllBooks() {
+        return bookRepository.findAll();
+    }
+}
+Step 2: Write the Test Class
+
+Next, create a test class for BookService:
+
+java
+Copy code
+@ExtendWith(SpringExtension.class)
+public class BookServiceTest {
+
+    @Mock
+    private BookRepository bookRepository;
+
+    @InjectMocks
+    private BookService bookService;
+
+    @Test
+    public void testFindAllBooks() {
+        // Arrange
+        Book book1 = new Book("Book 1", "Author 1", 2019);
+        Book book2 = new Book("Book 2", "Author 2", 2020);
+        List<Book> mockBooks = Arrays.asList(book1, book2);
+        Mockito.when(bookRepository.findAll()).thenReturn(mockBooks);
+
+        // Act
+        List<Book> result = bookService.findAllBooks();
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        Mockito.verify(bookRepository).findAll();
+    }
+}
+In this example:
+
+Arrange: Mock BookRepository's findAll() method to return a predefined list of books.
+Act: Call findAllBooks() on BookService.
+Assert: Check that the result is not null, contains the correct number of elements, and verify that findAll() was called on the repository.
+Conclusion
+Testing the service layer with Mockito in a Spring Boot application involves mocking dependencies to isolate the service layer's functionality. The example above demonstrates how to test a simple service method using Mockito annotations and methods. Remember, the key to effective testing is to isolate the component under test and simulate interactions with its dependencies using mocks.
+ 
  
  

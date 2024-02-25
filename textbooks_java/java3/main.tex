@@ -1086,6 +1086,85 @@ TODO's
 \end{itemize}
 
 
+
+\section{Oefeningen}
+
+\begin{oefening}
+\textbf{Telefoonboek}\\
+
+Schrijf een programma om telefoonnummers bij te houden.
+Wanneer je het programma opstart wordt het bestand phonedirectory.txt ingelezen,
+plaats dit dus in een nieuwe folder (bv. resources) in je project. Iedere lijn in het
+bestand heeft het volgende formaat: $<naam>;<tel1>;<tel2>;…$
+We geven alvast wat startcode voor het printen van het menu.
+(PhoneNumbersApp.java)
+\begin{itemize}
+\item Lees alle lijnen in en steek alle contacten in een Collection, zodat je aan de hand van
+een naam de bijhorende telefoonnummers kan zoeken. Let op: er kunnen meerdere
+telefoonnummers aan één contact gelinkt worden.
+\item Zorg ook voor functionaliteit om telefoongegevens toe te voegen (zie reeds gegeven
+code). Als je een telefoonnummer toevoegt dat reeds bestaat voor de gegeven
+persoon, gooit het programma een zelfgemaakte exception. (bv.
+PhoneDirectoryException). Deze exception moet niet opgevangen worden, dus het
+programma mag stoppen met uitvoeren in dit geval.
+\item Wanneer je ervoor kiest om het programma af te sluiten, worden alle gegevens eerst
+weer weggeschreven in phonedirectory.txt, zodat geen gegevens verloren gaan.
+\end{itemize}
+\end{oefening}
+
+\begin{oefening}
+\textbf{Bank account}\\
+
+Schrijf een applicatie voor het beheren van spaarrekeningen.
+Voorzie volgende functionaliteit:
+\begin{itemize}
+\item Maak een klasse Spaarrekening met de nodige member variabelen (bv. saldo,
+naam, nummer, …)
+\item Zorg dat instanties van deze klasse als object naar een file geschreven kunnen
+worden (Serializable interface)
+\item Schrijf in een main methode de code om een volledig Spaarrekening object
+naar een file weg te schrijven.
+\item Voeg code toe om een spaarrekening object terug uit te lezen uit deze file.
+\item Controleer of de member variabelen hun waarde hebben behouden na uitlezen.
+\end{itemize}
+\end{oefening}
+
+
+\section{Spring Boot File Handling}
+
+
+
+
+
+\section{outline}
+
+ Reading and Writing Files
+Streams: Introduce InputStream and OutputStream for reading from and writing to byte streams (e.g., FileInputStream, FileOutputStream).
+Readers and Writers: Discuss Reader and Writer for character stream operations (e.g., FileReader, FileWriter).
+Buffering: Explain the use of BufferedReader and BufferedWriter for efficient reading and writing.
+3. Working with Directories
+Directory Operations: Methods for listing files in a directory, creating directories, etc.
+4. Advanced File Operations
+Random Access File: Usage of RandomAccessFile class for reading and writing to any location in a file.
+5. Java NIO Package
+Path and Paths: Introduce Path class as an upgrade to java.io.File.
+Files Class: Utilizing Files class for file operations like checking, deleting, copying, moving files, reading, and writing.
+File Channels: Discuss FileChannel for reading, writing, mapping, and manipulating a file.
+Buffers and ByteBuffers: Understanding how data is buffered in NIO.
+Asynchronous File I/O: Introduce AsynchronousFileChannel for asynchronous file operations.
+6. Exception Handling in File I/O
+Try-with-resources: Best practices for handling exceptions and ensuring that files are properly closed using the try-with-resources statement.
+Handling IOExceptions: Strategies for handling IOException.
+7. Serialization and Deserialization
+Object Streams: Using ObjectInputStream and ObjectOutputStream for object serialization.
+8. Practical Exercises and Examples
+File Copy: Implement a program to copy a file.
+File Browser: Create a simple console-based or GUI file browser.
+Text File Processing: Read a text file, process its content, and write the output to another file.
+9. Best Practices
+File Handling Best Practices: Discuss best practices in file handling such as closing resources, handling exceptions, and ensuring efficient data processing.
+
+
 \printbibliography
 
 
