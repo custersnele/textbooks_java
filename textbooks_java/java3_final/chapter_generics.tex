@@ -61,7 +61,7 @@ are in module java.base of loader 'bootstrap')
 
 Type-safety was introduced in the Java Collections framework since Java 5. 
 When you open the java documentation for the class java.util.ArrayList, you will see the generic parameter  $<E>$. 
-E is the type-parameter en makes it possible to provide a datatype for the elements of the ArrayList. 
+E is the type-parameter and makes it possible to provide a datatype for the elements of the ArrayList. 
 
 \begin{lstlisting}
 /**
@@ -344,9 +344,7 @@ public interface Service<T,U> {
 
 The interface can have different parameter type and returntype, but this is not mandatory. You can, however, choose the same datatype for generic type T and U.
 
-Als je beslist om deze interface te implementeren ben je verplicht om de methode execute te implementeren, maar je ben vrij om het datatype voor de parameter en de return-waarde te kiezen.
-
-Hier volgen 2 klassen die de interface Service implementeren.
+Here are two classes implementing the Service interface.
 
 \begin{lstlisting}
 public class CountService implements Service<Integer, String> {

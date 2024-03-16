@@ -229,7 +229,7 @@ public class Demo03CreatingDirectoriesAndFiles {
 
 \subsubsection{Reading small files}
 
-Als je tekstbestanden met een beperkt aantal regels wil lezen kan je de static methode readAllLines gebruiken.
+For reading text files with a limited number of lines, you can use the static method readAllLines in the class Files.
 
 \begin{lstlisting}
 import java.nio.file.Path;
@@ -253,9 +253,9 @@ public class Demo04ReadingFiles {
 }
 \end{lstlisting}
 
-\subsubsection{Bestanden kopi\"eren}
+\subsubsection{Copying files}
 
-Je kan eenvoudig bestanden kopi\"eren door gebruik te maken van de static methode copy.
+Creating a copy of a file is easy using the static method copy in the class Files.
 
 \begin{lstlisting}
 import java.io.IOException;
@@ -281,7 +281,6 @@ public class Demo05CopyFiles {
 
 
 \section{Byte Streams}
-
 
 A stream is an ordered sequence of bytes of an arbitrary length.  Bytes flow over an output stream from an application to a destination and flow over an input stream from a source to an application.
 The java.io package provides several output stream and input stream classes that are descendants of its abstract \textit{OutputStream} and \textit{InputStream} classes.
@@ -444,38 +443,54 @@ In UTF-8 1 to 4 bytes are used to represent the characters.
 
 
 \begin{oefening}
-A text message has been encoded by replacing each character of the message with an integer. Each integer is an index into a key-phrase that contains all the lower case letters of the alphabet as well as the space character. The key-phrase may contain the same character in several locations. The encoded text is series of integers, like this:
+A text message has been encoded by replacing each character of the message with an integer.  Each integer is an index into a key-phrase that contains all the lower case letters of the alphabet as well as the space character. The key-phrase may contain the same character in several locations. The encoded text is series of integers, like this:
 
+\begin{verbatim}
 35 10 10 33 9 24 3 17 41 8 3 20 51 16 38 44 47 32 33 10 19 38 35 28 49 
-To decode the message, look up each integer in the key-phrase and output the corresponding character. For example, say that the key-phrase is this (the index of each character has been written above it):
+\end{verbatim}
 
+To decode the message,  use each integer as an index in the key-phrase and output the corresponding character. For example, say that the key-phrase is this (the index of each character has been written above it):
+
+\begin{verbatim}
           111111111122222222223333333333444444444455
 0123456789012345678901234567890123456789012345678901 
 six perfect quality black jewels amazed the governor
-using each integer from the encoded text as an index into the phrase results in the decoded message:
+\end{verbatim}
 
+using each integer from the encoded text as an index into the phrase
+ results in the decoded message:
+
+\begin{verbatim}
 attack the bridge at dawn
-Write a program that decodes a secret message contained in a text file. The first line of the text file contains the key-phrase. Then the file contains a sequence of integers, each of which indexes the key-phrase. Find the character corresponding to each integer and output the secret message. Note if a character character such as 'e' occurs several places in the key-phrase it may be encoded as different integers in different parts of the secret message.
+\end{verbatim}
+
+Write a program that decodes a secret message contained in a text file. The first line of the text file contains the key-phrase. Then the file contains a sequence of integers, each of which indexes the key-phrase. Find the character corresponding to each integer and output the secret message. Note if a character character such as `e' occurs several places in the key-phrase it may be encoded as different integers in different parts of the secret message.
 
 (The recipient of the secret message gets only the file of integers and must put the key-phrase at the top of the file.) For example, here is the contents of a secret message file ready for the program:
 
+\begin{verbatim}
 six perfect quality black jewels amazed the governor
 35 10 10 33 9 24 3 17 41 8 3 20 51 16 38 44 47 32 33 10 19 38 35 28 49 
+\end{verbatim}
+
 Here is a sample run of the program:
 
+\begin{verbatim}
 C:\> java Decode < secretFile.txt
 
 attack the bridge at dawn
-You will need the charAt() method of String.
+\end{verbatim}
+
 
 Here is another secret message file, with key-phrase inserted, that you can use to test your program:
 
+\begin{verbatim}
 six perfect quality black jewels amazed the governor
 31 16 2 3 4 42 48 7 27 9 10 43 12 13 35 15 1 40 18 3 
 20 15 33 23 24 32 26 29 28 27 21 31 25 14 34 14 36 
 42 38 19 40 41 27 3 44 50 46 42 48 49 50 6
+\end{verbatim}
 
-More: https://chortle.ccsu.edu/java5/Notes/chap84/progExercises84.html
 \end{oefening}
 
 
@@ -622,19 +637,19 @@ Here are some best practices for reading and writing to files using Java librari
 
 \begin{itemize}
 
-\item \textbf{Use try-with-resources}: When reading or writing to a file, it\’s important to properly handle the opening and closing of the file stream.  Java 7 introduced the try-with-resources statement which automatically closes the file stream once the code block is executed.
+\item \textbf{Use try-with-resources}: When reading or writing to a file, it's important to properly handle the opening and closing of the file stream.  Java 7 introduced the try-with-resources statement which automatically closes the file stream once the code block is executed.
 
 \item \textbf{Use buffered streams}: Reading or writing large files can be a performance bottleneck. Using buffered streams can help improve performance by reducing the number of I/O operations required.
 
-\item \textbf{Handle exceptions}: When reading or writing to a file, it\’s important to handle any exceptions that may occur. Common exceptions include FileNotFoundException and IOException.
+\item \textbf{Handle exceptions}: When reading or writing to a file, it's important to handle any exceptions that may occur. Common exceptions include FileNotFoundException and IOException.
 
-\item \textbf{Use appropriate encoding}: When reading or writing text files, it’s important to use the appropriate encoding. The default encoding used by Java is usually UTF-8, but this may not be appropriate for all scenarios.
+\item \textbf{Use appropriate encoding}: When reading or writing text files, it's important to use the appropriate encoding. The default encoding used by Java is usually UTF-8, but this may not be appropriate for all scenarios.
 
-\item \textbf{Use relative paths}: When working with files, it\’s best to use relative paths instead of absolute paths. This makes the code more portable and easier to maintain.
+\item \textbf{Use relative paths}: When working with files, it's best to use relative paths instead of absolute paths. This makes the code more portable and easier to maintain.
 
-\item \textbf{Check for file existence}: Before reading or writing to a file, it’s important to check if the file exists. This can be done using the File.exists() method.
+\item \textbf{Check for file existence}: Before reading or writing to a file,  it's important to check if the file exists. This can be done using the File.exists() method.
 
-\item \textbf{Use descriptive file names}: When creating new files, it\’s important to use descriptive file names that are easy to understand and maintain. This can help prevent naming conflicts and make it easier to find and manage files.
+\item \textbf{Use descriptive file names}: When creating new files, it's important to use descriptive file names that are easy to understand and maintain. This can help prevent naming conflicts and make it easier to find and manage files.
 \end{itemize}
 
 

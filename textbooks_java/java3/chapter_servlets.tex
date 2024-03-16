@@ -23,7 +23,7 @@ The junior-colleague
 
 \fcolorbox{black}[HTML]{ADD8E6}{\parbox{\textwidth}{%
 \noindent \textbf{Source for this chapter:}\\
-\url{https://github.com/custersnele/PAJ_servlets.git}
+\url{https://github.com/custersnele/servlet_technology.git}
 }}
 
 \section{What is a Servlet}
@@ -497,11 +497,6 @@ public class University {
 \end{lstlisting}
 
 
-\begin{oefening}
-To get familiar with the syntax of thymeleaf, use the interactive tutorial \url{http://itutorial.thymeleaf.org/}.  Solve the basic exercises. 
-\end{oefening}
-
-
 \section{@WebFilter}
 
 Filters let you intercept the request.  And if you can intercept the request,
@@ -600,62 +595,3 @@ The html-page phonebook\_add.html is provided. Create a Servlet to handle the fo
 \end{oefening}
 
 \includegraphics{./images/chapter8/add_phonebook_entry}
-
-\begin{oefening}
-
-Implement the following user stories in the superhero application. 
-
-\begin{tabularx}{\textwidth}{| X |}
-\hline
-\textbf{Title:} Story 1\\
-\hline
-\textbf{As a superhero I can provide worklog for a specific mission.}\\
-\hline
-\textbf{Description:} A thymeleaf form is created to enter the following information:
-\begin{itemize}
-\item superhero name  - text field
-\item mission - selectbox with all current missions (not deleted or finished)
-\item date
-\item task - textbox 
-\end{itemize}
-First, the information is validated.  The superhero is automatically assigned to the mission, if he isn't yet.  The task description may not be blank. If the data is valid, it's stored in the database. \\
-\hline
-\textbf{Acceptance criteria:}
-Given the superhero is assigned to the mission,\newline
-when all the requested data is provided,\newline
-the worklog is saved in the database.\newline
-Given the superhero is not assigned to the mission,\newline
-when all the requested data is provided,\newline
-the superhero is assigned to the mission and the worklog is saved in the database.\newline
-Given the superhero enters worklog information,\newline
-when required information is left blank,\newline
-a meaningful error message is shown\newline
-and the data can be completed.\\
-\hline
-\end{tabularx}
-
-\begin{tabularx}{\textwidth}{| X |}
-\hline
-\textbf{Title:} Story 2\\
-\hline
-\textbf{As a user I can request all the worklogs for a mission.}\\
-\hline
-\textbf{Description:} A REST endpoint is implemented to retrieve all the worklogs for a mission. There is one parameter, superheroname, which filters the worklogs for the given superhero. If no parameter value is provided, all the worklogs are returned. If the mission is completed, the worklogs can be retrieved.  If the mission is deleted, the worklogs can not be retrieved.  \\
-\hline
-\textbf{Acceptance criteria:}
-Given a user requesting the worklogs of a mission,\newline
-when no parameter is provided and the mission is not deleted or completed,\newline
-the requested data is returned. \newline
-Given a user requesting the worklogs of a mission, \newline
-when a superheroname is provided and the mission is not deleted or completed,\newline
-the worklogs for entered by the given superhero are returned.\newline
-Given a user requesting the worklogs of a mission, \newline
-when the misssion is completed,\newline
-a requested worklogs are returned.\\
-Given a user requesting the worklogs of a mission, \newline
-when the misssion is deleted,\newline
-an http status 404 (NOT FOUND) is returned.\\
-\hline
-\end{tabularx}
-
-\end{oefening}
