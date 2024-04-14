@@ -73,146 +73,97 @@ spring.jpa.hibernate.ddl-auto & Possible values: none (production), create, crea
 
 Alternatively, the data source configuration can be programmatically.
 
-The H2 in-memory database will be replaced with a MySQL database.
-We will run the MySQL database in a docker container. Each database server has its own specific protocol for transporting requests to, and results from, the server to application programs. Therefore, you need to replace the h2 dependency with the MySQL driver dependency.
+The appropriate JDBC driver for your database must be included in your project. This is achieved by declaring the driver as a dependency in your project's Maven configuration file, pom.xml. The dependency ensures that the JDBC driver is available during runtime, allowing Spring Data JPA to establish and manage database connections.
+
+Here is an example of how to include a JDBC driver for MySQL in your pom.xml file:
 
 \begin{lstlisting}
 <dependency>
-      <groupId>com.mysql</groupId>
-      <artifactId>mysql-connector-j</artifactId>
-      <scope>runtime</scope>
+<groupId>com.mysql</groupId>
+<artifactId>mysql-connector-j</artifactId>
+<scope>runtime</scope>
 </dependency>
 \end{lstlisting}
 
-Here is the docker-compose.yml file for creating the database for local development.
+This configuration snippet includes the MySQL JDBC driver, mysql-connector-j.
+
+Similarly,  to connect to a PostgreSQL database, you would use the PostgreSQL JDBC driver as shown below:
 
 \begin{lstlisting}
-version: "3.3"
-
-services:
-  superhero-db:
-    image: mysql:latest
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_DATABASE: 'superherodb'
-      # So you don't have to use root, but you can if you like
-      MYSQL_USER: 'user'
-      # You can use whatever password you like
-      MYSQL_PASSWORD: 'password'
-      # Password for root access
-      MYSQL_ROOT_PASSWORD: 'admin'
+<dependency>
+<groupId>org.postgresql</groupId>
+<artifactId>postgresql</artifactId>
+<scope>runtime</scope>
+</dependency>
 \end{lstlisting}
 
-\begin{oefening}
-Update the dependencies of the superhero-backend project.
-In the folder src/main you create a new directory docker. Here you add the docker-compose.yml file. In a terminal window, you navigate to the folder /src/main/docker and execute the command \fbox{\strut docker-compose up}.
-
-In the application.properties file you add the following lines:
-
-\begin{lstlisting}
-spring.datasource.url=jdbc:mysql://localhost:3306/superherodb
-spring.datasource.username=user
-spring.datasource.password=password
-spring.jpa.hibernate.ddl-auto=update
-\end{lstlisting}
-
-Start the spring boot application. Add the datasource in intellij's Database tool window. 
-
-\frame{\includegraphics[width=\textwidth]{./images/chapter-jpa/datasource_intellij}}
-
-\frame{\includegraphics{./images/chapter-jpa/superherodb_localhost}}
-
-\end{oefening}
-
+Adjusting the driver version in your pom.xml may be necessary as you upgrade your database server or migrate to a newer version of Spring Data JPA.
 
 
 \section{The Entity class}
 
 \begin{lstlisting}[frame=single,language=java]
-package be.pxl.superhero.domain;
-
-import jakarta.persistence.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Embeddable;
 
 @Entity
-@Table(name="superheroes")
-public class Superhero {
+@Table(name = "events")
+public class Event {
 
-	private static final Logger LOGGER = LogManager.getLogger(Superhero.class);
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	private String firstName;
-	private String lastName;
-	@Column(unique = true)
-	private String superheroName;
-	@Column(name="notes")
-	private String description;
+    @Column(name = "name", nullable = false,  length = 200)
+    private String title;
 
-	public Superhero() {
-		// JPA only
-	}
+    @Embedded
+    private EventDetails details;
 
-	public Superhero(String firstName, String lastName, String superheroName) {
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Creating a new superhero...");
-		}
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.superheroName = superheroName;
-	}
+    // Constructors, getters, and setters
+}
 
-	public Long getId() {
-		return id;
-	}
+@Embeddable
+class EventDetails {
+    private LocalDate date;
+    @Column(length = 512)
+    private String location;
 
-	public String getFirstName() {
-		if (LOGGER.isTraceEnabled()) {
-			LOGGER.trace(String.format("FirstName of %s was revealed.", superheroName));
-		}
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		if (LOGGER.isFatalEnabled()) {
-			LOGGER.fatal(String.format("LastName of %s was revealed.", superheroName));
-		}
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getSuperheroName() {
-		return superheroName;
-	}
-
-	public void setSuperheroName(String superheroName) {
-		this.superheroName = superheroName;
-	}
-
-	@Override
-	public String toString() {
-		return superheroName;
-	}
+    // Constructors, getters, and setters
 }
 \end{lstlisting}
 
 A JPA entity class is a POJO (Plain Old Java Object) class  that is annotated as having the ability to represent objects in the database.
+The \textbf{@Entity} annotation is used to declare that a class is an entity, so JPA will manage it and map it to a database table.
 
 The \textbf{@Id} annotation marks a field as a primary key field.
+
+The \textbf{@GeneratedValue} annotation is used to configure the primary key generation strategy for an entity. This annotation is usually combined with @Id to specify that the persistence provider should automatically generate a unique identifier for the entity objects. There are several strategies defined in the GenerationType enumeration that can be used with @GeneratedValue. Here's an overview:
+
+\begin{itemize}
+\item \textbf{GenerationType.AUTO}
+
+This is the default strategy and the persistence provider will choose the generation strategy based on the specific database capabilities and dialect. 
+
+\item \textbf{GenerationType.IDENTITY}
+
+Indicates that the persistence provider must assign primary keys using the database identity column. This is typically supported by SQL databases with an auto-increment column.
+
+\item \textbf{GenerationType.SEQUENCE}
+
+Specifies that the primary key values will be generated using a database sequence. This is a special database object that generates numbers in sequential order. Not all databases support sequences.
+This strategy is useful for databases supporting sequences, like Oracle, PostgreSQL, etc. It's beneficial for high-volume applications due to better performance compared to IDENTITY, as the sequence generation can be more efficiently managed.
+
+\item \textbf{GenerationType.TABLE}
+
+Uses a database table to simulate a sequence. This strategy uses a table to hold the next id incrementally. It's a portable solution but not as efficient as using database-specific features like sequences or identity columns.
+\end{itemize}
 
 The \textbf{@Column} annotation is used to specify the details of the column to which a field or property will be mapped. You can use column annotation with the following most commonly used attributes:
 \begin{itemize}
@@ -222,29 +173,12 @@ The \textbf{@Column} annotation is used to specify the details of the column to 
 \item \textbf{unique}: mark the column to contain only unique values.
 \end{itemize}
 
-\begin{oefening}
-$\square$ Create an entity-class Mission.
-A mission has following fields:
-\begin{tabular}{|c|c|c|}
-\hline
-id & Long & The primary key.\\
-name & String & Unique name of the mission.\\
-completed & boolean & \\
-deleted & boolean & \\
-\hline
-\end{tabular}
 
-$\square$ Create MissionRepository, MissionService with MissionServiceImpl and MissionController to make it possible to create, retrieve, update and delete a mission. Add an REST-endpoint to retrieve all missions. Create the necessary DTOs.
+The \textbf{@Embeddable} annotation marks a class to be embedded within another entity.
+In this example,  the EventDetails does not need its own table; instead, its properties are incorporated into the table of the entity that embeds it.
 
-\frame{\includegraphics[width=\textwidth]{./images/chapter-jpa/mission_controller}}
-
-\frame{\includegraphics{./images/chapter-jpa/mission_api}}
-
-
-Test all endpoints manually.
-
-Verify the code quality with SonarQube.
-\end{oefening}
+The annotation \textbf{@Embedded}  is used to denote a class whose instances are stored as an intrinsic part of an owning entity.
+ All the fields of EventDetails class are embedded within the events table, avoiding the need for a separate table.
 
 
 \section{Entity lifecycle}
@@ -616,6 +550,38 @@ Lastly, we need DTO's with extra fields with the detailed superhero and mission 
 
 \includegraphics{./images/chapter-jpa/superhero_detail_dto}
 
+
+Overview of spring data jpa annotations.
+
+Entity Definition
+@Entity: Specifies that a class is an entity and is mapped to a database table.
+@Table: Specifies the table in the database with which the entity is mapped.
+@Column: Specifies the mapped column for a persistent property or field.
+@Id: Marks a field as a primary key.
+@GeneratedValue: Specifies the strategy for generating primary key values.
+@Embedded: Indicates a field should be treated as an embeddable type.
+@Embeddable: Marks a class to be embedded within an entity.
+Relationships
+@ManyToOne: Defines a many-to-one relationship between two entities.
+@OneToMany: Defines a one-to-many relationship between two entities.
+@OneToOne: Defines a one-to-one relationship between two entities.
+@ManyToMany: Defines a many-to-many relationship between two entities.
+@JoinColumn: Specifies a column for joining an entity association or element collection.
+Inheritance
+@Inheritance: Defines the inheritance strategy to be used for an entity class hierarchy.
+Fetching Strategy
+@Fetch: Specifies a custom fetching strategy for an association.
+@LazyCollection: Specifies that a collection should be loaded lazily.
+Miscellaneous
+@Transient: Marks a field as not persistent.
+@Temporal: Converts between Java's Date and Time types and SQL's DATE, TIME, and TIMESTAMP types.
+@Enumerated: Specifies that a persistent property or field should be persisted as an enumerated type.
+Repository Support
+@Repository: Indicates that an annotated class is a repository, which is an abstraction of data access and storage.
+@Query: Specifies a SQL or JPQL query directly on the repository method.
+@Modifying: Indicates that a query method should be considered as modifying query (such as UPDATE, DELETE).
+Transaction Management
+@Transactional: Specifies that a method or class must be executed within a transaction.
 
 
 
