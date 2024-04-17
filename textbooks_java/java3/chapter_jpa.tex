@@ -142,6 +142,8 @@ class EventDetails {
 A JPA entity class is a POJO (Plain Old Java Object) class  that is annotated as having the ability to represent objects in the database.
 The \textbf{@Entity} annotation is used to declare that a class is an entity, so JPA will manage it and map it to a database table.
 
+\textbf{@Table} specifies the table in the database with which the entity is mapped.
+
 The \textbf{@Id} annotation marks a field as a primary key field.
 
 The \textbf{@GeneratedValue} annotation is used to configure the primary key generation strategy for an entity. This annotation is usually combined with @Id to specify that the persistence provider should automatically generate a unique identifier for the entity objects. There are several strategies defined in the GenerationType enumeration that can be used with @GeneratedValue. Here's an overview:
@@ -211,25 +213,319 @@ Open the class SimpleJpaRepository and take a look at its implementation (e.g. s
 \end{oefening}
 
 
-\section{Queries}
+\section{Relationships}
 
-With Spring Data JPA you can create query methods to select records from the database without writing SQL queries. Behind the scenes, Spring Data JPA will create SQL queries based on the query method and execute the query for us.
+\subsection{OneToOne relationship}
 
-The query generation from the method name is a query generation strategy where the invoked query is derived from the name of the query method.
+A OneToOne relationship in JPA is used when one entity instance is associated with exactly one instance of another entity.  In this example a user has exactly one passport.
 
-Consider a UserRepository with query method findByEmailAddressAndLastname().
+In a \textbf{uni-directional} OneToOne relationship, only one side of the relationship maintains knowledge of the other side’s existence. Consider a scenario where each Person has exactly one Passport. The Person entity holds a reference to the Passport, but the Passport does not hold any reference to the Person.
 
 \begin{lstlisting}
-public interface UserRepository extends JpaRepository<User, Long> {
-  List<User> findByEmailAddressAndLastname(String emailAddress, String lastname);
+@Entity
+public class Person {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "passport_id", referencedColumnName = "id")
+    private Passport passport;
+
+    // Standard getters and setters
+}
+
+@Entity
+public class Passport {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    private String number;
+
+    // Standard getters and setters
 }
 \end{lstlisting}
 
-Spring Data JPA behind the scene creates a query which translates into the JPQL query: select u from User u where u.emailAddress = ?1 and u.lastname = ?2. 
+In this example, the Person entity contains a Passport field annotated with @OneToOne. The @JoinColumn annotation specifies the column in the Person table that joins to the primary key of the Passport entity.
 
-\begin{oefening}
-In the interface SuperheroRepository you add a method for retrieving a Superhero by its Supheroname. The method should an Optional.
-\end{oefening}
+The concept of \"cascade types\" defines how persistence operations such as save, delete, and update performed on one entity should be propagated (or cascaded) to its associated entity. 
+
+When using the @OneToOne annotation in JPA, you can specify a cascade type to automate the persistence lifecycle management of the associated entity. Here are the most common cascade types used in JPA:
+
+\begin{itemize}
+\item \textbf{CascadeType.PERSIST}: When persisting an entity, also persist the associated entity.  For example, when saving a Person object, also save its associated Passport.
+
+\item \textbf{CascadeType.MERGE}: When merging the state of an entity into the current persistence context, also merge the entity held in this field.
+
+\item \textbf{CascadeType.REMOVE}: When deleting an entity, also delete the associated entity. This is particularly useful when the associated entity no longer makes sense to exist independently.
+
+\item \textbf{CascadeType.REFRESH}: When refreshing an entity, also refresh the entities held in this field. This means reloading the content of the associated entity from the database, which can be useful if the database might be changed by other processes.
+
+\item \textbf{CascadeType.DETACH}: When an entity is detached from the persistence context, also detach the entities held in this field.
+
+\item \textbf{CascadeType.ALL}: A convenience that cascades all the above operations (PERSIST, MERGE, REMOVE, REFRESH, DETACH). Using CascadeType.ALL is common for @OneToOne and @OneToMany associations.
+\end{itemize}
+
+In a \textbf{bi-directional} OneToOne relationship, both entities are aware of each other. This relationship allows navigation from either side. Using the same example as above, both the Person and Passport entities can have references to each other.
+
+\begin{lstlisting}
+@Entity
+public class Person {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @OneToOne(mappedBy = "person", cascade = CascadeType.ALL)
+    private Passport passport;
+
+    // Standard getters and setters
+}
+
+@Entity
+public class Passport {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String number;
+
+    @OneToOne
+    @JoinColumn(name = "person_id")
+    private Person person;
+
+    // Standard getters and setters
+}
+\end{lstlisting}
+
+In this bi-directional setup, the Person entity uses the mappedBy attribute in the @OneToOne annotation to indicate that the Person is not the owner of the relationship and that the Passport entity contains the foreign key.
+
+\subsection{ManyToOne relationship}
+
+A ManyToOne relationship in JPA is commonly used when one entity is related to multiple instances of another entity. For instance, in a blog system, many posts may belong to one category. Below, I will provide examples of both uni-directional and bi-directional ManyToOne relationships, suitable for inclusion in a student's textbook or educational material on Spring Data JPA.
+
+Uni-directional ManyToOne Relationship
+In a uni-directional ManyToOne relationship, only the 'many' side of the relationship is aware of the 'one' side. This setup is often seen when the 'one' side doesn't need to directly access the 'many' side.
+
+Example: Books and Authors
+Suppose each book can have one author, but each author can write many books. Here, the relationship from books to authors is a typical example of a uni-directional ManyToOne relationship.
+
+Entity Definition
+java
+Copy code
+@Entity
+public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String title;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id", nullable = false)
+    private Author author;
+
+    // Standard getters and setters
+}
+
+@Entity
+public class Author {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    // Standard getters and setters, no reference back to Book
+}
+In this model, each Book entity holds a reference to its Author, which is annotated with @ManyToOne. The @JoinColumn annotation specifies the foreign key column in the Book table that links to the Author.
+
+Repository Configuration
+Repositories for each entity can be defined as follows:
+
+java
+Copy code
+public interface BookRepository extends JpaRepository<Book, Long> {
+}
+
+public interface AuthorRepository extends JpaRepository<Author, Long> {
+}
+Bi-directional ManyToOne Relationship
+In a bi-directional relationship, both sides of the relationship are aware of each other. This is useful when you want to navigate the relationship from either side.
+
+Example: Books and Authors Continued
+Expanding on the previous example, suppose now we want authors to also be aware of the books they've written.
+
+Entity Definition
+java
+Copy code
+@Entity
+public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String title;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id", nullable = false)
+    private Author author;
+
+    // Standard getters and setters
+}
+
+@Entity
+public class Author {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    @OneToMany(mappedBy = "author")
+    private Set<Book> books = new HashSet<>();
+
+    // Standard getters and setters
+}
+In this bi-directional setup, the Author class includes a Set<Book> to hold the collection of books. The @OneToMany annotation in Author uses the mappedBy attribute to indicate that the Author entity is not the owner of the relationship and that the Book entity contains the foreign key.
+
+\subsection{ManyToMany relationship}
+
+
+A ManyToMany relationship is used when multiple instances of one entity are associated with multiple instances of another entity. Using the example of books and authors, a ManyToMany relationship would be appropriate if each book could have multiple authors and each author could write multiple books. 
+
+In a uni-directional ManyToMany relationship, only one entity maintains the relationship information.
+
+Imagine a scenario where each book can have multiple authors, but we are only interested in navigating from books to authors and not the other way around.
+
+\begin{lstlisting}
+@Entity
+public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String title;
+
+    @ManyToMany
+    @JoinTable(
+        name = "book_author",
+        joinColumns = @JoinColumn(name = "book_id"),
+        inverseJoinColumns = @JoinColumn(name = "author_id")
+    )
+    private Set<Author> authors = new HashSet<>();
+
+    // Standard getters and setters
+}
+
+@Entity
+public class Author {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    // Standard getters and setters, no reference back to Books
+}
+\end{lstlisting}
+In this example, the Book entity defines a ManyToMany relationship to the Author entity. The @JoinTable annotation specifies the table that maps books to authors, including columns for each foreign key.
+
+
+In a bi-directional ManyToMany relationship, both entities are aware of each other, and navigation is possible from either side.
+
+This time, both books and authors are aware of each other and can navigate the relationship.
+
+\begin{lstlisting}
+@Entity
+public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String title;
+
+    @ManyToMany
+    @JoinTable(
+        name = "book_author",
+        joinColumns = @JoinColumn(name = "book_id"),
+        inverseJoinColumns = @JoinColumn(name = "author_id")
+    )
+    private Set<Author> authors = new HashSet<>();
+
+    // Standard getters and setters
+}
+
+@Entity
+public class Author {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    @ManyToMany(mappedBy = "authors")
+    private Set<Book> books = new HashSet<>();
+
+    // Standard getters and setters
+}
+\end{lstlisting}
+
+In the bi-directional arrangement, the Author entity includes a Set<Book> to hold the collection of books. The mappedBy attribute indicates that the Author is not the owner of the relationship, and the mapping details are managed by the Book entity.
+
+\section{Fetching strategy}
+
+JPA provides two main fetching strategies to control how related entities are loaded from the database:
+
+\begin{itemize}
+\item \textbf{Eager Fetching}: With eager fetching, related entities are loaded immediately with the main entity, whether they are accessed in the application or not. This can lead to performance issues if the relationships involve large sets of data. Eager fetching is often used when the data sets are small or always used together with the main entity.
+
+Lazy Fetching: Lazy fetching loads the related entities only when they are explicitly accessed in the application. This can improve performance by reducing the initial load time and the amount of memory consumed. However, it requires careful management of the persistence context to avoid LazyInitializationException.
+
+java
+Copy code
+@ManyToMany(fetch = FetchType.LAZY)
+private Set<Author> authors = new HashSet<>();
+In the case of ManyToMany relationships, the default fetching strategy is lazy because eager fetching can result in very large numbers of joins and thus severe performance degradation.
+
+Understanding and choosing the right fetching strategy based on the specific use case and data access patterns is crucial for developing efficient, scalable applications.
+
+\section{Queries}
+
+Basic CRUD queries are in Spring Data JPA available in the repositories. But there are multiple ways of creating custom queries in a Spring boot application. Let's discuss the different
+types of queries.
+
+\subsection{Query methods}
+
+Spring Data JPA can create queries based on method names. You can use keywords like \textit{findBy}, \textit{findAllBy},
+\textit{findBy...And...}, ...
+
+An overview of the keywords can be found in spring documentation \url{https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html}.
+
+\begin{lstlisting}
+public interface ProductRepository extends JpaRepository<Product, Long> {
+    // Query method with parameters for finding products by name and price
+    List<Product> findByNameAndPrice(String name, double price);
+}
+\end{lstlisting}
+
+\subsection{JPQL queries}
+
+JPQL, or Java Persistence Query Language, is a query language designed to abstract database details from the developer, allowing queries to be written based on entity model classes rather than on database tables.
+
+
+\begin{lstlisting}
+public interface UserRepository extends JpaRepository<User, Long> {
+  @Query("SELECT u FROM User u WHERE u.age >= :minAge")
+  List<User> findByAgeGreaterThan(@Param("minAge") int minAge);
+}
+\end{lstlisting}
+
+\subsection{Native SQL queries}
+
+\begin{lstlisting}
+
+\end{lstlisting}
 
 
 \section{Unit testing a repository}
@@ -555,26 +851,20 @@ Overview of spring data jpa annotations.
 
 Entity Definition
 @Entity: Specifies that a class is an entity and is mapped to a database table.
-@Table: Specifies the table in the database with which the entity is mapped.
+
 @Column: Specifies the mapped column for a persistent property or field.
 @Id: Marks a field as a primary key.
 @GeneratedValue: Specifies the strategy for generating primary key values.
 @Embedded: Indicates a field should be treated as an embeddable type.
 @Embeddable: Marks a class to be embedded within an entity.
-Relationships
-@ManyToOne: Defines a many-to-one relationship between two entities.
-@OneToMany: Defines a one-to-many relationship between two entities.
-@OneToOne: Defines a one-to-one relationship between two entities.
-@ManyToMany: Defines a many-to-many relationship between two entities.
-@JoinColumn: Specifies a column for joining an entity association or element collection.
-Inheritance
-@Inheritance: Defines the inheritance strategy to be used for an entity class hierarchy.
+
 Fetching Strategy
 @Fetch: Specifies a custom fetching strategy for an association.
 @LazyCollection: Specifies that a collection should be loaded lazily.
 Miscellaneous
 @Transient: Marks a field as not persistent.
-@Temporal: Converts between Java's Date and Time types and SQL's DATE, TIME, and TIMESTAMP types.
+
+
 @Enumerated: Specifies that a persistent property or field should be persisted as an enumerated type.
 Repository Support
 @Repository: Indicates that an annotated class is a repository, which is an abstraction of data access and storage.
