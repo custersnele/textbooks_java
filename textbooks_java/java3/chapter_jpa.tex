@@ -50,7 +50,7 @@ Their main functions are:
 \end{itemize}
 
 
-\section{Datasource}
+\section{Datasource and application properties}
 
 In Spring Boot a DataSource-object is the preferred means of getting a connection to a database.
 The interface jakarta.sql.DataSource is implemented by the database driver vendor. 
@@ -97,6 +97,41 @@ Similarly,  to connect to a PostgreSQL database, you would use the PostgreSQL JD
 \end{lstlisting}
 
 Adjusting the driver version in your pom.xml may be necessary as you upgrade your database server or migrate to a newer version of Spring Data JPA.
+
+\subsection{Application properties}
+
+\begin{verbatim}
+\end{verbatim}
+
+\subsubsection{Database initialization}
+The spring.jpa.hibernate.ddl-auto property is Spring Data JPA specific property that specifies a value that will eventually be passed to Hibernate under the property it knows, hibernate.hbm2ddl.auto.
+
+The values create, create-drop, validate, and update basically influence how the schema tool management will manipulate the database schema at startup.
+
+\subsubsection{Logging and debugging}
+
+\begin{itemize}
+\item \textbf{spring.jpa.show-sql}: When set to true, Hibernate will log all SQL statements, which is invaluable for debugging and understanding how JPA translates entity operations into SQL.
+
+\item \textbf{spring.jpa.properties.hibernate.format_sql}: Improves the readability of the SQL logged by Hibernate by formatting it.
+
+\item \textbf{logging.level.org.hibernate.type.descriptor.sql}: Adjusting the log level makes it possible to log JDBC parameters and the results coming from the database.
+\end{itemize}
+
+\textit{logging.level.ROOT} is used for configuring the base level of logging across all components in the application unless overridden.
+
+\subsubsection{Transaction Management}
+
+Some properties are related to transaction management. 
+
+Setting \textit{spring.datasource.hikari.auto-commit=false} applies to the HikariCP connection pool. Setting auto-commit to false means that each connection obtained from the pool will not automatically commit its transactions after each SQL statement. Instead, the application must explicitly call commit or rollback on the transaction. This setting is crucial for ensuring that the transaction management can be fully controlled by the application.
+
+When setting \texit{spring.jpa.properties.hibernate.connection.autocommit} to false, Hibernate will not commit after each statement execution, allowing for transactional integrity where operations can be rolled back if a transaction is incomplete or encounters an error.
+
+Finally, \textit{spring.jpa.open-in-view=false} controls whether a Hibernate Session is bound to the thread for the entire duration of a web request. Setting it to false avoids the anti-pattern where the database transaction is kept open during the view rendering, potentially leading to performance issues, such as longer database connection hold times and difficulties in detecting transactional issues early in the request processing. It is important to set this property to false. It may occur that your application works on the developer machine but fails under load.
+Read the following article for additional information:
+\url{https://backendhance.com/en/blog/2023/open-session-in-view/}
+
 
 \section{The Entity class}
 
@@ -856,6 +891,11 @@ The parameter Pageable is automatically populated by Spring when the method is c
 For example, a request URL might look like this: \textit{/books?page=0\&size=10\&sort=title,asc}. This tells the application to get the first page of books, with 10 books per page, sorted by title in ascending order.
 
 \begin{lstlisting}
+public interface BookRepository extends JpaRepository<Book, Long> {
+}
+\end{lstlisting}
+
+\begin{lstlisting}
 @Service
 public class BookService {
 
@@ -867,13 +907,6 @@ public class BookService {
     public BookService(AuthorRepository authorRepository, BookRepository bookRepository) {
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
-    }
-
-    public List<String> getBooksByAuthor(String authorName) {
-        LOGGER.info("Starting getBooksByAuthor");
-        Author author = authorRepository.findAuthorByName(authorName).orElseThrow(() -> new NotFoundException(""));
-        LOGGER.info("Author retrieved...");
-        return author.getBooks().stream().map(Book::getTitle).toList();
     }
 
     public Page<BookDto> findAllBooks(Pageable pageable) {
@@ -888,19 +921,11 @@ public class BookService {
 }
 \end{lstlisting}
 
-The Pageable parameter is passed to the bookService.findAllBooks(pageable) method. This method is expected to interact with the repository layer that extends Spring Data’s PagingAndSortingRepository or JpaRepository. These repositories natively support Pageable for pagination and sorting.
-The repository method would use the Pageable object to construct a database query that fetches only the specified slice of data based on the page number, page size, and sorting criteria.
-Return Type (Page<BookDto>):
+The Pageable parameter is passed to the BookService's method findAllBooks. This method is expected to interact with the repository layer that extends Spring Data’s PagingAndSortingRepository or JpaRepository. These repositories natively support Pageable for pagination and sorting.
+The repository method uses the Pageable object to construct a database query that fetches only the specified slice of data based on the page number, page size, and sorting criteria.
+
 The method returns a Page<BookDto>, which is a specialized implementation of the Slice interface. It provides not only the list of data for the current page but also additional information about the total number of pages, the total number of elements, whether there are more pages available, and so forth.
-Benefits of Using Pageable
-Efficiency: Only the necessary slice of data is fetched from the database, which can be crucial for performance when dealing with large datasets.
-Flexibility: Clients of your API can specify how many records they want per page and how the data should be sorted.
-Ease of Use: Spring Data handles much of the heavy lifting, making it easier to implement robust pagination and sorting without much boilerplate code.
 
-
-\begin{lstlisting}
-
-\end{lstlisting}
 
 \begin{verbatim}
 {
@@ -971,7 +996,245 @@ Ease of Use: Spring Data handles much of the heavy lifting, making it easier to 
 }
 \end{verbatim}
 
+
+Only the requested slice of data is fetched from the database, which can be crucial for performance when dealing with large datasets. Paging and sorting offers flexibility: clients of your API can specify how many records they want per page and how the data should be sorted.
+Spring Data handles much of the heavy lifting, it's easy to implement robust pagination and sorting without much boilerplate code.
+
 \section{Searching and filtering data}
+
+
+\begin{lstlisting}
+public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificationExecutor<Book> {
+}
+\end{lstlisting}
+
+
+
+
+\section{N + 1 query problem}
+
+Suppose we have the entity-class Post and the entity-class PostComment. There is a uni-directional many-to-one relationship between PostComment and Post.  A PostComment belongs to exactly one Post however for one Post there may exist multiple PostComments.
+
+\begin{lstlisting}[frame=single,  language=java]
+package be.pxl.demo.domain;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+
+@Entity
+public class Post {
+	@Id
+	@GeneratedValue
+	private Long id;
+	private String title;
+
+	public Post() {
+		// JPA only
+	}
+
+	public Post(String title) {
+		this.title = title;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+}
+\end{lstlisting}
+
+\begin{lstlisting}[frame=single,  language=java]
+package be.pxl.demo.domain;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+
+@Entity
+public class PostComment {
+	@Id
+	@GeneratedValue
+	private Long id;
+	@ManyToOne
+	private Post post;
+	private String review;
+
+	public PostComment() {
+		// JPA only
+	}
+
+	public PostComment(Post post, String review) {
+		this.post = post;
+		this.review = review;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public Post getPost() {
+		return post;
+	}
+
+	public String getReview() {
+		return review;
+	}
+}
+\end{lstlisting}
+
+We have a JpaRepository for both entity-classes.
+The PostService implements a method to create a post, a method for creating comments, and a method for retrieving all comments from the database.
+
+\begin{lstlisting}
+package be.pxl.demo.service;
+
+import be.pxl.demo.api.dto.PostCommentDTO;
+import be.pxl.demo.domain.Post;
+import be.pxl.demo.domain.PostComment;
+import be.pxl.demo.exception.ResourceNotFoundException;
+import be.pxl.demo.repository.PostCommentRepository;
+import be.pxl.demo.repository.PostRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class PostService {
+
+    private final PostCommentRepository postCommentRepository;
+    private final PostRepository postRepository;
+
+    public PostService(PostCommentRepository postCommentRepository,
+                       PostRepository postRepository) {
+        this.postCommentRepository = postCommentRepository;
+        this.postRepository = postRepository;
+    }
+
+    public long createPost(String title) {
+        return postRepository.save(new Post(title)).getId();
+    }
+
+    public void createPostComment(long postId, String review) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
+        PostComment postComment = new PostComment(post, review);
+        postCommentRepository.save(postComment);
+
+    }
+
+    public List<PostCommentDTO> findAll() {
+        List<PostComment> allComments = postCommentRepository.findAll();
+        return allComments.stream().map(pc -> new PostCommentDTO(pc.getPost().getTitle(), pc.getReview())).toList();
+    }
+}
+\end{lstlisting}
+
+Then we have the PostController where we implement two endpoints. One endpoint for generating testdata and another endpoint for retrieving all the post comments.
+
+\begin{lstlisting}
+package be.pxl.demo.api;
+
+import be.pxl.demo.api.dto.PostCommentDTO;
+import be.pxl.demo.service.PostService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("posts")
+public class PostController {
+
+    private final PostService postService;
+
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
+
+    @GetMapping("init")
+    public void init() {
+        long post1Id = postService.createPost("PXL'er Ward Lemmelijn kroont zich tot wereldkampioen indoorroeien.");
+        long post2Id = postService.createPost("PXL naar finale in Cybersecurity challenge.");
+        long post3Id = postService.createPost("Luister naar PXLRadio!!");
+
+        postService.createPostComment(post1Id, "Schitterend ***");
+        postService.createPostComment(post1Id, "Proficiat!");
+        postService.createPostComment(post2Id, "Ik ben zeker van de partij!");
+        postService.createPostComment(post2Id, "Ik hou van uitdagingen!");
+        postService.createPostComment(post3Id, "Leuke muziek!");
+        postService.createPostComment(post3Id, "Toffe radiozender!");
+        postService.createPostComment(post3Id, "Zet die plaat af.");
+    }
+
+    @GetMapping
+    public List<PostCommentDTO> getAllComments() {
+        return postService.findAll();
+    }
+}
+\end{lstlisting}
+
+In application.properties file make sure to enable show-sql.
+
+\begin{lstlisting}
+spring.jpa.show-sql=true
+# Following property can be used to format the sql shown
+# spring.jpa.properties.hibernate.format_sql=true 
+\end{lstlisting}
+
+After we call the endpoint to generate testdata, we retrieve all comments from the database.
+In the log-files you will find the following log messages.
+
+\begin{lstlisting}
+Hibernate: select p1_0.id,p1_0.post_id,p1_0.review from post_comment p1_0
+Hibernate: select p1_0.id,p1_0.title from post p1_0 where p1_0.id=?
+Hibernate: select p1_0.id,p1_0.title from post p1_0 where p1_0.id=?
+Hibernate: select p1_0.id,p1_0.title from post p1_0 where p1_0.id=?
+\end{lstlisting}
+
+After retrieven the comments from the database, every post that's involved in the comments is retrieved as well. So, if you have N posts involved, N+1-queries will be executed. That's not efficient!
+
+You should tackle this problem by re-writing the query to retrieve all post comments.
+
+\begin{lstlisting}
+package be.pxl.demo.repository;
+
+import be.pxl.demo.domain.PostComment;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface PostCommentRepository extends JpaRepository<PostComment, Long> {
+
+    @Override
+    @EntityGraph(
+            type = EntityGraph.EntityGraphType.FETCH,
+            attributePaths = {
+                    "post"
+            }
+    )
+    List<PostComment> findAll();
+}
+\end{lstlisting}
+
+When retrieving comments using PostCommentRepository.findAll(), the @EntityGraph annotation causes Spring Data JPA and Hibernate to fetch the associated entities included in attributePaths.
+
+Only one query is executed.
+
+\begin{lstlisting}
+Hibernate: select p1_0.id,p2_0.id,p2_0.title,p1_0.review from post_comment p1_0 left join post p2_0 on p2_0.id=p1_0.post_id
+\end{lstlisting}
+
+Being able to see what Hibernate is actually doing with the database is very important.
+It's good practice to enable SQL output when working on a Spring Boot project, just as a sanity check. 
+You will definitly find problems you were unaware of by examining the SQL output.
+
+An extended example of the N+1 query problem and the solution can be found in this post: \url{https://tech.asimio.net/2020/11/06/Preventing-N-plus-1-select-problem-using-Spring-Data-JPA-EntityGraph.html}.
 
 
 
