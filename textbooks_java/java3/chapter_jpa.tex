@@ -19,6 +19,8 @@ The junior-colleague
 \item can implement CRUD operations using JPA.
 \item can implement queries using method names and annotations in Spring Data JPA.
 \item can describe and implement transactions in JPA.
+\item can explain transaction propagation.
+\item can explain fetching strategy.
 \item can describe and configure application properties for logging and debugging.
 \item can describe and configure application properties for managing transactions.
 \item can implement pagination and filtering in JPA applications.
@@ -545,6 +547,13 @@ Understanding and choosing the right fetching strategy based on the specific use
 Consider the following method findBooksByAuthor() in a BookService.
 When we look closely at the logging of the SQL-queries. We see that first, the author is retrieved and later, the author's books are retrieved on the moment we call author.getBooks(), not sooner. This is lazy loading or lazy fetching. When dealing with one-to-many or many-to-many relationships, lazy fetching is mostly the best solution in terms of performance.
 
+Make sure your method is running in  a transaction. Otherwise you will encounter a LazyInitializationException.
+\begin{verbatim}
+org.hibernate.LazyInitializationException: 
+failed to lazily initialize a collection of role: be.pxl.domain.Author.books:
+could not initialize proxy - no Session
+\end{verbatim}
+
 \begin{lstlisting}
 @Service
 public class BookService {
@@ -557,8 +566,10 @@ public class BookService {
         this.authorRepository = authorRepository;
     }
 
-    public List<String> findBooksByAuthor(String authorName) {
-        Author author = authorRepository.findAuthorByName(authorName).orElseThrow(() -> new NotFoundException("No author found"));
+    @Transactional
+    public List<String> getBooksByAuthor(String authorName) {
+        LOGGER.info("Starting getBooksByAuthor");
+        Author author = authorRepository.findAuthorByName(authorName).orElseThrow(() -> new NotFoundException(""));
         LOGGER.info("Author retrieved...");
         return author.getBooks().stream().map(Book::getTitle).toList();
     }
@@ -566,7 +577,8 @@ public class BookService {
 \end{lstlisting}
 
 \begin{verbatim}
-2024-04-23T20:23:48.883+02:00  INFO 26656 --- [nio-8080-exec-8] be.pxl.helpdesk.service.BookService      : Starting getBooksByAuthor
+2024-04-23T20:23:48.883+02:00  INFO 26656 --- [nio-8080-exec-8]
+be.pxl.service.BookService      : Starting getBooksByAuthor
 Hibernate: 
     select
         a1_0.id,
@@ -575,7 +587,8 @@ Hibernate:
         authors a1_0 
     where
         a1_0.name=?
-2024-04-23T20:23:48.946+02:00  INFO 26656 --- [nio-8080-exec-8] be.pxl.helpdesk.service.BookService      : Author retrieved...
+2024-04-23T20:23:48.946+02:00  INFO 26656 --- [nio-8080-exec-8]
+be.pxl.service.BookService      : Author retrieved...
 Hibernate: 
     select
         b1_0.author_id,
@@ -619,7 +632,8 @@ public class Author {
 \end{lstlisting}
 
 \begin{verbatim}
-2024-04-23T20:21:02.145+02:00  INFO 19956 --- [nio-8080-exec-6] be.pxl.helpdesk.service.BookService      : Starting getBooksByAuthor
+2024-04-23T20:21:02.145+02:00  INFO 19956 --- [nio-8080-exec-6]
+be.pxl.service.BookService      : Starting getBooksByAuthor
 Hibernate: 
     select
         a1_0.id,
@@ -640,7 +654,8 @@ Hibernate:
             on b1_1.id=b1_0.book_id 
     where
         b1_0.author_id=?
-2024-04-23T20:21:02.216+02:00  INFO 19956 --- [nio-8080-exec-6] be.pxl.helpdesk.service.BookService      : Author retrieved...
+2024-04-23T20:21:02.216+02:00  INFO 19956 --- [nio-8080-exec-6]
+be.pxl.service.BookService      : Author retrieved...
 \end{verbatim}
 
 Always be very carefull with bi-directional relationships and eager fetching. The performance cost may be underestimated. In this case, if an author has written many books, it may be beneficial, to only maintain the owning part of the relationship and search for in author's books with a query in the BookRepository.
@@ -651,6 +666,8 @@ The \textbf{@Transactional} annotation in Spring Boot is used to declare that a 
 
 A transaction is a sequence of actions that are treated as a single unit of work. These actions should either complete entirely or take no effect at all.
 Transaction Management ensures that an application maintains data integrity and consistency in scenarios involving multiple transaction operations.
+
+Newly created entities should always be saved to the database, however changes to managed entities are persisted automatically when the transaction is committed.
 
 \subsection{Usage of @Transactional}
 
@@ -725,13 +742,12 @@ In the context of transaction management, transaction propagation behaviours def
 \item \textbf{REQUIRED} - Use the existing transaction if available; start a new one if none exists. This is the default value.
 \item \textbf{SUPPORTS} - Execute within the existing transaction if one is already present; execute non-transactionally if there is no transaction.
 \item \textbf{MANDATORY} - Require an existing transaction; throw an exception if there is no existing transaction.
-\item \textbf{REQUIRES_NEW} - Suspend the current transaction if one exists, and start a new transaction.
-\item \textbf{NOT_SUPPORTED} - Suspend the existing transaction and execute non-transactionally.
+\item \textbf{REQUIRES\_NEW} - Suspend the current transaction if one exists, and start a new transaction.
+\item \textbf{NOT\_SUPPORTED} - Suspend the existing transaction and execute non-transactionally.
 \item \textbf{NEVER} - Execute non-transactionally; throw an exception if there is an existing transaction.
 \end{itemize}
 
-
-Given the following record, classes and interfaces.
+We will discuss these transaction propagation behaviours with example code.
 
 \begin{lstlisting}
 public record JoinOrganisationDto(String organisation, String employee) {
@@ -818,6 +834,7 @@ public class EmployeeService {
     public Employee insertEmployee(String name) {
         Employee employee = new Employee();
         employee.setName(name);
+        employee = employeeRepository.save(employee);
         return employee;
     }
 }
@@ -836,9 +853,7 @@ POST http://localhost:8080/organisations/join
 }
 \end{verbatim}
 
-If we don't save the employee explicitly, no data is persisted in the database.
-
-If we update the code, and save the employee explicitly, the employee data is persisted, but when something goes wrong in the method joinOrganisation, we end up with inconsistent data. The employee is saved without an organisation.
+The employee data is persisted, but when something goes wrong in the method joinOrganisation, we end up with inconsistent data. The employee is saved without an organisation.
 
 \begin{lstlisting}
  public Employee insertEmployee(String name) {
@@ -856,12 +871,164 @@ public void joinOrganisation(String organisationName, String employeeName) {
 }
 \end{lstlisting}
 
+\subsubsection{Propagation.REQUIRED}
+
 Let's add transaction management and discuss transaction propagation.
 When you use the annotation @Transactional, the default value for transaction propagation is REQUIRED: @Transactional(propagation = Propagation.REQUIRED).
 
+\begin{lstlisting}
+@Transactional(propagation = Propagation.REQUIRED)
+public void joinOrganisation(String organisationName, String employeeName) {
+        Organisation organisation = organizationRepository.findByName(organisationName).orElseThrow(() -> new NotFoundException("Not found"));
+        Employee employee = employeeService.insertEmployee(employeeName);
+        employee.setOrganisation(organisation);
+        //throw new RuntimeException("Intentional error");
+}
+
+@Transactional(propagation = Propagation.REQUIRED)
+ public Employee insertEmployee(String name) {
+        Employee employee = new Employee();
+        employee.setName(name);
+        employee = employeeRepository.save(employee);
+        return employee;
+}
+\end{lstlisting}
+
+When calling joinOrganisation a new transaction is created. This transaction is used when calling the method insertEmployee. This results in persisting an employee with his/her organisation. If an error occurs, the transaction is rolled back, and the employee is not persisted in the database. 
+
+\includegraphics[width=8cm]{./images/chapter-jpa/transaction_propagation_1}
 
 
+\subsubsection{Propagation.SUPPORTS}
 
+\begin{lstlisting}
+@Transactional(propagation = Propagation.REQUIRED)
+public void joinOrganisation(String organisationName, String employeeName) {
+        Organisation organisation = organizationRepository.findByName(organisationName).orElseThrow(() -> new NotFoundException("Not found"));
+        Employee employee = employeeService.insertEmployee(employeeName);
+        employee.setOrganisation(organisation);
+        //throw new RuntimeException("Intentional error");
+}
+
+@Transactional(propagation = Propagation.SUPPORTS)
+ public Employee insertEmployee(String name) {
+        Employee employee = new Employee();
+        employee.setName(name);
+        employee = employeeRepository.save(employee);
+        return employee;
+}
+\end{lstlisting}
+
+The method insertEmployee uses the transaction that is created when calling the joinOrganisation method. However, if the insertEmployee is called directly from the controller, no transaction will be created.
+
+\includegraphics[width=8cm]{./images/chapter-jpa/transaction_propagation_2}
+
+\subsubsection{Propagation.NOT\_SUPPORTED}
+
+\begin{lstlisting}
+@Transactional(propagation = Propagation.REQUIRED)
+public void joinOrganisation(String organisationName, String employeeName) {
+        Organisation organisation = organizationRepository.findByName(organisationName).orElseThrow(() -> new NotFoundException("Not found"));
+        Employee employee = employeeService.insertEmployee(employeeName);
+        employee.setOrganisation(organisation);
+        //throw new RuntimeException("Intentional error");
+}
+
+@Transactional(propagation = Propagation.NOT_SUPPORTED)
+ public Employee insertEmployee(String name) {
+        Employee employee = new Employee();
+        employee.setName(name);
+        employee = employeeRepository.save(employee);
+        return employee;
+}
+\end{lstlisting}
+
+\includegraphics[width=8cm]{./images/chapter-jpa/transaction_propagation_3}
+
+The method insertEmployee runs without transaction. It doesn't use the existing transaction, nor creates a new transaction. The employee is persisted in the database, without a link to its organisation.
+
+\subsubsection{Propagation.REQUIRES\_NEW}
+
+\begin{lstlisting}
+@Transactional(propagation = Propagation.REQUIRED)
+public void joinOrganisation(String organisationName, String employeeName) {
+        Organisation organisation = organizationRepository.findByName(organisationName).orElseThrow(() -> new NotFoundException("Not found"));
+        Employee employee = employeeService.insertEmployee(employeeName);
+        employee.setOrganisation(organisation);
+        //throw new RuntimeException("Intentional error");
+}
+
+@Transactional(propagation = Propagation.REQUIRES_NEW)
+ public Employee insertEmployee(String name) {
+        Employee employee = new Employee();
+        employee.setName(name);
+        employee = employeeRepository.save(employee);
+        return employee;
+}
+\end{lstlisting}
+
+\includegraphics[width=8cm]{./images/chapter-jpa/transaction_propagation_4}
+
+The method insertEmployee runs in its own, newly created transaction. If something goes wrong in the method joinOrganisation, only the sql statements from its own transaction are rolled back. Persisting the employee was already committed and will therefore not rollback.
+
+\subsubsection{Propagation.NEVER}
+
+\begin{lstlisting}
+@Transactional(propagation = Propagation.REQUIRED)
+public void joinOrganisation(String organisationName, String employeeName) {
+        Organisation organisation = organizationRepository.findByName(organisationName).orElseThrow(() -> new NotFoundException("Not found"));
+        Employee employee = employeeService.insertEmployee(employeeName);
+        employee.setOrganisation(organisation);
+        //throw new RuntimeException("Intentional error");
+}
+
+@Transactional(propagation = Propagation.NEVER)
+ public Employee insertEmployee(String name) {
+        Employee employee = new Employee();
+        employee.setName(name);
+        employee = employeeRepository.save(employee);
+        return employee;
+}
+\end{lstlisting}
+
+The method insertEmployee never runs in a transaction. If the calling method
+runs in a transaction, an exception will occur.
+
+\begin{verbatim}
+org.springframework.transaction.IllegalTransactionStateException: Existing transaction found for transaction marked with propagation 'never'
+\end{verbatim}
+
+\includegraphics[width=8cm]{./images/chapter-jpa/transaction_propagation_5}
+
+\subsubsection{Propagation.MANDATORY}
+
+\begin{lstlisting}
+@Transactional(propagation = Propagation.REQUIRED)
+public void joinOrganisation(String organisationName, String employeeName) {
+        Organisation organisation = organizationRepository.findByName(organisationName).orElseThrow(() -> new NotFoundException("Not found"));
+        Employee employee = employeeService.insertEmployee(employeeName);
+        employee.setOrganisation(organisation);
+        //throw new RuntimeException("Intentional error");
+}
+
+@Transactional(propagation = Propagation.MANDATORY)
+ public Employee insertEmployee(String name) {
+        Employee employee = new Employee();
+        employee.setName(name);
+        employee = employeeRepository.save(employee);
+        return employee;
+}
+\end{lstlisting}
+
+The method insertEmployee uses the existing transaction.
+
+\includegraphics[width=8cm]{./images/chapter-jpa/transaction_propagation_6}
+
+ If there is no current transaction that can be used, an error will be thrown. 
+
+\begin{verbatim}
+org.springframework.transaction.IllegalTransactionStateException: No existing transaction found for transaction marked with propagation 'mandatory'
+\end{verbatim}
 
 \section{Queries}
 
@@ -958,10 +1125,10 @@ The test class uses the entity managers, which is injected in the test with the 
 
 
 \begin{lstlisting}[frame=single, language=java]
-package be.pxl.helpdesk.repository;
+package be.pxl.repository;
 
-import be.pxl.helpdesk.builder.AuthorBuilder;
-import be.pxl.helpdesk.domain.Author;
+import be.pxl.builder.AuthorBuilder;
+import be.pxl.domain.Author;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeEach;
