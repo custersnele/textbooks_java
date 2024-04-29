@@ -5,18 +5,24 @@
 The junior-colleague
 \begin{enumerate}[nolistsep]
 \item can describe the concept of ORM.
-\item can explain what JPA is, and what it’s not.
-\item can denominate different JPA providers.
-\item can describe what a persistence unit is.
-\item can explain the fundamental interfaces of JPA.
-\item can explain what the persistence context is.
-\item can implement entity classes.
-\item can describe the entity objects’ lifecycle.
-\item can implement different types of relationships between entity classes.
-\item can implement CRUD operations.
-\item can implement queries.
-\item can implement named queries.
-\item can explain, identify and solve the N + 1 query problem.
+\item can explain what JPA is.
+\item can list and describe different JPA providers.
+\item can define what Hibernate is and its role within JPA.
+\item can explain the benefits of using Spring Data JPA.
+\item can describe what a persistence unit entails in JPA.
+\item can outline and explain the fundamental interfaces of JPA.
+\item can discuss what the persistence context is and its importance.
+\item can implement and explain entity classes in JPA.
+\item can use and explain the different annotations in JPA entity classes.
+\item can describe the lifecycle of entity objects in JPA.
+\item can implement and describe various types of relationships in entity classes.
+\item can implement CRUD operations using JPA.
+\item can implement queries using method names and annotations in Spring Data JPA.
+\item can describe and implement transactions in JPA.
+\item can describe and configure application properties for logging and debugging.
+\item can describe and configure application properties for managing transactions.
+\item can implement pagination and filtering in JPA applications.
+\item can explain, identify, and solve the N + 1 query problem in JPA applications.
 \end{enumerate}}}
 
   
@@ -29,16 +35,17 @@ Object-Relational Mapping (ORM) is a technique that lets you query and manipulat
 
 \section{What is JPA?}
 
-The Java Persistence API (JPA; recently renamed to Jakarta Persistence API) is a specification that defines how to persist data in Java applications. JPA mainly focuses on the ORM layer and managing persistent objects.
+The Java Persistence API (or more correctly Jakarta Persistence API) is a specification that defines how to persist data in Java applications. JPA mainly focuses on the ORM layer and managing persistent objects.
 
 JPA is a specification which means JPA consists of implementation guidelines for the Java ORM layer and the syntax. The specification only comes with interfaces, no actual implementation.  A reference implementation can be provided but other companies can create and distribute their own implementation of the specification.
 
 \frame{\includegraphics[width=\textwidth]{./images/chapter6/entity_class_specification}}
 
-For our exercises and projects we will use Hibernate as the actual implementation of de JPA specification \footnote{\url{https://hibernate.org/ and https://hibernate.org/orm/}}.  
+Hibernate is the default JPA provider when building Spring Boot applications. \footnote{\url{https://hibernate.org/ and https://hibernate.org/orm/}}.  
 
+Spring Data JPA is a part of the larger Spring Data family, aimed at simplifying data access and manipulation across a variety of database technologies.
 Spring Data JPA adds a layer on top of JPA. It uses all the features defined by the JPA specification, but adds no-code implementation of the repository pattern and the creation of database queries from method names.
-
+Within this framework, JpaRepository is a key interface that extends Spring Data’s repository abstraction, specifically tailored for JPA technology. This interface is designed to streamline the storage and retrieval processes of entity instances, reducing the amount of boilerplate code developers need to write and offering a more intuitive interaction with the data layer.
 JpaRepository extends PagingAndSortingRepository which in turn extends CrudRepository.
 
 Their main functions are:
@@ -70,9 +77,9 @@ spring.jpa.hibernate.ddl-auto & Possible values: none (production), create, crea
 \hline
 \end{tabular}
 
-Alternatively, the data source configuration can be programmatically.
+Alternatively, the data source configuration can be done programmatically.
 
-The appropriate JDBC driver for your database must be included in your project. This is achieved by declaring the driver as a dependency in your project's Maven configuration file, pom.xml. The dependency ensures that the JDBC driver is available during runtime, allowing Spring Data JPA to establish and manage database connections.
+The appropriate JDBC driver for your database must be included in your project by declaring the driver as a dependency in your project's Maven configuration file, pom.xml. The dependency ensures that the JDBC driver is available during runtime, allowing Spring Data JPA to establish and manage database connections.
 
 Here is an example of how to include a JDBC driver for MySQL in your pom.xml file:
 
@@ -84,7 +91,6 @@ Here is an example of how to include a JDBC driver for MySQL in your pom.xml fil
 </dependency>
 \end{lstlisting}
 
-This configuration snippet includes the MySQL JDBC driver, mysql-connector-j.
 
 Similarly,  to connect to a PostgreSQL database, you would use the PostgreSQL JDBC driver as shown below:
 
@@ -100,25 +106,26 @@ Adjusting the driver version in your pom.xml may be necessary as you upgrade you
 
 \subsection{Application properties}
 
-\begin{verbatim}
-\end{verbatim}
+Configuring a Spring Boot application involves more than just setting up the datasource. In this section, we delve into application properties that assist in database initialization, enhance logging and debugging capabilities, and facilitate robust transaction management. Understanding these properties will enable you to fine-tune your application for better performance, easier maintenance, and more effective error handling.
 
 \subsubsection{Database initialization}
-The spring.jpa.hibernate.ddl-auto property is Spring Data JPA specific property that specifies a value that will eventually be passed to Hibernate under the property it knows, hibernate.hbm2ddl.auto.
 
-The values create, create-drop, validate, and update basically influence how the schema tool management will manipulate the database schema at startup.
+The setting for Spring Data JPA's property \textit{spring.jpa.hibernate.ddl-auto} is directly transferred to Hibernate as the property \textit{hibernate.hbm2ddl.auto}. The permissible values — \textit{create}, \textit{create-drop}, \textit{validate}, and \textit{update} — determine how the schema tool management adjusts the database schema during application startup.
+
 
 \subsubsection{Logging and debugging}
+
+\textit{logging.level.ROOT} is used for configuring the base level of logging across all components in the application unless overridden.
 
 \begin{itemize}
 \item \textbf{spring.jpa.show-sql}: When set to true, Hibernate will log all SQL statements, which is invaluable for debugging and understanding how JPA translates entity operations into SQL.
 
-\item \textbf{spring.jpa.properties.hibernate.format_sql}: Improves the readability of the SQL logged by Hibernate by formatting it.
+\item \textbf{spring.jpa.properties.hibernate.format\_sql}: Improves the readability of the SQL logged by Hibernate by formatting it.
 
 \item \textbf{logging.level.org.hibernate.type.descriptor.sql}: Adjusting the log level makes it possible to log JDBC parameters and the results coming from the database.
 \end{itemize}
 
-\textit{logging.level.ROOT} is used for configuring the base level of logging across all components in the application unless overridden.
+
 
 \subsubsection{Transaction Management}
 
@@ -126,7 +133,7 @@ Some properties are related to transaction management.
 
 Setting \textit{spring.datasource.hikari.auto-commit=false} applies to the HikariCP connection pool. Setting auto-commit to false means that each connection obtained from the pool will not automatically commit its transactions after each SQL statement. Instead, the application must explicitly call commit or rollback on the transaction. This setting is crucial for ensuring that the transaction management can be fully controlled by the application.
 
-When setting \texit{spring.jpa.properties.hibernate.connection.autocommit} to false, Hibernate will not commit after each statement execution, allowing for transactional integrity where operations can be rolled back if a transaction is incomplete or encounters an error.
+When setting \textit{spring.jpa.properties.hibernate.connection.autocommit} to false, Hibernate will not commit after each statement execution, allowing for transactional integrity where operations can be rolled back if a transaction is incomplete or encounters an error.
 
 Finally, \textit{spring.jpa.open-in-view=false} controls whether a Hibernate Session is bound to the thread for the entire duration of a web request. Setting it to false avoids the anti-pattern where the database transaction is kept open during the view rendering, potentially leading to performance issues, such as longer database connection hold times and difficulties in detecting transactional issues early in the request processing. It is important to set this property to false. It may occur that your application works on the developer machine but fails under load.
 Read the following article for additional information:
@@ -134,6 +141,8 @@ Read the following article for additional information:
 
 
 \section{The Entity class}
+
+Let's explore an entity class that uses key annotations to manipulate event records in a database.
 
 \begin{lstlisting}[frame=single,language=java]
 import jakarta.persistence.Entity;
@@ -155,6 +164,9 @@ public class Event {
 
     @Column(name = "name", nullable = false,  length = 200)
     private String title;
+    
+    @Enumerated(value = EnumType.STRING)
+    private Category category;
 
     @Embedded
     private EventDetails details;
@@ -215,6 +227,9 @@ In this example,  the EventDetails does not need its own table; instead, its pro
 The annotation \textbf{@Embedded}  is used to denote a class whose instances are stored as an intrinsic part of an owning entity.
  All the fields of EventDetails class are embedded within the events table, avoiding the need for a separate table.
 
+The \textbf{@Enumerated} annotation is used to specify how an enum type should be mapped to a database column when using JPA. This annotation can take one of two values: EnumType.STRING or EnumType.ORDINAL.
+
+Using EnumType.STRING as the value for the @Enumerated annotation means that the enum values are stored in the database as their corresponding string names. This approach is often preferred because it makes the database values clear and readable, and it ensures that changes to the order of the enum values in the code do not affect the stored data.
 
 \section{Entity lifecycle}
 
@@ -518,11 +533,12 @@ JPA provides two main fetching strategies to control how related entities are lo
 \item \textbf{Lazy Fetching}: Lazy fetching loads the related entities only when they are explicitly accessed in the application. This can improve performance by reducing the initial load time and the amount of memory consumed. However, it requires careful management of the persistence context to avoid LazyInitializationException.
 \end{itemize}
 
-java
-Copy code
+In the case of ManyToMany relationships, the default fetching strategy is lazy because eager fetching can result in very large numbers of joins and thus severe performance degradation.
+
+\begin{lstlisting}
 @ManyToMany(fetch = FetchType.LAZY)
 private Set<Author> authors = new HashSet<>();
-In the case of ManyToMany relationships, the default fetching strategy is lazy because eager fetching can result in very large numbers of joins and thus severe performance degradation.
+\end{lstlisting} 
 
 Understanding and choosing the right fetching strategy based on the specific use case and data access patterns is crucial for developing efficient, scalable applications.
 
@@ -541,7 +557,7 @@ public class BookService {
         this.authorRepository = authorRepository;
     }
 
-    public List<String> getBooksByAuthor(String authorName) {
+    public List<String> findBooksByAuthor(String authorName) {
         Author author = authorRepository.findAuthorByName(authorName).orElseThrow(() -> new NotFoundException("No author found"));
         LOGGER.info("Author retrieved...");
         return author.getBooks().stream().map(Book::getTitle).toList();
@@ -631,41 +647,40 @@ Always be very carefull with bi-directional relationships and eager fetching. Th
 
 \section{Transactions}
 
-The @Transactional Annotation in Spring Boot
-The @Transactional annotation in Spring Boot is used to declare that a method or a class should be executed within a transactional context. This is a powerful feature provided by the Spring Framework that manages the transaction management boilerplate that can complicate the application code and ensures that your transaction requirements are handled consistently.
+The \textbf{@Transactional} annotation in Spring Boot is used to declare that a method or a class should be executed within a transactional context.
 
-Key Concepts:
-Transaction: A sequence of actions that are treated as a single unit of work. These actions should either complete entirely or take no effect at all.
-Transaction Management: Ensures that an application maintains data integrity and consistency in scenarios involving multiple transaction operations.
-Usage of @Transactional
-At the method level: When placed above a method, @Transactional ensures the method executes within a transaction. If a transaction is already running, the method by default runs within that transaction.
-At the class level: If @Transactional is placed at the class level, it applies to all the public methods of that class.
-Transaction Propagation
-Transaction propagation behavior defines how transactions relate to each other. Common propagation types include:
+A transaction is a sequence of actions that are treated as a single unit of work. These actions should either complete entirely or take no effect at all.
+Transaction Management ensures that an application maintains data integrity and consistency in scenarios involving multiple transaction operations.
 
-REQUIRED: Use the current transaction or start a new one if none exists.
-REQUIRES\_NEW: Always start a new transaction, suspending the current one if it exists.
-SUPPORTS: Run within the current transaction if it exists; otherwise, run non-transactionally.
-NEVER: Ensure no current transaction exists, throwing an exception if one exists.
-Flowchart of How Transactions Work in Spring Boot
-Here’s a simplified flowchart illustrating how transactions are managed in Spring Boot using the @Transactional annotation:
+\subsection{Usage of @Transactional}
 
-Method Invocation: A method annotated with @Transactional is called.
-Check Existing Transaction: The transaction manager checks if a current transaction exists.
-Transaction Propagation: Depending on the propagation setting:
-Use current transaction or start a new one.
-Suspend the current transaction and start a new one.
-Run without a transaction if none exists.
-Method Execution: The method executes. Database operations are performed as part of the transaction.
-Commit/Rollback:
+When placed above a method, @Transactional ensures the method executes within a transaction. If a transaction is already running, the method by default runs within that transaction.
+
+If @Transactional is placed at the class level, it applies to all the public methods of that class.
+
+
+Transaction propagation behaviour defines how transactions relate to each other. Common propagation types include:
+
+\begin{itemize}
+\item REQUIRED: Use the current transaction or start a new one if none exists.
+\item REQUIRES\_NEW: Always start a new transaction, suspending the current one if it exists.
+\item SUPPORTS: Run within the current transaction if it exists; otherwise, run non-transactionally.
+\item NEVER: Ensure no current transaction exists, throwing an exception if one exists.
+\end{itemize}
+
+
+Suppose a method annotated with @Transactional is called in a Spring Boot application. The transaction manager checks if a current transaction exists. Depending on the propagation setting:
+\begin{itemize}
+\item The current transaction is used, or a new transaction is created.
+\item The current transaction is suspended, and a new transaction is created.
+\end{itemize}
+Then the method executes and database operations are performed as part of the current transaction.
 If the method completes successfully, the transaction is committed.
 If an exception occurs, the transaction is rolled back.
-Example: Book and Author Entities
+
 Let’s consider an example with Book and Author entities. We want to ensure that adding a book linked to an author is transactional (either both the book and the author are saved, or neither).
 
-Entity Classes
-java
-Copy code
+\begin{lstlisting}
 @Entity
 public class Author {
     @Id
@@ -685,11 +700,9 @@ public class Book {
     private Author author;
     // constructors, getters, and setters
 }
-Service Class with Transactional Methods
-java
-Copy code
+
 @Service
-public class LibraryService {
+public class BookService {
     @Autowired
     private BookRepository bookRepository;
     @Autowired
@@ -703,11 +716,156 @@ public class LibraryService {
         // Both saves are part of the same transaction
     }
 }
+\end{lstlisting}
+
+\subsection{Transaction propagation}
+
+In the context of transaction management, transaction propagation behaviours define how transactions are handled when one transactional method calls another. The common types of transaction propagation behaviours with are:
+\begin{itemize}
+\item \textbf{REQUIRED} - Use the existing transaction if available; start a new one if none exists. This is the default value.
+\item \textbf{SUPPORTS} - Execute within the existing transaction if one is already present; execute non-transactionally if there is no transaction.
+\item \textbf{MANDATORY} - Require an existing transaction; throw an exception if there is no existing transaction.
+\item \textbf{REQUIRES_NEW} - Suspend the current transaction if one exists, and start a new transaction.
+\item \textbf{NOT_SUPPORTED} - Suspend the existing transaction and execute non-transactionally.
+\item \textbf{NEVER} - Execute non-transactionally; throw an exception if there is an existing transaction.
+\end{itemize}
+
+
+Given the following record, classes and interfaces.
+
+\begin{lstlisting}
+public record JoinOrganisationDto(String organisation, String employee) {
+}
+
+@RestController
+@RequestMapping("/organisation")
+public class OrganisationController {
+
+    private final OrganisationService organisationService;
+
+    public OrganisationController(OrganisationService organisationService) {
+        this.organisationService = organisationService;
+    }
+
+    @PostMapping("/join")
+    public void joinOrganisation(@RequestBody JoinOrganisationDto joinOrganisationDto) {
+        organisationService.joinOrganisation(joinOrganisationDto.organisation(), joinOrganisationDto.employee());
+    }
+}
+
+@Entity
+public class Employee {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @ManyToOne
+    private Organisation organisation;
+
+
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setOrganisation(Organisation organisation) {
+        this.organisation = organisation;
+    }
+}
+
+@Entity
+public class Organisation {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+}
+
+@Service
+public class OrganisationService {
+
+    private final OrganizationRepository organizationRepository;
+    private final EmployeeService employeeService;
+
+
+    public OrganisationService(OrganizationRepository organizationRepository, EmployeeService employeeService) {
+        this.organizationRepository = organizationRepository;
+        this.employeeService = employeeService;
+    }
+
+    public void joinOrganisation(String organisationName, String employeeName) {
+        Organisation organisation = organizationRepository.findByName(organisationName).orElseThrow(() -> new NotFoundException("Not found"));
+        Employee employee = employeeService.insertEmployee(employeeName);
+        employee.setOrganisation(organisation);
+    }
+}
+
+@Service
+public class EmployeeService {
+
+    public Employee insertEmployee(String name) {
+        Employee employee = new Employee();
+        employee.setName(name);
+        return employee;
+    }
+}
+
+public interface OrganizationRepository extends JpaRepository<Organisation, Long> {
+    Optional<Organisation> findByName(String name);
+}
+
+\end{lstlisting}
+
+\begin{verbatim}
+POST http://localhost:8080/organisations/join
+{
+	"organisation" : "Happy Organisation",
+	"employee": "Tamara"
+}
+\end{verbatim}
+
+If we don't save the employee explicitly, no data is persisted in the database.
+
+If we update the code, and save the employee explicitly, the employee data is persisted, but when something goes wrong in the method joinOrganisation, we end up with inconsistent data. The employee is saved without an organisation.
+
+\begin{lstlisting}
+ public Employee insertEmployee(String name) {
+        Employee employee = new Employee();
+        employee.setName(name);
+        employee = employeeRepository.save(employee);
+        return employee;
+}
+
+public void joinOrganisation(String organisationName, String employeeName) {
+        Organisation organisation = organizationRepository.findByName(organisationName).orElseThrow(() -> new NotFoundException("Not found"));
+        Employee employee = employeeService.insertEmployee(employeeName);
+        employee.setOrganisation(organisation);
+        throw new RuntimeException("Intentional error");
+}
+\end{lstlisting}
+
+Let's add transaction management and discuss transaction propagation.
+When you use the annotation @Transactional, the default value for transaction propagation is REQUIRED: @Transactional(propagation = Propagation.REQUIRED).
+
+
+
+
 
 \section{Queries}
 
-Basic CRUD queries are in Spring Data JPA available in the repositories. But there are multiple ways of creating custom queries in a Spring boot application. Let's discuss the different
-types of queries.
+Basic CRUD queries are in Spring Data JPA available in the repositories. But there are multiple ways of creating custom queries in a Spring boot application. Let's discuss the different types of queries.
 
 \subsection{Query methods}
 
@@ -730,15 +888,18 @@ JPQL, or Java Persistence Query Language, is a query language designed to abstra
 
 \begin{lstlisting}
 public interface UserRepository extends JpaRepository<User, Long> {
-  @Query("SELECT u FROM User u WHERE u.age >= :minAge")
-  List<User> findByAgeGreaterThan(@Param("minAge") int minAge);
+    @Query("SELECT u FROM User u WHERE u.age >= :minAge")
+    List<User> findByAgeGreaterThan(@Param("minAge") int minAge);
 }
 \end{lstlisting}
 
 \subsection{Native SQL queries}
 
 \begin{lstlisting}
-
+public interface UserRepository extends JpaRepository<User, Long> {
+    @Query(value = "SELECT * FROM users WHERE age >= :minAge", nativeQuery = true)
+    List<User> findByAgeGreaterThanOrEqualNative(@Param("minAge") int minAge);
+}
 \end{lstlisting}
 
 
@@ -932,7 +1093,7 @@ The method returns a Page<BookDto>, which is a specialized implementation of the
 	"content": [
 		{
 			"title": "Whispers of the Ancient",
-			"category": null,
+			"category": "HISTORY",
 			"authors": [
 				"Tessa Fairwind",
 				"Elara Thornwood"
@@ -940,28 +1101,28 @@ The method returns a Page<BookDto>, which is a specialized implementation of the
 		},
 		{
 			"title": "The Last Ember",
-			"category": null,
+			"category": "DETECTIVE",
 			"authors": [
 				"Milo Ventris"
 			]
 		},
 		{
 			"title": "Beneath the Starless Sky",
-			"category": null,
+			"category": "NON-FICTION",
 			"authors": [
 				"Tessa Fairwind"
 			]
 		},
 		{
 			"title": "Echoes of the Forgotten",
-			"category": null,
+			"category": "ROMANTIC",
 			"authors": [
 				"Quentin Ashlore"
 			]
 		},
 		{
 			"title": "The Glass Fortress",
-			"category": null,
+			"category": "HISTORY",
 			"authors": [
 				"Nora Spellbound",
 				"Quentin Ashlore"
@@ -1002,11 +1163,121 @@ Spring Data handles much of the heavy lifting, it's easy to implement robust pag
 
 \section{Searching and filtering data}
 
+The JpaSpecificationExecutor interface in Spring Data JPA is an extension used to allow the execution of database queries using the Specification criteria API, which adds a layer of abstraction over string-based criteria queries. This interface is particularly useful for building complex or dynamic queries based on conditions that are determined at runtime.
 
 \begin{lstlisting}
 public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificationExecutor<Book> {
 }
 \end{lstlisting}
+
+\begin{lstlisting}
+public record FilterDto(String authorName, BookCategory category, String titlePart) {
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+@RestController
+@RequestMapping("books")
+public class BookController {
+
+    private final BookService bookService;
+
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
+    }
+
+    @GetMapping("search")
+    public List<BookDto> searchBooks(@RequestBody FilterDto filter) {
+        return bookService.searchBooks(filter);
+    }
+}
+
+\end{lstlisting}
+
+
+\begin{lstlisting}
+@Service
+public class BookService {
+
+    private static final Logger LOGGER = LogManager.getLogger(BookService.class);
+
+    private final AuthorRepository authorRepository;
+    private final BookRepository bookRepository;
+
+    public BookService(AuthorRepository authorRepository, BookRepository bookRepository) {
+        this.authorRepository = authorRepository;
+        this.bookRepository = bookRepository;
+    }
+
+
+    public List<BookDto> searchBooks(FilterDto filter) {
+        return bookRepository.findAll(createBookSpecification(filter))
+                .stream()
+                .map(this::mapToBookDto)
+                .toList();
+    }
+
+    private Specification<Book> createBookSpecification(FilterDto filter) {
+        return new Specification<Book>() {
+            @Override
+            public Predicate toPredicate(Root<Book> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
+                List<Predicate> allPredicates = new ArrayList<>();
+                if (filter.titlePart() != null) {
+                    allPredicates.add(builder.like(builder.lower(root.get("title")), "%" + filter.titlePart().toLowerCase() + "%"));
+                }
+                if (filter.category() != null) {
+                    allPredicates.add(builder.equal(root.get("category"), filter.category()));
+                }
+ 
+                if (filter.authorName() != null) {
+                    Join<Book, Author> authors = root.join("authors", JoinType.LEFT);
+                    allPredicates.add(builder.like(builder.lower(authors.get("name")), "%" + filter.authorName().toLowerCase() + "%"));
+                }
+
+                query.distinct(true);
+
+                return builder.and(allPredicates.toArray(new Predicate[0]));
+            }
+        };
+    }
+
+    private BookDto mapToBookDto(Book book) {
+        return new BookDto(book.getTitle(), book.getCategory(), book.getAuthors().stream().map(Author::getName).toList());
+    }
+}
+\end{lstlisting}
+
+The method createBookSpecification is an example of how to implement a custom Specification<Book> using Spring Data JPA's Criteria API. This method constructs a dynamic query specification based on filtering criteria encapsulated within a FilterDto object. The specification is used to generate a query that can fetch Book entities from the database according to the provided filter parameters.
+
+The URL \textit{http://localhost:8080/books/search} can be called with different filters.
+
+\begin{verbatim}
+{
+	"category": "HISTORY",
+	"titlePart": "ro"
+}
+\end{verbatim}
+
+The above filter will retrieve all the books with category HISTORY that contain ro in the title.
+
+\begin{verbatim}
+[
+	{
+		"title": "Ironheart",
+		"category": "HISTORY",
+		"authors": [
+			"Tessa Fairwind"
+		]
+	},
+	{
+		"title": "The Crown of Thorns",
+		"category": "HISTORY",
+		"authors": [
+			"Quentin Ashlore"
+		]
+	}
+]
+\end{verbatim}
 
 
 
