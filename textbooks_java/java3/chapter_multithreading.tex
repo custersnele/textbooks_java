@@ -296,7 +296,7 @@ public class WorkerThreadWithSleep extends Thread {
 }
 \end{lstlisting}
 
-After printing 'Line A...', the workThread goes to sleep for 5 seconds. The status of the workerThread then becomes TIMED_WAITING, and the main thread can continue its activities. When the 5 seconds are up, the workThread can resume work.
+After printing 'Line A...', the workThread goes to sleep for 5 seconds. The status of the workerThread then becomes TIMED\_WAITING, and the main thread can continue its activities. When the 5 seconds are up, the workThread can resume work.
 
 \begin{oefening}
 Create a class \textbf{Talker} that is a subclass of the class \textbf{java.util.Thread}.
@@ -573,12 +573,12 @@ What happens if the method commonResource() is not synchronized?
 
 \section{Timer and TimerTask}
 
-De klasse java.util.TimerTask is een abstracte klasse die de Runnable interface implementeert. Je kan deze klasse gebruiken als je een taak op bepaalde momenten wil uitvoeren. 
+The class \textbf{java.util.TimerTask} is an abstract class that implements the Runnable interface. You can use this class if you want to execute a task at specific times.
 
-In de run() methode van een subklasse of instantie van de TimerTask-klasse implementeer je de acties van de taak. In de instantie repeatedTask in onderstaand voorbeeld tonen we de start- en eindtijd van de taak, daartussen wordt er gedurende 2 seconden gewacht.
+In the run() method of a subclass or instance of the TimerTask class, you implement the actions of the task. In the instance repeatedTask in the example below, we show the start and end time of the task, and in between, there is a 2-second wait.
 
-We gebruiken een object van de klasse Timer om de taak te plannen en te starten.
-De Timer-klasse bevat verschillende methodes schedule() om een taak uit te voeren op een gegeven datum of na een bepaalde tijd (delay). Er zijn ook verschillende methodes met de naam scheduleAtFixedRate() waarmee je met een bepaald interval kan herhalen. 
+We use an object from the Timer class to schedule and start the task.
+The Timer class contains various schedule() methods to execute a task on a given date or after a specified time (delay). There are also various methods named scheduleAtFixedRate() which allow you to repeat at a specified interval.
 
 \begin{lstlisting}
 import java.time.LocalDateTime;
@@ -606,7 +606,7 @@ public class RepeatTask {
 }
 \end{lstlisting}
 
-Als je het bovenstaande programma uitvoert krijg je bijvoorbeeld de volgende output:
+Executing the program will give the following output:
 
 \begin{verbatim}
 Task started on 2020-12-14T14:50:42.207567
@@ -615,9 +615,9 @@ Task started on 2020-12-14T14:50:52.207359
 Task completed on 2020-12-14T14:50:54.209605
 \end{verbatim}
 
-De taak wordt iedere 10 seconden (10000 milliseconden) opgestart en zal ongeveer 2 seconden tijd vragen om uitgevoerd te worden.
+The task is started every 10 seconds (10,000 milliseconds) and will take approximately 2 seconds to execute.
 
-Wanneer de uitvoertijd van de taak groter is dan de periode tussen opeenvolgende geplande taken, dan worden de taken in een wachtrij geplaatst en zal de volgende taak gestart worden zodra de voorgaande taak is be\"einidigd. Test dit even uit door in het programma RepeatTask de uitvoertijd en de periode tussen de opeenvolgende taken aan te passen.
+When the execution time of the task is longer than the period between consecutive scheduled tasks, the tasks are placed in a queue, and the next task will start as soon as the previous task has finished. Test this out by adjusting the execution time and the period between consecutive tasks in the program RepeatTask.
 
 You can use Timer and TimerTask in a Spring Boot application, but it's more common to use Spring's \textbf{@Scheduled} annotation for scheduling tasks. Both methods allow you to schedule tasks for future execution in a background thread, but they offer different levels of integration and flexibility, particularly in a Spring context.
 
@@ -625,10 +625,10 @@ You can use Timer and TimerTask in a Spring Boot application, but it's more comm
 
 \subsection{Concurrent collections}
 
-Een groot aantal Collection klassen zijn niet thread-safe. Dit betekent dat ze niet probleemloos door verschillende threads gelijktijdig gebruikt kunnen worden.
-Er werd geen concurrency controle voorzien voor de collections om de performatie te maximaliseren in een single-threaded programma.
+A large number of Collection classes are not thread-safe. This means that they cannot be used concurrently by different threads without issues.
+Concurrency control was not provided for the collections to maximize performance in a single-threaded program.
 
-We illustreren het probleem aan de hand van een voorbeeld. In het onderstaande programma starten we 2 threads die beide 1000 getallen toevoegen in een gemeenschappelijk lijst. Wanneer beide threads klaar zijn, verwacht je dus dat er 2000 getallen in de lijst staan. 
+We illustrate the problem with an example. In the program below, we start 2 threads that both add 1000 numbers to a shared list. When both threads are finished, you would therefore expect there to be 2000 numbers in the list.
 
 \begin{lstlisting}
 import java.util.ArrayList;
@@ -672,7 +672,7 @@ public class ConcurrentCollection extends Thread {
 }
 \end{lstlisting}
 
-Wanneer we het programma meermaals uitvoeren zien we de volgende getallen als output verschijnen wanneer we het aantal elementen van de lijst opvragen.
+When we run the program multiple times, we see the following numbers appear as output when we query the number of elements in the list.
 
 \begin{verbatim}
 1226
@@ -687,8 +687,7 @@ Wanneer we het programma meermaals uitvoeren zien we de volgende getallen als ou
 1620
 \end{verbatim}
 
-
-Het kan zelfs gebeuren dat er een exception optreedt.
+It is also possible that an exception occurs while running the program.
 \begin{verbatim}
 Exception in thread "Thread-4" java.lang.ArrayIndexOutOfBoundsException: Index 113 out of bounds for length 109
 	at java.base/java.util.ArrayList.add(ArrayList.java:486)
@@ -696,34 +695,34 @@ Exception in thread "Thread-4" java.lang.ArrayIndexOutOfBoundsException: Index 1
 	at be.pxl.multithreading.collections.ConcurrentCollection.run(ConcurrentCollection.java:20)
 \end{verbatim}
 
-Het probleem is opgelost zodra je een synchronizedList maakt van de lijst values.
+The problem is solved by making the ArrayList a synchronizedList.
 
 \begin{lstlisting}
 List<Integer> values = Collections.synchronizedList(new ArrayList<>());
 \end{lstlisting}
 
-\subsubsection{Producer-consumer probleem}
+\subsubsection{Producer-consumer problem}
 
-Een klassiek synchronisatie-probleem is het producer-consumer probleem (ook gekend als bounded-buffer probleem). Bij het producer-consumer probleem hebben we 2 threads: de producer en de consumer, die beide een gemeenschappelijke buffer met een vaste grootte delen. De producer's taak bestaat uit het genereren van data en deze in de buffer te plaatsen. De consumer verwerkt tegelijkertijd de gegevens die op de buffer verschijnen. Wanneer de buffer vol is, moet de producer even wachten vooraleer hij nieuwe data op de buffer kan plaatsen. Wanneer de buffer leeg is, moet de consumer wachten tot er nieuwe data geproduceerd is.
-In de literatuur vind je nog verschillende klassieke synchronisatie-problemen (zoals de dining philosophers) en de problemen die door synchronisatie veroorzaakt kunnen worden (zoals deadlocks), maar deze vallen buiten de scope van deze cursus.
+A classic synchronization problem is the producer-consumer problem (also known as the bounded-buffer problem). In the producer-consumer problem, we have two threads: the producer and the consumer, who both share a common buffer of a fixed size. The producer's task is to generate data and place it in the buffer. At the same time, the consumer processes the data that appears on the buffer. When the buffer is full, the producer must wait before placing new data on the buffer. When the buffer is empty, the consumer must wait until new data is produced.
+In the literature, you will find several other classic synchronization problems (such as the dining philosophers) and problems that can be caused by synchronization (such as deadlocks), but these are beyond the scope of this course.
 
 \subsection{Atomic variables}
 
-AtomicInteger is when we are in multi-threaded context and we need to perform atomic operations on an int value without using synchronized keyword.
+The AtomicInteger and other atomic classes in Java are part of the java.util.concurrent.atomic package. These classes provide a way to perform atomic (i.e., thread-safe without using synchronization) operations on single variables. Essentially, they offer a non-blocking mechanism to perform thread-safe operations on single values, which can be significantly faster than using synchronized blocks.
  
 \begin{lstlisting}
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Koekjesdoos {
+public class CookieBox {
 
-	private AtomicInteger aantalKoekjes;
+	private AtomicInteger numberOfCookies;
 
-	public Koekjesdoos(int aantalKoekjes) {
-		this.aantalKoekjes = new AtomicInteger(aantalKoekjes);
+	public CookieBox(int numberOfCookies) {
+		this.numberOfCookies = new AtomicInteger(numberOfCookies);
 	}
 
-	public boolean neemKoekje() {
-		int result = aantalKoekjes.getAndDecrement();
+	public boolean takeCookie() {
+		int result = numberOfCookies.getAndDecrement();
 		return result > 0;
 	}
 }
@@ -732,33 +731,31 @@ public class Koekjesdoos {
 
 \subsection{ExecutorService framework}
 
-ExecutorService framework is een API die een hele groep (pool) threads beschikbaar maakt, waaraan je taken kan geven.
+The ExecutorService framework is an API that makes a whole group (pool) of threads available, to which you can assign tasks.
 
-Er zijn verschillende factory-methoden beschikbaar om een ExecutorService-object aan te maken. De volgende lijn code toont hoe je een thread-pool met 10 threads kan 
-cre\"eeren:
+There are several factory methods available to create an ExecutorService object. The following line of code shows how you can create a thread pool with 10 threads:
 
 \begin{lstlisting}
 ExecutorService executor = Executors.newFixedThreadPool(10);
 \end{lstlisting}
 
-Nu kan je een taak toekennen aan de ExecutorService. De ExecutorService kan 2 soorten taken verwerken: Runnable en Callable taken. Callable is een verbeterde versie van Runnable die werd toegevoegd sinds Java 1.5.
+Now you can assign a task to the ExecutorService. The ExecutorService can handle two types of tasks: Runnable and Callable tasks. Callable is an enhanced version of Runnable that was added since Java 1.5.
 
-Callable$<$V$>$ is een generieke functionele interface  met een methode call() die een waarde van het generieke datatype V teruggeeft als resultaat. 
-
-\subsubsection{Runnable}
+Callable$<$V$>$ is a generic functional interface with a method call() that returns a value of the generic datatype V as a result.
 
 \begin{lstlisting}
 import java.util.Random;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class ReadFromUrlWithRunnable {
+public class GeneratingFutureString {
 
 	public static void main(String[] args) {
 		ExecutorService executorService = Executors.newFixedThreadPool(5);
 
-		Runnable generateRandomLetters = () -> {
+		Callable<String> generateRandomLetters = () -> {
 			int leftLimit = 'a'; // letter 'a'
 			int rightLimit = 'z'; // letter 'z'
 			int targetStringLength = 10;
@@ -773,11 +770,9 @@ public class ReadFromUrlWithRunnable {
 					e.printStackTrace();
 				}
 			}
-			String generatedString = buffer.toString();
-			System.out.println(generatedString);
-
+			return buffer.toString();
 		};
-		Future<?> result = executorService.submit(generateRandomLetters);
+		Future<String> result = executorService.submit(generateRandomLetters);
 
 
 		System.out.println("Counting down...");
@@ -795,66 +790,29 @@ public class ReadFromUrlWithRunnable {
 }
 \end{lstlisting}
 
+\subsubsection{CompletableFuture}
 
-\subsubsection{Callable}
+CompletableFuture is a class introduced in Java 8 that allows us to write asynchronous, non-blocking code. It is a powerful tool that can help us write code that is more efficient and responsive.
 
 \begin{lstlisting}
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
+    try {
+        Thread.sleep(5000);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
+    return "Hello, world!";
+});
 
-public class ReadFromUrl {
-
-	public static void main(String[] args) {
-		ExecutorService executorService = Executors.newFixedThreadPool(5);
-
-		Callable<String> readData = () -> {
-			String urlString = "http://www.google.com";
-
-			// create the url
-			URL url = new URL(urlString);
-
-			// open the url stream, wrap it an a few "readers"
-			BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
-
-			// write the output to stdout
-			StringBuilder result = new StringBuilder();
-			String line;
-			while ((line = reader.readLine()) != null) {
-				result.append(line).append("\n");
-			}
-
-			return result.toString();
-		};
-		Future<String> data = executorService.submit(readData);
-		System.out.println("Counting down...");
-		for (int i = 10; i >= 0; i--) {
-			System.out.println(i);
-		}
-		try {
-			String bookData = data.get();
-			System.out.println(bookData);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		}
-	}
-
-}
+future.thenAccept(result -> System.out.println(result));
 \end{lstlisting}
 
 
 \section{Parallel streams}
 
-Parallelisme is het concept waarbij een probleem wordt opgedeeld in verschillende deelproblemen. Je kan dan verschillende threads aan het werk zetten om voor elk deelprobleem de oplossing te berekenen. Uiteindelijk wordt de oplossing bekomen door de oplossingen van de deelproblemen te combineren. 
+Parallelism is the concept where a problem is divided into several subproblems. You can then assign different threads to work on solving each subproblem. Ultimately, the solution is obtained by combining the solutions of the subproblems.
 
-In hoofdstuk 7 hebben we geleerd hoe streams gebruikt worden. Het is mogelijk om streams serieel of parallel uit te voeren. Hier is de klasse Employee.
+It is possible to execute streams serially or in parallel. Here is the Employee class.
 
 \begin{lstlisting}
 public class Employee {
@@ -872,7 +830,7 @@ public class Employee {
 }
 \end{lstlisting}
 
-Je wil nu weten hoeveel employees een salaris (salary) hebben van 15000 of meer. Ook dit kan je parallel berekenen. Bij de klasse IntStream moet je de methode parallel() gebruiken, bij verzamelingen (collections) gebruik je parallelStream().
+You now want to know how many employees have a salary of 15,000 or more. This can also be calculated in parallel. With the IntStream class, you must use the parallel() method, while with collections, you use parallelStream().
 
 \begin{lstlisting}
 public class ParallellStreams {
@@ -905,7 +863,6 @@ public class ParallellStreams {
 }
 \end{lstlisting}
 
-Ook hier zie je een snellere uitvoertijd door gebruik te maken van parallellisme.
 
 \begin{verbatim}
 Sequential Stream Count?= 300
@@ -915,26 +872,26 @@ Parallel Stream Count?= 300
 Parallel Stream Time Taken?= 8
 \end{verbatim}
 
-\section{Oefeningen}
+\section{Exercises}
 
 \begin{oefening}
-\textbf{Simulatie van het gebruik van een bankrekening}\\
-Volgende programma-instellingen worden via properties (programma eigenschappen) beheerd:
+\textbf{Simulation of the use of a bank account}\
+The following program settings are managed via properties (program properties):
 \begin{itemize}
-\item Startbalans voor een bankrekening
-\item Aantal gebruikers die toegang hebben tot de bankrekening
-\item Aantal transacties dat iedere gebruiker zal uitvoeren (iedere gebruiker zal evenveel transacties uitvoeren)
-\item Limietwaarde voor een transactie (zowel voor geldopneming als storting)
+\item Starting balance for a bank account
+\item Number of users who have access to the bank account
+\item Number of transactions that each user will carry out (each user will perform an equal number of transactions)
+\item Limit value for a transaction (both for withdrawals and deposits)
 \end{itemize}
 
-Maak nu een bank account aan met de opgegeven startbalans.\\
-Maak voor iedere gebruiker een thread aan die het opgegeven aantal transacties zal uitvoeren, dit kunnen zowel geldopnemingen als stortingen zijn. Hou hierbij rekening met de opgegeven limietwaarde. Let wel op dat de balans van bankrekening nooit negatief mag worden.\\
-Iedere transactie wordt samen met het resultaat van de transactie weggeschreven in een transaction log bestand.
+Now create a bank account with the specified starting balance.\\
+Create a thread for each user that will perform the specified number of transactions, which can be either withdrawals or deposits. Take into account the specified limit value. Note that the balance of the bank account should never become negative.\\
+Each transaction, along with the result of the transaction, is written in a transaction log file.
 \end{oefening}
 
 \begin{oefening}
 \textbf{Producer-Consumer}\\
-Deze applicatie simuleert een productielijn waarop meerdere threads tegelijkertijd en aan een verschillende rate nieuwe producten plaatsen. Een andere thread verwerkt de producten op de lijn aan een bepaalde snelheid. Met de applicatie kan getest worden of de verwerkingsunit de snelheid aankan.
+This application simulates a production line where multiple threads simultaneously and at different rates place new products. Another thread processes the products on the line at a certain speed. The application can be used to test whether the processing unit can handle the speed.
  
 \begin{figure}[H]
 \includegraphics[width=\linewidth]{images/h9/opgave_producer_consumer.png}
@@ -943,52 +900,24 @@ Deze applicatie simuleert een productielijn waarop meerdere threads tegelijkerti
 \end{figure}
 
 \textbf{Package}\\
-De Package klasse is reeds gegeven, deze bevat enkel een constructor die een ID of volgnummer toekent aan elk nieuw pakketje op de lijn en voorziet ook een toString methode. Hiervoor wordt een klasse variabele gebruikt, deze waarde moet dus niet meegegeven worden bij de creatie van een Package.
+The Package class is already provided; it contains only a constructor that assigns an ID or sequence number to each new package on the line and also provides a toString method. A class variable is used for this, so this value does not need to be provided when creating a Package.
 \\
 \textbf{ProductionLine}\\
-Maak een ProductionLine klasse die de productielijn zal voorstellen. Op de productielijn kan je nieuwe producten enkel achteraan toevoegen en enkel vooraan afnemen. Gebruik een verzameling naar keuze uit het Collection framework. Voorzie methoden om een Package toe te voegen aan het einde van de productielijn ( addPackage() ) en om een Package aan de voorkant af te nemen. ( getPackage() ) Denk eraan om de afgenomen pakketjes ook van de productielijn te verwijderen. 
-Zorg dat er geen exceptions kunnen optreden als er geen pakketjes meer op de lijn zitten.
-Voorzie het nodige om ervoor te zorgen dat alle bewerkingen op de productielijn gesynchroniseerd verlopen en dat het dus niet mogelijk is dat meerdere threads tegelijk een bewerking op de verzameling uitvoeren. (Hiervoor moet je enkel aanpassingen doen op de methoden addPackage() en getPackage() van de ProductionLine klasse.
+Create a ProductionLine class that will represent the production line. On the production line, you can only add new products at the end and take them from the front. Use a collection of your choice from the Collection framework. Provide methods to add a Package to the end of the production line (addPackage()) and to take a Package from the front (getPackage()). Remember to remove the taken packages from the production line.
+Ensure that no exceptions can occur if there are no packages left on the line.
+Make sure that all operations on the production line are synchronized, so it is not possible for multiple threads to perform an operation on the collection at the same time. (For this, you only need to make adjustments to the addPackage() and getPackage() methods of the ProductionLine class).
 \\
 \textbf{Producer}\\
-Maak de Producer klasse aan. Deze zal aan een vast tempo nieuwe Packages aanmaken en deze aan de productielijn toevoegen. De Producer moet kunnen runnen als een thread, dus voorzie daar het nodige voor. In de constructor moet je twee parameters voorzien: de rate waaraan nieuwe producten aangemaakt worden en het productielijn object. De rate is het aantal pakketjes dat deze consumer per minuut aanmaakt.
-Wanneer de Producer thread opgestart wordt, moet deze continu nieuwe Packages aanmaken en aan de productielijn toevoegen, met tussenin telkens een pauze zodat de aangegeven rate aangehouden wordt (gebruik hiervoor Thread.sleep(milliseconds)). De thread geeft een korte melding in de console weer, telkens wanneer er een nieuw pakketje op de lijn geplaatst wordt.
-Het juiste aantal milliseconden dat de Producer moet wachten tussen 2 pakketjes kan je als volgt berekenen: (60 / rate) * 1000
+Create the Producer class. This will create new Packages at a steady pace and add them to the production line. The Producer must be able to run as a thread, so provide the necessary for that. In the constructor, you must provide two parameters: the rate at which new products are created and the production line object. The rate is the number of packages this producer creates per minute.
+When the Producer thread is started, it must continuously create new Packages and add them to the production line, with a pause in between to maintain the specified rate (use Thread.sleep(milliseconds) for this). The thread gives a short notification in the console each time a new package is placed on the line.
+The correct number of milliseconds the Producer should wait between two packages can be calculated as follows: (60 / rate) * 1000
 \\
 \textbf{Consumer}\\
-De Consumer klasse is gelijkaardig: deze moet ook kunnen runnen als een thread en in de constructor worden eveneens de rate (= opnieuw het aantal pakketjes dat de Consumer per minuut kan verwerken) en het productielijn object meegegeven.
-Na opstarten zal de Consumer continu pakketjes van de productielijn afnemen (telkens vooraan) aan de opgegeven rate. Gebruik de methode die je hiervoor voorzien hebt in de ProductionLine klasse. 
-De thread print telkens uit welk pakket verwerkt werd. Ook wanneer er geen pakketjes beschikbaar zijn op de productielijn, wordt dit gemeld via een bericht in de console.
+The Consumer class is similar: it must also be able to run as a thread, and the constructor also includes the rate (= again the number of packages that the Consumer can process per minute) and the production line object.
+Upon starting, the Consumer will continuously take packages from the production line (always from the front) at the specified rate. Use the method you have provided for this in the ProductionLine class.
+The thread prints out each package processed. Also, when no packages are available on the production line, this is reported via a message in the console.
 \\
-\textbf{Main methode}\\
-Voorzie tenslotte een main methode. Deze gebruik je om 4 Producers aan te maken met de rates 20, 15, 12 en 7. Daarna maak je ook een Consumer aan met als rate 30. De Consumer verwerkt dus 30 pakketjes per minuut en werkt daarmee sneller dan de 4 Producers. 
-Zorg dat al deze componenten correct opgestart worden en parallel hun werk doen. Op deze manier zou je moeten kunnen analyseren of de Consumer voldoende snel werkt om de 4 gelijktijdige Producers aan te kunnen.
+\textbf{Main Method}\\
+Finally, provide a main method. Use this to create 4 Producers with rates of 20, 15, 12, and 7. Then also create a Consumer with a rate of 30. The Consumer thus processes 30 packages per minute and works faster than the 4 Producers.
+Make sure all these components are correctly started and work in parallel. This way, you should be able to analyze whether the Consumer works fast enough to handle the 4 simultaneous Producers.
 \end{oefening}
-
-
-4. Synchronization and Locks
-Synchronized Methods and Blocks
-Object and Class Level Locks
-Deadlocks, Livelocks, and How to Avoid Them
-Lock Objects in java.util.concurrent.locks
-5. Advanced Thread Coordination
-Wait/Notify Mechanisms
-Using Conditions and ReentrantLock
-CountDownLatch, CyclicBarrier, and Semaphore
-6. Concurrency Utilities (java.util.concurrent)
-Executors and Thread Pools
-Fixed thread pool
-Cached thread pool
-Scheduled thread pool
-Work-stealing pool
-Concurrent Collections (e.g., ConcurrentHashMap, BlockingQueue)
-Atomic Variables and java.util.concurrent.atomic package
-8. Parallel Streams
-Creating Parallel Streams
-Performance Considerations
-Use Cases for Parallel vs. Sequential Streams
-9. Asynchronous Programming
-Using CompletableFuture
-Combining CompletableFutures
-Exception Handling in Asynchronous Code
-Link to Spring Asynchronous Methods Guide
