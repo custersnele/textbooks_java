@@ -1,0 +1,444 @@
+\chapter{Mockito}
+
+\fcolorbox{black}[HTML]{E9F0E9}{\parbox{\textwidth}{%
+\noindent \textbf{Learning goals}\\
+The junior-colleague
+\begin{enumerate}[nolistsep]
+\item can describe the usage of mockito.
+\item can describe what a mock object is.
+\item can describe what stubbing is.
+\item can implement unit tests with mockito.
+\item can use MockMvc to test a controller's methods.
+\end{enumerate}}}
+
+\section{Mocking with Mockito}
+
+Mockito is a popular open source framework for mocking objects when testing software.  Mocking an object means creating a lightweight, configurable imitation of a real object.  In automated tests, mocks simulate the behavior of complex, real objects (like database connections, network services, or other external dependencies) when it's impractical or inefficient to use the real ones.
+
+\begin{lstlisting}
+package be.pxl;
+
+public class MyService {
+
+    private final OtherService otherService;
+
+    public MyService(OtherService otherService) {
+        this.otherService = otherService;
+    }
+
+    public int doCalculation(int value) {
+        return value * otherService.getValue();
+    }
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+package be.pxl;
+
+public interface OtherService {
+
+    int getValue();
+}
+\end{lstlisting}
+
+When writing a unit test for the method doCalculation() we need an object of the class OtherService. We don't need an object of an actual implementation of the interface. We can just mock the OtherService-object and tell it what it should return when it's called.
+
+\begin{lstlisting}
+package be.pxl;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
+public class MyServiceTest {
+
+    @Mock
+    private OtherService otherService;
+    
+    @InjectMocks
+    private MyService myService;
+
+    @Test
+    public void doCalculationTest() {
+        when(otherService.getValue()).thenReturn(5);
+        assertEquals(500, myService.doCalculation(100));
+    }
+}
+\end{lstlisting}
+
+\section{Creating fake (or dummy) objects}
+
+There are scenarios where mocking a data object might be useful, particularly when:
+
+\begin{itemize}
+\item \textbf{The object is difficult to instantiate}: If the object has a complex setup or requires dependencies that are not relevant to the test at hand.
+\item \textbf{The object has behavior that's being tested elsewhere}: If the object includes logic (e.g., methods that compute values based on its fields) and you want to isolate the unit test from this behavior.
+\item \textbf{The object's state is irrelevant to the test's outcome}: If you're testing functionality that doesn't depend on the specific state of the object, and creating a real instance would distract from the intent of the test.
+\end{itemize}
+
+\begin{lstlisting}
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
+
+@ExtendWith(MockitoExtension.class)
+public class ClassroomTest {
+    
+    @Mock
+    private Teacher mockTeacher;
+    
+    @Test
+    public void testClassroomHasTeacher() {
+        Classroom classroom = new Classroom()
+        assertFalse(classroom.hasTeacher());
+        
+    }
+    
+    @Test
+    public void testClassroomHasTeacher() {
+        Classroom classroom = new Classroom()
+        
+        classroom.addTeacher(mockTeacher);
+        assertTrue(classroom.hasTeacher());
+    }
+    
+    @Test
+    public void testClassroomGetTeacherName() {
+        when(mockTeacher.getName()).thenReturn("Teacher Name");
+        
+        Classroom classroom = new Classroom();
+        classroom.addTeacher(mockTeacher);
+        
+        assertEquals(classroom.getTeacherName(),  "Teacher Name");
+    }
+}
+\end{lstlisting}
+
+We want to configure the mock and define what to do when specific methods of the mock are called. This is called \textbf{stubbing}.
+
+Mockito offers two ways of stubbing. The first way is \"when this method is called, then do something.\" This strategy uses Mockito's thenReturn call:
+
+\begin{lstlisting}
+when(passwordEncoder.encode("1")).thenReturn("a");
+\end{lstlisting}
+
+In plain English: "When passwordEncoder.encode("1") is called, return an a."
+
+The second way of stubbing reads more like "do something when this mock’s method is called with the following arguments." This way of stubbing is harder to read as the cause is specified at the end. Consider:
+
+\begin{lstlisting}
+doReturn("a").when(passwordEncoder).encode("1");
+\end{lstlisting}
+
+The snippet with this method of stubbing would read: "Return a when passwordEncoder’s encode() method is called with an argument of 1."
+
+For mocking void methods, there is no when-then option. We have to use do-when syntax.
+
+\section{Unit testing the service-layer methods}
+
+
+We can use Mockito to test the services of a spring boot application by mocking the repository.
+
+
+\begin{lstlisting}[frame=single, language=java]
+@ExtendWith(SpringExtension.class)
+public class BookServiceTest {
+
+    @Mock
+    private BookRepository bookRepository;
+
+    @InjectMocks
+    private BookService bookService;
+
+    @Test
+    public void testFindAllBooks() {
+        // Arrange
+        Book book1 = new Book("Book 1", "Author 1", 2019);
+        Book book2 = new Book("Book 2", "Author 2", 2020);
+        List<Book> books = Arrays.asList(book1, book2);
+        when(bookRepository.findAll()).thenReturn(books);
+
+        // Act
+        List<BookDTO> result = bookService.findAllBooks();
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        // additional assertions about the retrieved DTO's
+        verify(bookRepository).findAll();
+    }
+}
+\end{lstlisting}
+
+
+\section{ArgumentCaptor}
+
+
+An ArgumentCaptor is used with Mockito to capture argument values for further assertions. They are particularly useful when we want to inspect complex objects passed to methods of mocked dependencies.
+
+Below is an example demonstrating how to use an ArgumentCaptor in a unit test with Mockito. We'll test a UserService that depends on a UserRepository. The service method createUser takes a User object, does some processing, and then saves it using the repository. We want to ensure that the User object passed to the repository's save method has been processed correctly by the service.
+
+First, we define a simple User class and a UserRepository interface.
+
+\begin{lstlisting}
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class User {
+	@Id
+	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	private Long id;
+    private String name;
+    private int age;
+
+    // Getters and setters
+}
+
+
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserService {
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public User createUser(String name, int age) {
+        User user = new User();
+        user.setName(name);
+        user.setAge(age);
+        // Additional processing logic
+        return userRepository.save(user);
+    }
+}
+\end{lstlisting}
+
+Now, we'll write a test for UserService using Mockito and an ArgumentCaptor to capture the User object passed to the save method of UserRepository.
+
+\begin{lstlisting}
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
+
+@ExtendWith(MockitoExtension.class)
+public class UserServiceTest {
+
+    @Mock
+    private UserRepository userRepository;
+    @Captor
+    private ArgumentCaptor<User> userArgumentCaptor;
+    @InjectMocks
+    private UserService userService;
+
+    @Test
+    public void createUserTest() {
+
+        userService.createUser("John Doe", 30);
+
+        // Capture the user object passed to save
+        verify(userRepository).save(userArgumentCaptor.capture());
+
+        // Retrieve the captured value
+        User capturedUser = userArgumentCaptor.getValue();
+
+        // Assert the state of the captured user
+        assertEquals("John Doe", capturedUser.getName());
+        assertEquals(30, capturedUser.getAge());
+    }
+}
+\end{lstlisting}
+
+After createUser is called on the UserService, verify(mockRepository).save(userArgumentCaptor.capture()) captures the User object passed to the save method. The captured object is then retrieved using userArgumentCaptor.getValue() for assertions.
+
+This test ensures that the UserService correctly processes and passes a User object to the UserRepository. ArgumentCaptor is a powerful tool for asserting the indirect outputs of methods when direct return value assertions are not sufficient.
+ 
+ \section{MockMvc}
+ 
+MockMvc is a core part of the Spring Framework's testing suite which allows you to test Spring MVC controllers without the need to start a full HTTP server. It provides a powerful way to quickly test MVC controllers by performing requests and asserting responses with a fluent API. By simulating HTTP requests and responses, developers can ensure their web layer conforms to specifications.
+ 
+MockMvc is defined as the main entry point for server-side Spring MVC testing.
+Tests annotated with @WebMvcTest will auto-configure Spring Security and MockMvc.  These tests will also auto-configure all classes relevant to MVC tests (e.g. @Controller,  @ControllerAdvice, ...).  Using the annotation @MockitoBean we can provide mock objects for the @Service components.
+By default, @WebMvcTest adds all @Controller beans to the application context. We can specify a subset of controllers by using the controllers attribute, as we have done in the examples discussed here. 
+The method perform in the class MockMvc performs a request and returns a type that allows chaining further actions,  such as asserting expectations,  on the result.
+When implementing unit tests, we pass the path parameters using MockMvcRequestBuilders and verify the status response codes and response content using MockMvcResultMatchers and MockMvcResultHandlers.
+
+Assuming a basic Book class and a BookService interface.
+
+\begin{lstlisting}[language=java, frame=single]
+public class Book {
+    private Long id;
+    private String title;
+    private String author;
+
+    // Constructors, Getters, and Setters
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+public interface BookService {
+    Book saveBook(Book book);
+    Book getBookById(Long id);
+    Book updateBook(Long id, Book book);
+    void deleteBook(Long id);
+}
+\end{lstlisting}
+
+Here is the BookController under test:
+
+\begin{lstlisting}
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/books")
+public class BookController {
+
+    private final BookService bookService;
+
+    @Autowired
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
+    }
+
+    @PostMapping
+    public ResponseEntity<Book> createBook(@RequestBody Book book) {
+        Book savedBook = bookService.saveBook(book);
+        return new ResponseEntity<>(savedBook, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Book> getBookById(@PathVariable Long id) {
+        Book book = bookService.getBookById(id);
+        return ResponseEntity.ok(book);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestBody Book book) {
+        Book updatedBook = bookService.updateBook(id, book);
+        return ResponseEntity.ok(updatedBook);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
+        bookService.deleteBook(id);
+        return ResponseEntity.noContent().build();
+    }
+}
+\end{lstlisting}
+
+Let's write the MockMvc tests for this BookController. We'll mock the BookService since we want to isolate the controller layer for unit testing.
+
+\begin{lstlisting}
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+
+@WebMvcTest(BookController.class)
+public class BookControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockitoBean
+    private BookService bookService;
+
+    private ObjectMapper objectMapper = new ObjectMapper();
+
+    @Test
+    public void createBookTest() throws Exception {
+        Book newBook = new Book("The Great Gatsby", "F. Scott Fitzgerald");
+        Mockito.when(bookService.saveBook(ArgumentMatchers.any(Book.class))).thenReturn(newBook);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/books")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(newBook)))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("The Great Gatsby"));
+    }
+
+    @Test
+    public void getBookByIdTest() throws Exception {
+        Book book = new Book("The Great Gatsby", "F. Scott Fitzgerald");
+        Mockito.when(bookService.getBookById(1L)).thenReturn(book);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/books/{id}", 1))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("The Great Gatsby"));
+    }
+
+    @Test
+    public void updateBookTest() throws Exception {
+        Book updatedBook = new Book("The Great Gatsby", "Fitzgerald");
+        Mockito.when(bookService.updateBook(ArgumentMatchers.eq(1L), ArgumentMatchers.any(Book.class))).thenReturn(updatedBook);
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/books/{id}", 1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updatedBook)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.author").value("Fitzgerald"));
+    }
+
+    @Test
+    public void deleteBookTest() throws Exception {
+        Mockito.doNothing().when(bookService).deleteBook(1L);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/books/{id}", 1))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+}
+
+\end{lstlisting}
+
+In these tests, we use @WebMvcTest to bring up a context that focuses solely on the web layer (specifically, the BookController), and @MockitoBean to create and inject a mock BookService instance. This setup isolates the controller layer, allowing for focused unit testing of web interactions.
+
+
