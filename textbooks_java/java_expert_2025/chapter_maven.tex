@@ -38,7 +38,7 @@ The main objectives of using Maven for developers are:
 Maven is much more than a build tool.  Maven offers support for automatic source generation,  compiling the source code and test sources, packaging final product(s) for different environments, running health checks and reporting.  Continuous builds, integration, and testing can be easily handled by using Maven. A tool commonly used for creating CI/CD pipelines (continuous integration and continuous delivery) is Jenkins.  Jenkins cannot replace Maven or vice-versa. Jenkins can use Maven as its build tool.  
 When Jenkins deploys artifacts to remote repositories, they are usually Maven repositories. 
 
-According to snyk's 2021 JVM ecosystem report \footnote{\url{https://snyk.io/jvm-ecosystem-report-2021/}} Maven is most popular build tool for the Java ecosystem.
+According to Jetbrain's 2023 Java ecosystem report \footnote{\url{https://www.jetbrains.com/lp/devecosystem-2023/java/}} Maven is most popular build tool for the Java ecosystem.
 
 \section{Installation and Configuration}
 
@@ -324,3 +324,41 @@ jobs:
 \end{lstlisting}
 
 This workflow ensures that every commit and pull request triggers an automated Maven build and test cycle, helping teams detect issues early in the development process. The use of dependency caching also optimizes build times, making the CI process more efficient.  The option -B or --batch-mode tells Maven to run in non-interactive mode, meaning it will not prompt for user input.
+
+
+\section{Deploying a Maven-based Java Application in a Docker Container}
+
+After building and testing your Java application using Maven, the next step is often to package and deploy it. One increasingly popular approach is to use Docker to containerize the application. This allows you to run your application in a consistent environment across different machines, reducing compatibility issues.
+
+Once you have verified that your application passes all tests with Maven (mvn test), you can proceed to create a Docker image. This image encapsulates your Java application along with its runtime environment. A typical Dockerfile for a Maven-based Java application might look like this:
+
+\begin{lstlisting}
+FROM openjdk:21-jdk-slim
+COPY target/cargo-0.0.1.jar /app/myapp.jar
+WORKDIR /app
+CMD ["java", "-jar", "myapp.jar"]
+\end{lstlisting}
+
+This Dockerfile specifies:
+\begin{itemize}
+\item Using an official OpenJDK 21 image as the base.
+
+\item Copying the built JAR file (produced by Maven) into the container.
+
+\item Setting the working directory to /app.
+
+\item Specifying the command to run the application.
+\end{itemize}
+
+You can build the Docker image with:
+
+\begin{verbatim}
+docker build -t myapp .
+\end{verbatim}
+
+
+And run the container with:
+
+\begin{verbatim}
+docker run -d -p 8080:8080 myapp
+\end{verbatim}

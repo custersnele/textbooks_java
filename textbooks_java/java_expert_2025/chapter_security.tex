@@ -1,0 +1,1333 @@
+\chapter{Spring security}
+
+WARNING: this chapter is currently being updated.
+
+\fcolorbox{black}[HTML]{E9F0E9}{\parbox{\textwidth}{%
+\noindent \textbf{Learning goals}\\
+The junior-colleague
+\begin{enumerate}[nolistsep]
+\item Understand JWT and its role in authentication
+\item Can configure stateless authentication with Spring Security
+\item Can implement and test method-level security with annotations like @PreAuthorize
+\item Can test secured endpoints using MockMvc and SpringBootTest annotations
+\end{enumerate}
+}}
+
+\fcolorbox{black}[HTML]{ADD8E6}{\parbox{\textwidth}{%
+\noindent \textbf{Source for this chapter:}\\
+\url{https://github.com/custersnele/spring_security_jwt_example}
+}}
+
+
+\section{What is spring security}
+
+\includegraphics[width=\textwidth]{./images/security/spring_boot.png}
+
+In today’s digital landscape, securing web applications and protecting sensitive data is more critical than ever. Spring Security is a comprehensive framework built on the Spring ecosystem that provides a wide range of security services in a developer-friendly and flexible manner. Although it is widely used to secure web applications, its modular design also allows it to be integrated into stand-alone applications.
+
+\subsection*{Key Features and Benefits}
+Spring Security empowers developers with:
+\begin{itemize}
+    \item \textbf{Advanced Web Security:} Safeguard your applications against common vulnerabilities such as cross-site scripting (XSS), cross-site request forgery (CSRF), and clickjacking.
+    \item \textbf{Resource and URL Protection:} Restrict access to specific endpoints and enforce secure communications (e.g., HTTPS) to protect critical resources.
+    \item \textbf{Role-Based Access Control:} Easily manage and enforce permissions through role-based authentication and authorization.
+    \item \textbf{Flexible Authentication Mechanisms:} Seamlessly integrate various authentication strategies—whether it’s JWT, OAuth2, Basic Authentication, or session-based authentication—to meet your application’s requirements.
+    \item \textbf{Domain Model Security:} Secure your business data by controlling access to domain objects, ensuring that only authorized users can perform sensitive operations.
+\end{itemize}
+
+\subsection*{Integration with External Identity Providers}
+While Spring Security allows you to handle authentication within your application (for example, by generating and managing JWT tokens internally), it is often beneficial to delegate authentication to external identity providers in production environments. These providers offer:
+\begin{itemize}
+    \item \textbf{Centralized User Management:} Streamlined administration and enhanced security features such as single sign-on (SSO) and multi-factor authentication (MFA).
+    \item \textbf{Robust Security and Compliance:} Built-in support for security standards and protocols that reduce the risk of vulnerabilities.
+\end{itemize}
+
+Some commonly used external authentication providers include:
+\begin{itemize}
+    \item \textbf{Keycloak:} An open-source identity and access management solution by Red Hat, supporting OAuth2, OpenID Connect, and SAML.
+    \item \textbf{AWS Cognito:} A cloud-based service designed for handling authentication, authorization, and federation with both social and enterprise identity providers.
+    \item \textbf{Okta:} A cloud-based identity management provider known for its adaptive MFA and comprehensive API security.
+    \item \textbf{Auth0:} A developer-friendly platform that offers extensive customization options for OAuth2, OpenID Connect, and SAML-based authentication.
+\end{itemize}
+
+In this chapter, we will focus on implementing JWT token generation and management with Spring Security, exploring how these concepts can be applied to build a secure, stateless authentication mechanism.  Working samples are available at \url{https://github.com/spring-projects/spring-security-samples}.
+
+\section{JWT Authentication}
+
+In this section, we will setup a secure JWT-based authentication system using Spring Boot 3 with Spring Security 6.
+
+JWT (JSON Web Token) is an open standard (RFC 7519) that defines a compact and self-contained way for securely transmitting information between parties as a JSON object. JWTs are commonly used for authentication and authorization in web applications and APIs.
+
+JWTs are digitally signed, not encrypted. The information they contain can be decoded by anyone with access to the token, but the signature ensures its integrity. Storing sensitive data in the payload is not recommended, as the payload can be easily decoded.
+
+To prevent tampering, it’s important to use strong and secure algorithms for signing the tokens.  Secrets used for signing should be kept secret. 
+
+\subsection*{Environment Setup}
+
+Begin by creating a PostgreSQL database using Docker Compose.
+
+\begin{lstlisting}
+services:
+  spring-security-db:
+    image: postgres
+    environment:
+      POSTGRES_USER: demo
+      POSTGRES_PASSWORD: demo
+      POSTGRES_DB: demo
+    ports:
+      - "5432:5432"
+\end{lstlisting}
+
+\subsection*{Project Dependencies}
+
+Create a new Spring Boot project with the following dependencies:
+
+\begin{itemize}
+\item Spring Security
+\item Spring Web
+\item PostgreSQL driver
+\item Spring Data JPA
+\end{itemize}
+
+Next, add the needed dependencies in pom.xml files.  The following api's from io.jsonwebtoken are used: \textit{jjwt-api} defines how JWTs work, \textit{jjwt-impl} provides the actual implementation, and \textit{jjwt-jackson} ensures correct JSON handling, making it easier to work with JWT payloads.
+
+\begin{lstlisting}
+		<dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.12.6</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.12.6</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>0.12.6</version>
+            <scope>runtime</scope>
+        </dependency>
+\end{lstlisting}
+
+\subsection*{Application Configuration}
+
+Next, configure the \texttt{application.properties} file to set up the database connection,  JPA settings, server configuration, and JWT properties:
+
+\begin{lstlisting}
+spring.application.name=SpringSecurityExample
+## DB Configuration ##
+spring.datasource.url=jdbc:postgresql://localhost:5432/demo
+spring.datasource.username=demo
+spring.datasource.password=demo
+## JPA  Configuration ##
+spring.jpa.show-sql=true
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.generate-ddl=true
+spring.jpa.open-in-view=false
+spring.datasource.hikari.auto-commit=false
+spring.jpa.properties.hibernate.connection.provider_disables_autocommit=true
+## Server Configuration ##
+server.servlet.context-path=/api
+server.port=8080
+## JWT Configuration (demo values)
+# Access token validity: 2 minutes
+jwt.jwtExpirationTime=120000
+# Refresh token validity: 5 minutes
+jwt.jwtRefreshTokenExpirationTime=300000
+app.admin.password=ElfLordsOnly!42
+\end{lstlisting}
+
+\subsection*{REST Endpoints Overview}
+
+The sample application exposes the following REST endpoints:
+
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Method} & \textbf{URL} & \textbf{Action} \\
+\hline
+POST & /api/auth/register & Registers a new account\\
+POST & /api/auth/authenticate & Authenticates a user and issues tokens.\\
+POST & /api/auth/refresh-token & Exchanges a refresh token for a new access token.\\
+GET & /api/users & Retrieves all users\\
+GET & /api/public/welcome & Serves public content.\\
+GET & /api/dashboard & Displays a user-only dashboard. \\
+GET & /api/admin/hello & Provides admin-only content\\
+PUT & /api/admin/users/\{id\}/promote & Allows admin to promote a user.\\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection*{User and Role Models}
+
+Define user roles and the user entity. Start with a simple enumeration for roles:
+
+\begin{lstlisting}
+package be.pxl.demo.domain;
+
+public enum Role {
+    USER, ADMIN
+}
+\end{lstlisting}
+
+Next, create the \texttt{User} entity. This class implements Spring Security’s \texttt{UserDetails} interface, ensuring it can be used seamlessly within the security framework:
+
+\begin{lstlisting}
+package be.pxl.demo.domain;
+
+import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Objects;
+
+@Entity
+@Table(name = "customUsers")
+public class User implements Serializable, UserDetails {
+    private static final String ROLE_PREFIX = "ROLE_";
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String firstName;
+    private String lastName;
+    @Column(unique = true)
+    private String email;
+    private String password;
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    public User(String email, String password, Role role) {
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
+    public User() {
+        // JPA only
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority(ROLE_PREFIX + role.name()));
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    // Getters and setters are omitted for brevity
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return email != null && email.equals(user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email);
+    }
+}
+\end{lstlisting}
+
+\subsection*{User Repository and Custom User Details Service}
+
+Create a repository interface to handle user persistence:
+
+\begin{lstlisting}
+package be.pxl.demo.repository;
+
+import be.pxl.demo.domain.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    boolean existsByEmail(String email);
+    Optional<User> findByEmail(String email);
+}
+\end{lstlisting}
+
+Implement a custom \texttt{UserDetailsService} to load user details during authentication:
+
+\begin{lstlisting}
+package be.pxl.demo.security;
+
+import be.pxl.demo.domain.User;
+import be.pxl.demo.repository.UserRepository;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
+
+@Component
+public class CustomUserDetailsService implements UserDetailsService {
+
+    private final UserRepository userRepository ;
+
+    public CustomUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Override
+    public User loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException("User not found !"));
+    }
+
+}
+\end{lstlisting}
+
+\section{Implementing JWT Token Handling and Security}
+
+Now that the basic application and user management are in place, we move on to securing our application using JSON Web Tokens (JWTs). This section explains how JWTs are generated, validated, and integrated into Spring Security. We'll look at key classes that enable stateless authentication, authorization, and role-based access control using tokens.
+
+\subsection*{Overview of the Security Components}
+
+We will discuss the following components.
+
+\begin{itemize}
+\item \textbf{JwtUtilities:} Core JWT helper class.
+\item \textbf{JwtAuthenticationFilter:} Intercepts requests to validate tokens.
+\item \textbf{SpringSecurityConfig:} Sets up Spring Security with JWT support.
+\item \textbf{AuthenticationService:} Encapsulates registration, login, and refresh logic.
+\end{itemize}
+
+\subsection*{JwtUtilities: Token Management}
+
+This utility class encapsulates JWT logic to:
+
+\begin{itemize}
+\item Generate access and refresh tokens.
+\item Extract claims (like username and token ID).
+\item Validate token integrity and expiration.
+\item Retrieve tokens from HTTP headers.
+\end{itemize}
+
+
+\includegraphics{./images/security/spring_boot.png}
+
+In this demo, the token signing keys are generated in memory. 
+The class uses \textit{Jwts.SIG.RS256.keyPair().build()} to generate a private-public key pair. The private key signs the token (signWith), the public key verifies the signature (verifyWith).  In production environments, store keys securely using a keystore, environment variables, or a secrets manager.
+
+The refresh token generation contains a unique JWT ID (jti - Token ID) which will be stored in the databased and used to verify refresh token legitimacy and detect reuse.
+
+The claimsCache caches claims to avoid redundant parsing per request.
+
+\begin{lstlisting}
+package be.pxl.demo.config;
+
+import io.jsonwebtoken.*;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+
+import java.security.KeyPair;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+
+@Component
+public class JwtUtilities {
+    private static final Logger LOGGER = LogManager.getLogger(JwtUtilities.class);
+
+    @Value("${jwt.jwtExpirationTime}")
+    private Long jwtExpirationTime;
+
+    private final KeyPair keyPair = Jwts.SIG.RS256.keyPair().build();
+    private final Map<String, Claims> claimsCache = new ConcurrentHashMap<>();
+
+    private PrivateKey getPrivateKey() {
+        return keyPair.getPrivate();
+    }
+
+    private PublicKey getPublicKey() {
+        return keyPair.getPublic();
+    }
+
+    public String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
+    }
+
+    public Claims extractAllClaims(String token) {
+        return claimsCache.computeIfAbsent(token, t ->
+                Jwts.parser()
+                        .verifyWith(getPublicKey())
+                        .build()
+                        .parseSignedClaims(t)
+                        .getPayload()
+        );
+    }
+
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
+    public String generateToken(String email, List<String> roles) {
+        return Jwts.builder()
+                .subject(email)
+                .claim("role", roles)
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(Date.from(Instant.now().plus(jwtExpirationTime, ChronoUnit.MILLIS)))
+                .signWith(getPrivateKey())
+                .compact();
+    }
+
+    public String generateRefreshToken(String email, String jti, Instant expirationDate) {
+        return Jwts.builder()
+                .subject(email)
+                .id(jti)
+                .issuedAt(new Date())
+                .expiration(Date.from(expirationDate)) // long-lived
+                .signWith(getPrivateKey())
+                .compact();
+    }
+
+    public void validateToken(String token) {
+        try {
+            Jwts.parser().verifyWith(getPublicKey()).build().parseSignedClaims(token);
+        } catch (SecurityException | MalformedJwtException e) {
+            LOGGER.info("Invalid JWT token.", e);
+            throw e;
+        } catch (ExpiredJwtException e) {
+            LOGGER.info("Expired JWT token.", e);
+            throw e;
+        } catch (UnsupportedJwtException e) {
+            LOGGER.info("Unsupported JWT token.", e);
+            throw e;
+        } catch (IllegalArgumentException e) {
+            LOGGER.info("JWT token compact of handler are invalid.", e);
+            throw e;
+        }
+    }
+
+    public UUID extractTokenId(String token) {
+        return UUID.fromString(extractClaim(token, Claims::getId)); // ID == jti
+    }
+
+    public String getToken(HttpServletRequest httpServletRequest) {
+        final String bearerToken = httpServletRequest.getHeader("Authorization");
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
+}
+\end{lstlisting}
+
+The configuration class  \textbf{SpringSecurityConfig} is responsible for setting up Spring Security in a Spring Boot application. It:
+\begin{itemize}
+\item Defines security filters
+\item Configures authorization rules
+\item Enables method-level security (@EnableMethodSecurity)
+\item Implements JWT-based authentication (stateless sessions)
+\item Defines an authentication manager and password encoder
+\end{itemize}
+
+The following annotations are important:
+\begin{tabular}{|l|l|}
+\hline
+ @Configuration &
+This annotation tells Spring that this class contains bean definitions for the application context. \\
+@EnableWebSecurity &
+This annotation enables Spring Security in the application, allowing us to configure security settings. \\
+@EnableMethodSecurity &
+This annotation enables method-level security, allowing us to use @PreAuthorize and @Secured in service methods.
+Without this annotation, @PreAuthorize on findAllUsers() in UserService would not work. (see later in this chapter)\\
+\hline
+\end{tabular}
+
+\begin{lstlisting}
+package be.pxl.demo.config;
+
+import be.pxl.demo.domain.Role;
+import be.pxl.demo.domain.User;
+import be.pxl.demo.repository.UserRepository;
+import be.pxl.demo.security.CustomUserDetailsService;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+@Configuration
+@EnableWebSecurity
+@EnableMethodSecurity
+public class SpringSecurityConfig {
+
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final CustomUserDetailsService customerUserDetailsService;
+
+    @Value("${app.admin.password}")
+    private String adminPassword;
+
+    public SpringSecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, CustomUserDetailsService customerUserDetailsService) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.customerUserDetailsService = customerUserDetailsService;
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth ->
+                        auth.requestMatchers("/public/**", "/users/**", "auth/**", "/error").permitAll()
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/dashboard").authenticated());
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http
+                .exceptionHandling(customizer -> customizer
+                        .authenticationEntryPoint((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized"))
+                        .accessDeniedHandler((request, response, accessDeniedException) -> response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied"))
+                );
+        return http.build();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(customerUserDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return new ProviderManager(authProvider);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public CommandLineRunner createDefaultAdmin(UserRepository userRepository, PasswordEncoder encoder) {
+        return args -> {
+            if (userRepository.findByEmail("elrond.doesnt.play@rivendell.biz").isEmpty()) {
+                User admin = new User();
+                admin.setEmail("elrond.doesnt.play@rivendell.biz");
+                admin.setPassword(encoder.encode(adminPassword));
+                admin.setFirstName("Legitimus");
+                admin.setLastName("Elrondson");
+                admin.setRole(Role.ADMIN);
+                userRepository.save(admin);
+            }
+        };
+    }
+}
+\end{lstlisting}
+
+Let's break down the security features of the filter chain:
+\begin{tabular}{| l | l | l |}
+\hline
+Feature	& Code &	Explanation \\
+CSRF Protection Disabled &	http.csrf(AbstractHttpConfigurer::disable)	&
+Since we are using JWT (which is stateless), CSRF protection is not needed.\\
+Stateless Authentication &	sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) &	Ensures that Spring Security does not create sessions (JWT will be used instead).\\
+Public Access	&  auth.requestMatchers("/public/**", "/users/**", "auth/**", "/error").permitAll()	& 
+Allows unauthenticated users to access public APIs.\\
+Restricted Access & auth..requestMatchers("/dashboard").authenticated() &
+Ensures that only authenticated users can access /dashboard.\\
+Admin Access Restriction &	
+auth.requestMatchers("/admin/**").hasRole("ADMIN") &
+Ensures that only users with ROLE\_ADMIN can access /admin/**.\\ 
+JWT Authentication Filter &	http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);	&
+Ensures that requests are first checked for valid JWT tokens before authentication is attempted.\\
+Custom Exception Handling &	http.exceptionHandling(...)&
+	Defines custom responses for unauthorized (401) and forbidden (403) access.\\
+	\hline
+	\end{tabular}
+	
+
+The class SpringSecurityConfig also provides an AuthenticationManager bean that Spring Security can use for authentication.
+
+And finally,   BCryptPasswordEncoder is used for hashing passwords.
+BCrypt is a strong one-way hashing algorithm, making it a secure choice for password storage.
+
+
+\textbf{JwtAuthenticationFilter} is a Spring Security filter that runs before any secured endpoint is accessed.
+It performs the following functions:
+\begin{itemize}
+\item Extracts JWT from the request header (Authorization: Bearer <token>).
+\item Validates the JWT using JwtUtilities.
+\item Retrieves user details from the token and authenticates the user.
+\item Handles expired or invalid JWTs by returning appropriate HTTP status codes.
+\end{itemize}
+
+\begin{lstlisting}
+package be.pxl.demo.config;
+
+import be.pxl.demo.security.CustomUserDetailsService;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+@Component
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+    private static final Logger LOGGER = LogManager.getLogger(JwtAuthenticationFilter.class);
+    private final JwtUtilities jwtUtilities;
+    private final CustomUserDetailsService customerUserDetailsService;
+
+    public JwtAuthenticationFilter(JwtUtilities jwtUtilities, CustomUserDetailsService customerUserDetailsService) {
+        this.jwtUtilities = jwtUtilities;
+        this.customerUserDetailsService = customerUserDetailsService;
+    }
+
+    @Override
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
+                                    @NonNull FilterChain filterChain)
+            throws ServletException, IOException {
+        String token = jwtUtilities.getToken(request);
+        try {
+            if (token != null) {
+                jwtUtilities.validateToken(token);
+                String email = jwtUtilities.extractUsername(token);
+                UserDetails userDetails = customerUserDetailsService.loadUserByUsername(email);
+                if (userDetails != null) {
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
+                    LOGGER.info("authenticated user with email :{}", email);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            }
+        } catch (ExpiredJwtException e) { // Handle Expired Token
+            sendErrorResponse(response, HttpServletResponse.SC_FORBIDDEN, "Authorization header is expired.");
+            return;
+        }  catch (JwtException e) { // Handle Other JWT Issues
+            sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "Authorization header is invalid.");
+            return;
+        }
+        filterChain.doFilter(request, response);
+    }
+
+    private void sendErrorResponse(HttpServletResponse response, int status, String message) throws IOException {
+        response.setStatus(status);
+        response.setContentType("application/json");
+        PrintWriter writer = response.getWriter();
+        writer.write("{\"error\": \"" + message + "\"}");
+    }
+}
+\end{lstlisting}
+
+The \textbf{AuthenticationService} and it's implementation define the logic for registering and authenticating a user.  It also handles the functionality for exchanging a refresh token (see later).
+
+\begin{lstlisting}
+package be.pxl.demo.service;
+
+import be.pxl.demo.api.dto.LoginDto;
+import be.pxl.demo.api.dto.RegisterDto;
+import be.pxl.demo.api.dto.TokenDto;
+
+public interface AuthenticationService {
+        TokenDto authenticate(LoginDto loginDto);
+        void register (RegisterDto registerDto);
+        TokenDto refreshToken(String refreshToken);
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+package be.pxl.demo.service.impl;
+
+import be.pxl.demo.api.dto.LoginDto;
+import be.pxl.demo.api.dto.RegisterDto;
+import be.pxl.demo.api.dto.TokenDto;
+import be.pxl.demo.config.JwtUtilities;
+import be.pxl.demo.domain.RefreshToken;
+import be.pxl.demo.domain.User;
+import be.pxl.demo.exception.DuplicateEmailException;
+import be.pxl.demo.exception.RefreshTokenExpiredException;
+import be.pxl.demo.exception.RefreshTokenNotFoundException;
+import be.pxl.demo.repository.RefreshTokenRepository;
+import be.pxl.demo.repository.UserRepository;
+import be.pxl.demo.service.AuthenticationService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Collections;
+import java.util.UUID;
+
+@Service
+public class DefaultAuthenticationService implements AuthenticationService {
+
+    private static final Logger LOGGER = LogManager.getLogger(DefaultAuthenticationService.class);
+
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtilities jwtUtilities;
+    private final UserDetailsService userDetailsService;
+    private final RefreshTokenRepository refreshTokenRepository;
+
+    @Value("${jwt.jwtRefreshTokenExpirationTime}")
+    private Long refreshTokenExpirationTime;
+
+    public DefaultAuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtUtilities jwtUtilities, UserDetailsService userDetailsService, RefreshTokenRepository refreshTokenRepository) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.jwtUtilities = jwtUtilities;
+        this.userDetailsService = userDetailsService;
+        this.refreshTokenRepository = refreshTokenRepository;
+    }
+
+
+    public void register(RegisterDto registerDto) {
+        if (userRepository.existsByEmail(registerDto.email())) {
+            throw new DuplicateEmailException();
+        } else {
+            User user = new User();
+            user.setEmail(registerDto.email());
+            user.setFirstName(registerDto.firstName());
+            user.setLastName(registerDto.lastName());
+            user.setPassword(passwordEncoder.encode(registerDto.password()));
+            user.setRole(registerDto.userRole());
+            userRepository.save(user);
+        }
+    }
+
+
+    @Transactional
+    public TokenDto refreshToken(String refreshToken) {
+        jwtUtilities.validateToken(refreshToken);
+        String email = jwtUtilities.extractUsername(refreshToken);
+        UUID jti = jwtUtilities.extractTokenId(refreshToken);
+
+        User user = (User) userDetailsService.loadUserByUsername(email);
+
+        RefreshToken storedRefreshToken = refreshTokenRepository.findByUuidAndUser(jti, user).orElseThrow(RefreshTokenNotFoundException::new);
+        if (storedRefreshToken.getExpirationTime().isBefore(Instant.now())) {
+            refreshTokenRepository.delete(storedRefreshToken);
+            if (LOGGER.isInfoEnabled()) {
+                LOGGER.info("The refresh token is expired.");
+            }
+            throw new RefreshTokenExpiredException();
+        }
+
+        refreshTokenRepository.delete(storedRefreshToken);
+
+        String newAccessToken = jwtUtilities.generateToken(user.getUsername(),
+                user.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .toList());
+
+        String newRefreshToken = createAndStoreRefreshToken(user);
+        return new TokenDto(newAccessToken, newRefreshToken);
+    }
+
+
+    @Transactional
+    public TokenDto authenticate(LoginDto loginDto) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginDto.email(),
+                        loginDto.password()
+                )
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        User user = userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        String token = jwtUtilities.generateToken(user.getUsername(), Collections.singletonList(user.getRole().name()));
+        String refreshToken = createAndStoreRefreshToken(user);
+
+        return new TokenDto(token, refreshToken);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public String createAndStoreRefreshToken(User user) {
+        refreshTokenRepository.deleteByUser(user);
+        UUID uuid = UUID.randomUUID();
+        Instant expirationDate = Instant.now().plus(refreshTokenExpirationTime, ChronoUnit.MILLIS);
+        String token = jwtUtilities.generateRefreshToken(user.getUsername(), uuid.toString(), expirationDate);
+        RefreshToken refreshToken = new RefreshToken(uuid, token, expirationDate, user);
+        refreshTokenRepository.save(refreshToken);
+        return token;
+    }
+}
+\end{lstlisting}
+
+
+The \textbf{UserService} and it's implementation offer a method to retrieve all users. Here the usage is \textbf{@PreAuthorize} is used to demonstrate securing an endpoint. 
+  @PreAuthorize is a Spring Security annotation used to apply method-level security. It ensures that only users with specific roles or permissions can execute a method. This annotation works with Spring Expression Language (SpEL) to define security constraints.
+
+@PreAuthorize("hasRole('ADMIN')") ensures that only users with the role ROLE\_ADMIN can access the findAllUsers method.
+If a user without the ROLE\_ADMIN role tries to invoke findAllUsers, Spring Security will throw an AccessDeniedException.
+
+\begin{lstlisting}
+package be.pxl.demo.service;
+
+import be.pxl.demo.api.dto.UserDto;
+import org.springframework.security.access.prepost.PreAuthorize;
+
+import java.util.List;
+
+public interface UserService {
+    @PreAuthorize("hasRole('ADMIN')")
+    List<UserDto> findAllUsers();
+
+    @PreAuthorize("hasRole('ADMIN')")
+    void promoteToAdmin(Long id);
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+package be.pxl.demo.service.impl;
+
+import be.pxl.demo.api.dto.UserDto;
+import be.pxl.demo.repository.UserRepository;
+import be.pxl.demo.service.UserService;
+import be.pxl.demo.service.mapper.UserMapper;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class DefaultUserService implements UserService {
+
+    private final UserMapper userMapper;
+    private final UserRepository userRepository;
+
+    public DefaultUserService(UserRepository userRepository, UserMapper userMapper) {
+        this.userRepository = userRepository;
+        this.userMapper = userMapper;
+    }
+
+    @Override
+    public List<UserDto> findAllUsers() {
+        return userRepository.findAll().stream().map(userMapper::toDto).toList();
+    }
+}
+\end{lstlisting}
+
+The RestControllers describe the endpoints of the application. 
+
+\begin{lstlisting}
+package be.pxl.demo.api;
+
+import be.pxl.demo.api.dto.*;
+import be.pxl.demo.service.AuthenticationService;
+import be.pxl.demo.service.UserService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/auth")
+public class AuthenticationController {
+    private final UserService userService;
+    private final AuthenticationService authenticationService;
+
+    public AuthenticationController(UserService userService, AuthenticationService authenticationService) {
+        this.userService = userService;
+        this.authenticationService = authenticationService;
+    }
+
+    @PostMapping("/register")
+    public void register(@RequestBody RegisterDto registerDto) {
+        authenticationService.register(registerDto);
+    }
+
+    @PostMapping("/refresh-token")
+    public TokenDto refreshToken(@RequestBody RefreshTokenRequest request) {
+        return authenticationService.refreshToken(request.refreshToken());
+    }
+
+    @PostMapping("/authenticate")
+    public TokenDto authenticate(@RequestBody LoginDto loginDto) {
+        return authenticationService.authenticate(loginDto);
+    }
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+package be.pxl.demo.api;
+
+import be.pxl.demo.api.dto.UserDto;
+import be.pxl.demo.service.UserService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/users")
+public class UserController {
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping
+    public List<UserDto> findAllUsers() {
+        return userService.findAllUsers();
+    }
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+package be.pxl.demo.api;
+
+import be.pxl.demo.service.UserService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/admin")
+public class AdminController {
+
+    private final UserService userService;
+
+    public AdminController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping("/hello")
+    @PreAuthorize("hasRole('ADMIN')") // Additional layer of security
+    public String sayHello(Authentication authentication) {
+        return "Welcome " + authentication.getPrincipal() +" you are authenticated as Admin!";
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/users/{id}/promote")
+    public ResponseEntity<?> promoteToAdmin(@PathVariable Long id) {
+        userService.promoteToAdmin(id);
+        return ResponseEntity.ok().build();
+    }
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+package be.pxl.demo.api;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/public")
+public class PublicController {
+
+    @GetMapping("/welcome")
+    public ResponseEntity<String> welcome() {
+        return ResponseEntity.ok("Welcome! This is a public content!");
+    }
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+package be.pxl.demo.api;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/dashboard")
+public class DashboardController {
+
+    @GetMapping
+    public String getAdminDashboard(Authentication authentication) {
+        return "Dashboard - Welcome " + authentication.getName();
+    }
+}
+\end{lstlisting}
+
+
+
+
+\subsection{Usage}
+
+Now it's time to start the application and test all the endpoints.
+The AuthenticationController offers an endpoint to create new users. A user's email must be unique. New user's have the role USER. 
+
+\begin{verbatim}
+POST http://localhost:8080/api/auth/register
+{
+  "firstName": "Gandalf",
+  "lastName": "TheGrey",
+  "email": "admin@gondor.com",
+  "password": "youShallNotPass123"
+}
+\end{verbatim}
+
+\begin{verbatim}
+POST http://localhost:8080/api/auth/register
+{
+  "firstName": "Samwise",
+  "lastName": "Gamgee",
+  "email": "sam@shire.org",
+  "password": "secondBreakfast"
+}
+\end{verbatim}
+
+Only an existing admin can promote users.
+
+\begin{verbatim}
+PUT http://localhost:8080/api/admin/users/3/promote
+> Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIi....CDA1lbWsuvEEpX3hYA
+\end{verbatim}
+
+Normally, a http status 200 OK is returned after creating a new user, unless the email is already taken, then a 400 Bad Request with error \"Email already taken.\" is returned.
+
+The public endpoint is accessible without authentication.
+
+\begin{verbatim}
+GET http://localhost:8080/api/public/welcome
+\end{verbatim}
+
+However, if you try to access the dashboard without authentication, you will receive a
+4001 Unauthorized. 
+\begin{verbatim}
+GET http://localhost:8080/api/dashboard
+\end{verbatim}
+
+Samwise Gamgee will authenticate and request  an access token and refresh token.
+
+\begin{verbatim}
+POST http://localhost:8080/api/auth/authenticate
+{
+               
+  "email": "sam@shire.org",
+  "password": "secondBreakfast"
+}
+\end{verbatim}
+
+When the email and password are valid a 200 OK is returned with the accessToken and refreshToken in the response.
+\begin{verbatim}
+{
+	"accessToken": "eyJhbGciOiJSUzI1NiJ9.eyJzdWIi....CDA1lbWsuvEEpX3hYA",
+	"refreshToken": "eyJhbGciOiJSUzI1Ni...5c6zBNTqccs1YONXjWUBitXJQ"
+}
+\end{verbatim}
+
+When the email and/or password are not valid a 401 Unauthorized is returned.
+
+For demo, the accessToken is only valid for x minutes,  after this time the refreshToken can be used once to retrieve a new accessToken before the refreshToken is expired.
+
+Samwise Gamegee can access the dashboard:
+
+\begin{verbatim}
+GET http://localhost:8080/api/dashboard
+> Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIi....CDA1lbWsuvEEpX3hYA
+\end{verbatim}
+
+\begin{verbatim}
+200 OK
+Dashboard - Welcome sam@shire.org
+\end{verbatim}
+
+As soon as the accessToken is expired. Samwise Gamegee will see
+
+\begin{verbatim}
+403 Forbidden
+{
+	"error": "Authorization header is expired."
+}
+\end{verbatim}
+
+Now the refresh token can be exchanged for a new accessToken. 
+
+\begin{verbatim}
+POST http://localhost:8080/api/auth/refresh-token
+{
+	"refreshToken": "eyJhbGciOiJSUzI1NiJ9.eyJzd...t1d8gwSfN-w"
+}
+\end{verbatim}
+
+If the refreshToken is already used, the following response will be returned.
+
+\begin{verbatim}
+403 Forbidden
+{
+	"timeStamp": "2025-03-26T10:29:28.562962",
+	"error": "Refresh token not found or already used.",
+	"status": "FORBIDDEN"
+}
+\end{verbatim}
+
+When the refreshToken is valid, a new accessToken en refreshToken are returned.
+
+
+Samwise Gamegee (user) will not be able to retrieve all the users.
+
+\begin{verbatim}
+GET http://localhost:8080/api/users
+> Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIi....CDA1lbWsuvEEpX3hYA
+\end{verbatim}
+
+\begin{verbatim}
+403 Forbidden
+{
+	"timeStamp": "2025-03-26T10:37:13.168673",
+	"error": "Access Denied",
+	"status": "FORBIDDEN"
+}
+\end{verbatim}
+
+However,  the admin user gets access to retrieve all users.
+
+\begin{verbatim}
+[
+	{
+		"firstName": "Samwise",
+		"lastName": "Gamgee",
+		"email": "sam@shire.org",
+		"userRole": "USER"
+	},
+	{
+		"firstName": "Gandalf",
+		"lastName": "TheGrey",
+		"email": "admin@gondor.com",
+		"userRole": "ADMIN"
+	}
+]
+\end{verbatim}
+
+
+
+
+\section{Refresh tokens}
+
+
+
+
+\section{Unit tests}
+
+
+\begin{lstlisting}
+package be.pxl.demo.api;
+
+import be.pxl.demo.config.JwtAuthenticationFilter;
+import be.pxl.demo.config.JwtUtilities;
+import be.pxl.demo.config.SpringSecurityConfig;
+import be.pxl.demo.domain.Role;
+import be.pxl.demo.domain.User;
+import be.pxl.demo.security.CustomUserDetailsService;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Collections;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@WebMvcTest(AdminController.class) // Loads only the AdminController with MockMvc
+@Import({SpringSecurityConfig.class, JwtUtilities.class})
+public class AdminControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private JwtUtilities jwtUtilities;
+
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @MockitoBean
+    private CustomUserDetailsService customUserDetailsService;
+
+    @Test
+    void testSayHello_WithAdminUser_ShouldReturnWelcomeMessage() throws Exception {
+        String jwtToken = jwtUtilities.generateToken("admin", Collections.singletonList("ADMIN"));
+        User user = new User();
+        user.setRole(Role.ADMIN);
+        user.setEmail("admin");
+        Mockito.when(customUserDetailsService.loadUserByUsername("admin")).thenReturn(user);
+
+        mockMvc.perform(get("/admin/hello").header("Authorization", "Bearer " + jwtToken))
+                .andExpect(status().isOk()) // Expect 200 OK
+                .andExpect(content().string("Welcome admin you are authenticated as Admin!"));
+    }
+
+    @Test
+    void testSayHello_WithUser_ShouldReturnAccessDenied() throws Exception {
+        String jwtToken = jwtUtilities.generateToken("eve", Collections.singletonList("USER"));
+        User user = new User();
+        user.setRole(Role.USER);
+        user.setEmail("eve");
+        Mockito.when(customUserDetailsService.loadUserByUsername("eve")).thenReturn(user);
+
+        mockMvc.perform(get("/admin/hello").header("Authorization", "Bearer " + jwtToken))
+                .andExpect(status().is(403));
+    }
+
+    @Test
+    void testSayHello_WithoutAuthentication_ShouldReturnUnauthorized() throws Exception {
+        mockMvc.perform(get("/admin/hello"))
+                .andExpect(status().isUnauthorized()); // Expect 401 Unauthorized
+    }
+}
+\end{lstlisting}
+
+With the @SpringBootTest annotation, Spring Boot provides a convenient way to start up an application context to be used in a test.
+
+\begin{lstlisting}
+package be.pxl.demo.service.impl;
+
+import be.pxl.demo.api.dto.UserDto;
+import be.pxl.demo.builder.UserBuilder;
+import be.pxl.demo.domain.User;
+import be.pxl.demo.repository.UserRepository;
+import be.pxl.demo.service.UserService;
+import be.pxl.demo.service.mapper.UserMapper;
+import be.pxl.demo.service.mapper.UserMapperImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+@SpringBootTest(classes = {UserService.class, DefaultUserService.class, UserMapperImpl.class})
+@EnableMethodSecurity
+class UserServiceTest {
+
+    @MockitoBean
+    private UserRepository userRepository;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private UserService userService;
+
+    @BeforeEach
+    void setUp() {
+        List<User> users = Arrays.asList(UserBuilder.anUser().build(), UserBuilder.anUser().build());
+        when(userRepository.findAll()).thenReturn(users);
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN") // Simulate a user with ADMIN role
+    void findAllUsers_ShouldReturnUsers_WhenUserIsAdmin() {
+        List<UserDto> users = userService.findAllUsers();
+        assertNotNull(users);
+        assertEquals(2, users.size());
+    }
+
+    @Test
+    @WithMockUser(roles = "USER") // Simulate a user with USER role
+    void findAllUsers_ShouldThrowException_WhenUserIsNotAdmin() {
+        assertThrows(AccessDeniedException.class, () -> userService.findAllUsers());
+    }
+
+    @Test
+    void findAllUsers_ShouldThrowException_WhenUserIsNotAuthenticated() {
+        assertThrows(AuthenticationCredentialsNotFoundException.class, () -> userService.findAllUsers());
+    }
+}
+
+\end{lstlisting}
+
+When using @SpringBootTest annotation to test controllers with Spring Security, it's necessary to explicitly configure the filter chain when setting up MockMvc.
+
+Using the static springSecurity method provided by  SecurityMockMvcConfigurer is the preferred way to do this.
+
+The annotation @WithMockUser is used to mock a logged-in user.
+
+
+
+
+
+
+
